@@ -2,1356 +2,276 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="theme-color" content="#18181b">
-<title>Syranx AI</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<!-- SDK FIREBASE -->
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/9.23.0/firebase-database-compat.js"></script>
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="theme-color" content="#09090b">
+<title>Syranx AI - Maintenance</title>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
 <style>
-  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
-  :root { --bg: #09090b; --bg-card: #18181b; --bg-input: #27272a; --accent: #7c5cff; --accent-2: #4dd4ff; --accent-glow: rgba(124, 92, 255, 0.2); --bubble-user-1: #7c5cff; --bubble-user-2: #5b3fff; --border: #27272a; --text: #f4f4f5; --text-2: #a1a1aa; --text-3: #71717a; --code-bg: #0d1117; }
-  html, body { font-family: 'Inter', -apple-system, sans-serif; background: var(--bg); color: var(--text); height: 100vh; height: 100dvh; overflow: hidden; -webkit-font-smoothing: antialiased; }
-  body { display: flex; flex-direction: column; background-size: cover; background-position: center; background-repeat: no-repeat; transition: background-image 0.5s ease; }
-  body::before { content: ''; position: fixed; inset: 0; background: var(--bg); opacity: 1; z-index: -1; transition: opacity 0.5s; }
-  body.has-photo::before { opacity: 0.85; backdrop-filter: blur(8px); }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
   
-  #auth-screen { position: fixed; inset: 0; z-index: 100; background: var(--bg); display: none; align-items: center; justify-content: center; padding: 20px; }
-  #auth-screen.show { display: flex; }
-  .auth-box { width: 100%; max-width: 380px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 20px; padding: 30px; animation: fadeUp 0.4s ease; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-  .auth-box h2 { text-align: center; font-size: 24px; margin-bottom: 5px; color: #fff; letter-spacing: 4px; }
-  .auth-box p.tag { text-align: center; color: var(--text-2); font-size: 11px; margin-bottom: 24px; letter-spacing: 2px;}
-  .input-group { position: relative; margin-bottom: 12px; }
-  .input-group input { width: 100%; padding: 14px 16px; border-radius: 12px; background: var(--bg-input); border: 1px solid transparent; color: #fff; font-size: 14px; outline: none; transition: 0.2s; }
-  .input-group input:focus { border-color: var(--accent); }
-  .eye-btn { position: absolute; right: 10px; top: 50%; transform: translateY(-50%); width: 32px; height: 32px; border-radius: 8px; background: transparent; border: none; color: var(--text-3); display: flex; align-items: center; justify-content: center; cursor: pointer; }
-  .eye-btn svg { width: 16px; height: 16px; }
-  .btn-primary { width: 100%; padding: 14px; border-radius: 12px; background: var(--accent); color: #fff; border: none; font-weight: 600; font-size: 14px; cursor: pointer; margin-top: 10px; transition: 0.2s; }
-  .btn-primary:active { transform: scale(0.98); }
-  .auth-switch { text-align: center; font-size: 13px; color: var(--text-2); margin-top: 20px; }
-  .auth-switch a { color: var(--accent); cursor: pointer; font-weight: 500; }
-  .error-msg { color: #ef4444; font-size: 12px; text-align: center; margin-top: 10px; min-height: 15px; }
-  .account-counter { display: flex; align-items: center; justify-content: center; gap: 8px; margin-top: 20px; padding: 10px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); border-radius: 12px; font-size: 11px; letter-spacing: 1px; color: var(--text-2); }
-  .account-counter .counter-num { color: #fff; font-weight: 700; font-size: 13px; }
-
-  #reg-intro { position: fixed; inset: 0; z-index: 9999; background: #000; display: none; overflow: hidden; transition: opacity 0.4s ease; }
-  #reg-intro.show { display: block; }
-  .intro-clip { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; opacity: 0; visibility: hidden; transition: opacity 0.8s ease, visibility 0.8s ease; pointer-events: none; background: #000; }
-  .intro-clip.active { opacity: 1; visibility: visible; pointer-events: auto; z-index: 10; }
-  .clip-1-content { text-align: center; color: #fff; animation: fadeUp 0.8s ease; display: flex; flex-direction: column; align-items: center; }
-  .intro-video-bg { position: absolute; top: 0; left: 0; width: 100vw; height: 100vh; object-fit: cover; z-index: 0; opacity: 0.9; pointer-events: none; }
-  .intro-overlay { position: absolute; inset: 0; z-index: 1; background: linear-gradient(to bottom, rgba(0,0,0,0.4) 0%, rgba(0,0,0,0.6) 100%); pointer-events: none; }
-  .intro-top-btns { position: absolute; top: 20px; left: 20px; right: 20px; z-index: 99; display: flex; justify-content: space-between; align-items: flex-start; pointer-events: none; }
-  .intro-top-btns > div { pointer-events: auto; display: flex; gap: 8px; }
-  .intro-btn { background: rgba(0, 0, 0, 0.5); color: #fff; border: 1px solid rgba(255, 255, 255, 0.3); padding: 8px 16px; border-radius: 20px; display: flex; align-items: center; justify-content: center; gap: 6px; cursor: pointer; backdrop-filter: blur(5px); transition: 0.2s; font-family: 'Inter', sans-serif; font-size: 12px; font-weight: 600; pointer-events: auto; }
-  .intro-btn:active { transform: scale(0.95); background: rgba(0,0,0,0.9); }
-  .intro-btn svg { width: 16px; height: 16px; }
-  .intro-btn.danger { border-color: rgba(239, 68, 68, 0.5); color: #fca5a5; }
-  .intro-btn.danger:active { background: rgba(239, 68, 68, 0.2); }
-  .intro-bottom-text { position: absolute; bottom: 40px; left: 0; right: 0; display: flex; flex-direction: column; align-items: center; z-index: 2; animation: fadeUp 0.8s ease forwards; }
-  .intro-logo { font-size: 36px; font-weight: 700; letter-spacing: 12px; background: linear-gradient(135deg, #fff, var(--accent)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; padding-left: 12px; margin-bottom: 8px; }
-  .intro-sub { color: #d4d4d8; font-size: 11px; letter-spacing: 4px; }
-
-  #loading-overlay { position: fixed; inset: 0; z-index: 400; background: rgba(9,9,11,0.95); backdrop-filter: blur(10px); display: none; flex-direction: column; align-items: center; justify-content: center; }
-  #loading-overlay.show { display: flex; }
-  .spinner { width: 30px; height: 30px; border: 3px solid rgba(255,255,255,0.1); border-top-color: var(--accent); border-radius: 50%; animation: spin 1s linear infinite; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-
-  #app { display: none; flex-direction: column; height: 100dvh; }
-  #header { display: flex; align-items: center; gap: 6px; padding: 12px 16px; background: rgba(9, 9, 11, 0.85); backdrop-filter: blur(10px); border-bottom: 1px solid var(--border); z-index: 10; }
-  .avatar { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); display: flex; align-items: center; justify-content: center; font-weight: 600; font-size: 16px; overflow: hidden; cursor: pointer; color: #fff; }
-  .avatar img { width: 100%; height: 100%; object-fit: cover; }
-  .info { flex: 1; margin-left: 6px; }
-  .info h1 { font-size: 15px; font-weight: 600; display: flex; align-items: center; gap: 4px; color: #fff; }
-  .info p { font-size: 11px; color: var(--text-2); margin-top: 2px; display: flex; align-items: center; gap: 6px; }
-  .icon-btn { width: 34px; height: 34px; border-radius: 10px; background: transparent; border: none; color: var(--text-2); display: flex; align-items: center; justify-content: center; cursor: pointer; transition: 0.2s; }
-  .icon-btn:active { background: var(--bg-input); color: #fff; }
-  .icon-btn svg { width: 20px; height: 20px; }
-  .verified { width: 15px; height: 15px; color: #1d9bf0; }
-  .verified-small { width: 12px; height: 12px; color: #1d9bf0; vertical-align: middle; }
-
-  .tools-screen { position: fixed; inset: 0; z-index: 500; background: var(--bg); display: none; flex-direction: column; animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-  .tools-screen.show { display: flex; }
-  @keyframes slideInRight { from { transform: translateX(100%); } to { transform: translateX(0); } }
-  .tools-header { display: flex; align-items: center; gap: 12px; padding: 16px; border-bottom: 1px solid var(--border); background: var(--bg-card); }
-  .tools-header h2 { font-size: 18px; font-weight: 700; color: #fff; flex: 1; }
-  .tools-grid { flex: 1; overflow-y: auto; padding: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; align-content: start; }
-  .tool-card { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 12px; cursor: pointer; transition: 0.2s; text-align: center; }
-  .tool-card:active { transform: scale(0.96); background: var(--bg-input); border-color: var(--accent); }
-  .tool-icon { width: 56px; height: 56px; border-radius: 16px; display: flex; align-items: center; justify-content: center; font-size: 28px; background: rgba(124, 92, 255, 0.15); color: var(--accent-2); }
-  .tool-icon svg { width: 28px; height: 28px; stroke-width: 1.5; }
-  .tool-name { font-size: 14px; font-weight: 600; color: #fff; }
-  .tool-desc { font-size: 11px; color: var(--text-2); line-height: 1.4; }
-
-  #tool-play-screen { position: fixed; inset: 0; z-index: 600; background: var(--bg); display: none; flex-direction: column; animation: slideInRight 0.3s cubic-bezier(0.16, 1, 0.3, 1); }
-  #tool-play-screen.show { display: flex; }
-  .play-header { display: flex; align-items: center; gap: 12px; padding: 16px; border-bottom: 1px solid var(--border); background: var(--bg-card); }
-  .play-header h2 { font-size: 16px; font-weight: 600; color: #fff; flex: 1; }
-  .play-content { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; }
-
-  /* GAMES STYLES */
-  .ttt-container { width: 100%; display: flex; flex-direction: column; align-items: center; justify-content: center; }
-  .ttt-grid { display: grid; grid-template-columns: repeat(3, 1fr); grid-template-rows: repeat(3, 1fr); gap: 10px; width: 300px; height: 300px; background: var(--bg-card); padding: 10px; border-radius: 20px; border: 1px solid var(--border); }
-  .ttt-cell { background: var(--bg-input); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 48px; font-weight: 800; cursor: pointer; color: #fff; transition: 0.2s; user-select: none; width: 100%; height: 100%; }
-  .ttt-cell:active { transform: scale(0.95); } .ttt-cell.x { color: #4dd4ff; } .ttt-cell.o { color: #ff5c7c; }
-
-  /* MENU AWAL ZOUR */
-  .zour-start-menu { display: flex; flex-direction: column; gap: 16px; width: 100%; max-width: 300px; margin-top: 20px; }
-  .zour-start-btn { background: var(--bg-card); border: 1px solid var(--border); border-radius: 16px; padding: 20px; display: flex; align-items: center; gap: 16px; cursor: pointer; transition: 0.2s; }
-  .zour-start-btn:active { transform: scale(0.96); background: var(--bg-input); border-color: var(--accent); }
-  .zour-start-btn .icon { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: #fff; }
-  .zour-start-btn .txt { text-align: left; }
-  .zour-start-btn .txt h3 { font-size: 16px; font-weight: 700; color: #fff; margin-bottom: 4px; }
-  .zour-start-btn .txt p { font-size: 12px; color: var(--text-2); }
-
-  /* CORE ZOUR GAME */
-  .tg-container { width: 100%; display: flex; flex-direction: column; align-items: center; font-family: 'Segoe UI', system-ui, sans-serif; color: #eee; padding: 0px; }
-  
-  .tg-diff-toggle { display: flex; margin-bottom: 15px; border-radius: 10px; overflow: hidden; border: 1px solid #2a6aaa; width: 100%; max-width: 320px; }
-  .tg-diff-toggle button { flex: 1; padding: 8px 0; border: none; background: #0f3460; color: #888; font-size: 0.75rem; cursor: pointer; transition: all 0.2s; font-weight: bold;}
-  .tg-diff-toggle button.active { background: #ffd93d; color: #1a1a2e; }
-
-  .tg-status { font-size: 1rem; padding: 10px 20px; border-radius: 12px; background: #0f3460; margin-bottom: 15px; min-height: 44px; display: flex; align-items: center; justify-content: center; gap: 10px; transition: background 0.3s; text-align: center; width: 100%; max-width: 320px; }
-  .tg-status.red { background: #5a1e1e; } .tg-status.blue { background: #1e3a5a; } .tg-status.win { background: #2d5a1e; } .tg-status.thinking { background: #3a2d5a; } .tg-status.stuck { background: #5a3a1e; }
-  .tg-dot { width: 16px; height: 16px; border-radius: 50%; display: inline-block; flex-shrink: 0; }
-  .tg-dot.red { background: #ff6b6b; } .tg-dot.blue { background: #4ecdc4; }
-  
-  .tg-board-wrapper { position: relative; width: 320px; height: 320px; background: #2a2a3e; border-radius: 20px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); margin-bottom: 15px; padding: 10px; }
-  .tg-board { position: relative; width: 300px; height: 300px; background: repeating-linear-gradient(to bottom, transparent 0px, transparent 99px, rgba(100,150,200,0.18) 99px, rgba(100,150,200,0.18) 100px), repeating-linear-gradient(to right, transparent 0px, transparent 99px, rgba(100,150,200,0.18) 99px, rgba(100,150,200,0.18) 100px), linear-gradient(135deg, #f5f0e1 0%, #e8e2d0 100%); border-radius: 8px; box-shadow: inset 0 0 30px rgba(0,0,0,0.15), 0 0 0 3px #8b7355, 0 0 0 6px #a0896b; touch-action: manipulation; }
-  .tg-board svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
-  .tg-node { position: absolute; width: 60px; height: 60px; transform: translate(-50%, -50%); border-radius: 50%; cursor: pointer; display: flex; align-items: center; justify-content: center; z-index: 2; }
-  .tg-node::before { content: ''; width: 22px; height: 22px; border-radius: 50%; background: rgba(30,60,90,0.15); border: 2px dashed rgba(30,60,90,0.3); transition: background 0.15s, transform 0.15s; }
-  .tg-node.hint::before { background: rgba(255,217,61,0.7); border: 2px solid #ffd93d; box-shadow: 0 0 12px #ffd93d; animation: tgPulse 1s infinite; }
-  @keyframes tgPulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.18); } }
-  .tg-node.blocked::before { background: rgba(150,150,150,0.15); border: 2px dashed rgba(100,100,100,0.25); }
-  .tg-node.selectable::before { background: rgba(255,217,61,0.5); border: 2px solid #ffd93d; animation: tgPulse 1s infinite; }
-  .tg-node.occupied::before { display: none; }
-  .tg-pion { width: 32px; height: 32px; border-radius: 50%; position: absolute; z-index: 3; pointer-events: none; transform: translate(-50%, -50%); transition: left 0.3s ease-out, top 0.3s ease-out; }
-  .tg-pion.red { background: radial-gradient(circle at 30% 30%, #ff9a9a, #ff6b6b 50%, #b91c1c); box-shadow: 0 3px 8px rgba(185,28,28,0.5), inset 0 -3px 8px rgba(0,0,0,0.3), inset 0 3px 6px rgba(255,255,255,0.4); }
-  .tg-pion.blue { background: radial-gradient(circle at 30% 30%, #7eeae0, #4ecdc4 50%, #0d9488); box-shadow: 0 3px 8px rgba(13,148,136,0.5), inset 0 -3px 8px rgba(0,0,0,0.3), inset 0 3px 6px rgba(255,255,255,0.4); }
-  .tg-pion.selected { animation: tgBounce 0.7s infinite; box-shadow: 0 0 25px #ffd93d !important; }
-  @keyframes tgBounce { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.12); } }
-  .tg-pion.win-pion { animation: tgWinpulse 0.8s infinite; box-shadow: 0 0 30px #7ed957 !important; }
-  @keyframes tgWinpulse { 0%, 100% { filter: brightness(1); } 50% { filter: brightness(1.5); } }
-  
-  .tg-info { color: #888; font-size: 0.8rem; text-align: center; margin-bottom: 10px; }
-  .tg-phase-badge { display: inline-block; padding: 4px 12px; border-radius: 20px; font-size: 0.7rem; font-weight: bold; text-transform: uppercase; margin-top: 5px; }
-  .tg-phase-badge.place { background: #ffd93d; color: #1a1a2e; } .tg-phase-badge.move { background: #4ecdc4; color: #1a1a2e; } .tg-phase-badge.stuck { background: #ff9a4d; color: #1a1a2e; }
-  
-  .tg-controls { display: flex; gap: 10px; margin-top: 10px; flex-wrap: wrap; justify-content: center; }
-  .tg-controls button { padding: 8px 16px; border: none; border-radius: 8px; background: #0f3460; color: #eee; font-size: 0.85rem; cursor: pointer; border: 1px solid #2a6aaa; }
-  .tg-controls button:active { transform: scale(0.97); }
-  
-  .tg-wins { display: flex; gap: 20px; margin-top: 10px; font-size: 0.9rem; }
-  .tg-wins .score { display: flex; align-items: center; gap: 6px; }
-  .tg-thinking-dots::after { content: ''; animation: tgDots 1.5s infinite; }
-  @keyframes tgDots { 0% { content: ''; } 25% { content: '.'; } 50% { content: '..'; } 75% { content: '...'; } }
-  
-  /* ONLINE ROOM UI */
-  .online-room-ui { display: flex; flex-direction: column; gap: 12px; width: 100%; max-width: 320px; margin-bottom: 15px; }
-  .online-room-ui input { padding: 12px; border-radius: 8px; border: 1px solid #2a6aaa; background: #0f3460; color: #fff; text-align: center; font-size: 1.2rem; font-weight: bold; letter-spacing: 2px; }
-  .online-room-ui button { padding: 12px; border-radius: 8px; border: none; background: #4ecdc4; color: #1a1a2e; font-weight: bold; font-size: 1rem; cursor: pointer; }
-
-  .player-info { display: flex; justify-content: space-between; width: 100%; max-width: 320px; margin-bottom: 10px; font-size: 12px; font-weight: 600; }
-  .player-info .p1 { color: #ff6b6b; } .player-info .p2 { color: #4ecdc4; }
-
-  /* DEV CHEAT MENU */
-  #dev-cheat-menu {
-    position: fixed; bottom: 20px; right: 20px; z-index: 999;
-    background: #000; border: 2px dashed #ef4444; border-radius: 12px;
-    padding: 10px; display: flex; flex-direction: column; gap: 8px;
-    box-shadow: 0 0 20px rgba(239, 68, 68, 0.5);
-    animation: flashRed 2s infinite alternate;
+  html, body {
+    width: 100%;
+    max-width: 100vw;
+    overflow-x: hidden; /* Mencegah layar geser ke samping */
+    background-color: #09090b;
+    color: #f4f4f5;
+    font-family: 'Inter', sans-serif;
+    height: 100dvh; /* dvh lebih akurat di HP */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
   }
-  #dev-cheat-menu button {
-    background: #ef4444; color: #fff; border: none; padding: 8px 12px;
-    border-radius: 6px; font-weight: bold; font-size: 11px; cursor: pointer;
+
+  /* Efek Lampu Latar (Glow) - Dikunci biar ga bikin layar geser */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 100vw;
+    height: 100vh;
+    background: radial-gradient(circle, rgba(124, 92, 255, 0.2) 0%, rgba(9, 9, 11, 0) 70%);
+    z-index: -1;
+    pointer-events: none;
   }
-  @keyframes flashRed { 0% { box-shadow: 0 0 10px rgba(239,68,68,0.5); } 100% { box-shadow: 0 0 30px rgba(239,68,68,1); } }
 
-  /* TOOLS OTHER */
-  .calc-container { width: 100%; max-width: 320px; }
-  .calc-display { width: 100%; background: var(--bg-input); border: 1px solid var(--border); border-radius: 16px; padding: 20px; text-align: right; font-size: 32px; font-weight: 600; color: #fff; margin-bottom: 16px; overflow-x: auto; white-space: nowrap; }
-  .calc-buttons { display: grid; grid-template-columns: repeat(4, 1fr); gap: 8px; }
-  .calc-btn { background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; padding: 18px 0; font-size: 20px; font-weight: 600; color: #fff; cursor: pointer; transition: 0.1s; }
-  .calc-btn:active { background: var(--bg-input); } .calc-btn.op { color: var(--accent-2); background: rgba(77, 212, 255, 0.1); }
-  .calc-btn.eq { background: var(--accent); color: #fff; border: none; grid-column: span 2; } .calc-btn.clear { color: #ef4444; background: rgba(239, 68, 68, 0.1); }
+  .container {
+    padding: 20px;
+    width: 100%;
+    max-width: 400px; /* Biar pas di tengah */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: fadeUp 0.8s ease-out;
+    z-index: 10;
+  }
 
-  .conv-container { width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 16px; }
-  .conv-group { display: flex; flex-direction: column; gap: 6px; }
-  .conv-group label { font-size: 12px; color: var(--text-2); font-weight: 500; }
-  .conv-group input, .conv-group select { width: 100%; padding: 14px; border-radius: 12px; background: var(--bg-input); border: 1px solid var(--border); color: #fff; font-size: 16px; outline: none; }
-  .conv-result { background: rgba(34, 197, 94, 0.15); border: 1px solid rgba(34, 197, 94, 0.3); border-radius: 16px; padding: 20px; text-align: center; }
-  .conv-result small { font-size: 12px; color: var(--text-2); } .conv-result div { font-size: 28px; font-weight: 700; color: #22c55e; margin-top: 8px; }
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
 
-  .sw-container { width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 20px; align-items: center; }
-  .sw-display { font-family: 'JetBrains Mono', monospace; font-size: 48px; font-weight: 700; color: var(--accent-2); text-shadow: 0 0 20px var(--accent-glow); }
-  .sw-btns { display: flex; gap: 12px; width: 100%; }
-  .sw-btn { flex: 1; padding: 16px; border-radius: 12px; border: none; font-weight: 700; font-size: 15px; cursor: pointer; color: #fff; }
-  .sw-btn.start { background: #22c55e; } .sw-btn.stop { background: #ef4444; } .sw-btn.reset { background: var(--bg-input); border: 1px solid var(--border); }
+  .icon-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 80px;
+    height: 80px;
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 24px;
+    margin-bottom: 24px;
+    box-shadow: 0 10px 30px rgba(124, 92, 255, 0.15);
+  }
 
-  .dice-container { width: 100%; max-width: 320px; display: flex; flex-direction: column; gap: 20px; align-items: center; text-align: center; }
-  .dice-face { font-size: 100px; line-height: 1; transition: transform 0.2s; }
-  .action-btn { width: 100%; max-width: 200px; padding: 16px; border-radius: 12px; border: none; background: var(--accent); color: #fff; font-weight: 700; font-size: 16px; cursor: pointer; }
+  .icon-wrapper svg {
+    width: 40px;
+    height: 40px;
+    color: #7c5cff;
+    animation: spin 4s linear infinite;
+  }
 
-  #prank-screen { position: fixed; inset: 0; z-index: 9000; background: #000; display: none; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 30px; animation: flashRed 0.5s ease; }
-  #prank-screen.show { display: flex; }
-  @keyframes flashRed { 0% { background: #ff0000; } 100% { background: #000; } }
-  .prank-title { font-size: 48px; font-weight: 900; color: #ff0000; text-shadow: 0 0 20px #ff0000, 0 0 40px #ff0000; margin-bottom: 20px; animation: shake 0.5s infinite; }
-  @keyframes shake { 0%, 100% { transform: translateX(0); } 25% { transform: translateX(-10px); } 75% { transform: translateX(10px); } }
-  .prank-text { font-size: 20px; font-weight: 700; color: #fff; letter-spacing: 2px; margin-bottom: 40px; line-height: 1.5; }
-  .prank-btn { padding: 14px 30px; background: #ff0000; color: #fff; border: none; border-radius: 30px; font-weight: 700; font-size: 16px; cursor: pointer; box-shadow: 0 0 20px #ff0000; }
+  @keyframes spin { 100% { transform: rotate(360deg); } }
 
-  /* CHAT */
-  #chat { flex: 1; overflow-y: auto; padding: 20px 16px; display: flex; flex-direction: column; gap: 16px; scroll-behavior: smooth; }
-  #chat::-webkit-scrollbar { width: 4px; } #chat::-webkit-scrollbar-thumb { background: #3f3f46; border-radius: 4px; }
-  .row { display: flex; align-items: flex-end; gap: 8px; max-width: 100%; animation: fadeUp 0.3s ease; } .row.user { flex-direction: row-reverse; }
-  .bubble-wrap { display: flex; flex-direction: column; max-width: 85%; min-width: 0; }
-  .bubble { padding: 12px 16px; border-radius: 18px; font-size: 14.5px; line-height: 1.5; word-wrap: break-word; }
-  .user .bubble { background: var(--accent); color: #fff; border-bottom-right-radius: 4px; }
-  .ai .bubble { background: var(--bg-card); border: 1px solid var(--border); color: var(--text); border-bottom-left-radius: 4px; }
-  .ai .bubble p { margin-bottom: 8px; } .ai .bubble p:last-child { margin-bottom: 0; }
-  .ai .bubble strong { color: #fff; font-weight: 600; }
-  .ai .bubble code:not(pre code) { background: rgba(255,255,255,0.1); color: #fff; padding: 2px 6px; border-radius: 4px; font-family: 'JetBrains Mono', monospace; font-size: 13px; }
-  .mini-avatar { width: 28px; height: 28px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 12px; font-weight: 600; flex-shrink: 0; }
-  .user .mini-avatar { background: var(--bg-input); color: #fff; } .ai .mini-avatar { background: var(--accent-2); color: #000; }
-  .mini-avatar img { width: 100%; height: 100%; object-fit: cover; border-radius: 50%; }
-  .code-block { margin: 10px 0; border-radius: 12px; background: var(--code-bg); border: 1px solid var(--border); overflow: hidden; }
-  .code-header { display: flex; justify-content: space-between; padding: 8px 12px; background: rgba(255,255,255,0.02); border-bottom: 1px solid var(--border); font-size: 11px; color: var(--text-2); font-family: 'JetBrains Mono', monospace; }
-  .code-copy-btn { background: transparent; border: none; color: var(--text-2); cursor: pointer; display: flex; align-items: center; gap: 4px; font-size: 11px; }
-  .code-body { padding: 12px; overflow-x: auto; font-family: 'JetBrains Mono', monospace; font-size: 12px; line-height: 1.6; color: #e4e4e7; white-space: pre; }
-  .code-body .kw { color: #c678dd; } .code-body .str { color: #98c379; } .code-body .num { color: #d19a66; } .code-body .com { color: #5c6370; font-style: italic; }
-  .bubble-actions { display: flex; gap: 6px; margin-top: 8px; opacity: 0.8; }
-  .bubble-actions button { background: var(--bg-input); border: 1px solid var(--border); color: var(--text-2); padding: 5px 10px; border-radius: 8px; font-size: 10.5px; font-weight: 600; cursor: pointer; transition: 0.2s; display: flex; align-items: center; gap: 4px; }
-  .bubble-actions button:active { background: #3f3f46; color: #fff; }
-  .welcome { text-align: center; padding: 40px 20px; color: var(--text-2); font-size: 13px; line-height: 1.6; }
-  .welcome h2 { font-size: 32px; font-weight: 700; letter-spacing: 8px; margin-bottom: 8px; color: #fff; }
-  .welcome .sub-title { font-size: 11px; letter-spacing: 4px; color: var(--accent-2); margin-bottom: 30px; }
-  .quick-hints { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 24px; }
-  .quick-hints button { background: var(--bg-card); border: 1px solid var(--border); padding: 8px 14px; border-radius: 20px; color: var(--text); font-size: 12px; cursor: pointer; transition: 0.2s; }
-  .quick-hints button:active { background: var(--bg-input); }
-  .typing { display: flex; gap: 4px; padding: 4px 0; }
-  .typing span { width: 6px; height: 6px; background: var(--text-2); border-radius: 50%; animation: bounce 1.4s infinite ease-in-out; }
-  .typing span:nth-child(2) { animation-delay: 0.2s; } .typing span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes bounce { 0%, 60%, 100% { transform: translateY(0); opacity: 0.4; } 30% { transform: translateY(-5px); opacity: 1; } }
+  h1 {
+    font-size: 26px;
+    font-weight: 800;
+    letter-spacing: 2px;
+    margin-bottom: 12px;
+    background: linear-gradient(135deg, #fff, #7c5cff);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    line-height: 1.2;
+  }
 
-  #input-area { padding: 12px 16px; background: var(--bg); border-top: 1px solid var(--border); }
-  .input-row { display: flex; align-items: flex-end; gap: 8px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 24px; padding: 6px; transition: 0.2s; }
-  .input-row:focus-within { border-color: #52525b; }
-  .attach-btn { width: 38px; height: 38px; border-radius: 50%; background: transparent; border: none; color: var(--text-2); display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-  .attach-btn:active { background: var(--bg-input); color: #fff; }
-  .attach-btn svg { width: 20px; height: 20px; }
-  #mic-btn.recording { color: #ef4444; background: rgba(239, 68, 68, 0.15); animation: pulseMic 1s infinite alternate; }
-  @keyframes pulseMic { from { transform: scale(1); } to { transform: scale(1.1); } }
-  #prompt { flex: 1; background: transparent; border: none; color: #fff; font-size: 14.5px; padding: 10px 4px; resize: none; outline: none; max-height: 120px; font-family: 'Inter', sans-serif; line-height: 1.4; }
-  #prompt::placeholder { color: var(--text-3); }
-  #kirim { width: 38px; height: 38px; border-radius: 50%; background: var(--accent); border: none; color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; transition: 0.2s; }
-  #kirim:active { transform: scale(0.9); } #kirim:disabled { background: var(--bg-input); color: var(--text-3); }
-  #file-preview { display: none; padding: 8px 12px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 12px; margin-bottom: 8px; align-items: center; justify-content: space-between; font-size: 12px; color: #fff; }
-  #file-preview.show { display: flex; }
-  #file-preview img { width: 30px; height: 30px; border-radius: 6px; object-fit: cover; margin-right: 8px; }
-  .remove-file { cursor: pointer; padding: 0 8px; font-weight: bold; color: var(--text-2); font-size: 18px; }
-  #footer { text-align: center; padding: 8px; font-size: 10px; color: var(--text-3); background: var(--bg); border-top: 1px solid var(--border); letter-spacing: 1px; }
-  #footer b { color: var(--accent-2); }
+  p {
+    font-size: 14px;
+    color: #a1a1aa;
+    line-height: 1.6;
+    margin-bottom: 30px;
+    max-width: 90%;
+  }
 
-  #settings-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.6); z-index: 900; opacity: 0; visibility: hidden; transition: 0.3s; }
-  #settings-overlay.show { opacity: 1; visibility: visible; }
-  #settings-panel { position: fixed; top: 0; right: 0; bottom: 0; width: 100%; max-width: 350px; background: var(--bg-card); z-index: 950; transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.16, 1, 0.3, 1); display: flex; flex-direction: column; border-left: 1px solid var(--border); }
-  #settings-panel.show { transform: translateX(0); }
-  .settings-header { padding: 16px 20px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
-  .settings-header h3 { font-size: 16px; color: #fff; }
-  .settings-body { flex: 1; overflow-y: auto; padding: 20px; display: flex; flex-direction: column; gap: 24px; }
-  .settings-section h4 { font-size: 11px; text-transform: uppercase; color: var(--text-2); margin-bottom: 12px; letter-spacing: 1.5px; }
-  .theme-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; }
-  .theme-card { aspect-ratio: 1; border-radius: 12px; border: 2px solid transparent; cursor: pointer; position: relative; display: flex; align-items: center; justify-content: center; overflow: hidden; background: #000; }
-  .theme-card.active { border-color: #fff; }
-  .theme-card .orb { width: 30px; height: 30px; border-radius: 50%; filter: blur(8px); position: absolute; }
-  .theme-card .orb1 { top: 10%; left: 10%; } .theme-card .orb2 { bottom: 10%; right: 10%; }
-  .theme-card .check { position: absolute; top: 6px; right: 6px; width: 16px; height: 16px; border-radius: 50%; background: #fff; color: #000; display: none; align-items: center; justify-content: center; font-size: 10px; font-weight: bold; }
-  .theme-card.active .check { display: flex; }
-  .theme-card .label { position: absolute; bottom: 0; left: 0; right: 0; padding: 4px; background: rgba(0,0,0,0.8); color: #fff; font-size: 9px; text-align: center; }
-  .dev-bg-grid { display: none; grid-template-columns: repeat(4, 1fr); gap: 8px; margin-bottom: 12px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 12px; }
-  .dev-bg-grid.show { display: grid; animation: fadeUp 0.3s ease; }
-  .dev-bg-item { aspect-ratio: 1; border-radius: 8px; border: 2px solid transparent; cursor: pointer; overflow: hidden; position: relative; background: #000; }
-  .dev-bg-item img { width: 100%; height: 100%; object-fit: cover; opacity: 0.7; transition: 0.2s; }
-  .dev-bg-item:active img { opacity: 1; }
-  .dev-bg-item.active { border-color: var(--accent); }
-  .dev-bg-item.active img { opacity: 1; }
-  .dev-bg-item .check { position: absolute; top: 4px; right: 4px; width: 14px; height: 14px; border-radius: 50%; background: #fff; color: #000; display: none; align-items: center; justify-content: center; font-size: 9px; font-weight: bold; }
-  .dev-bg-item.active .check { display: flex; }
-  .dev-music-list { display: none; flex-direction: column; gap: 8px; margin-bottom: 12px; padding: 10px; background: rgba(0,0,0,0.2); border-radius: 12px; }
-  .dev-music-list.show { display: flex; animation: fadeUp 0.3s ease; }
-  .dev-music-item { display: flex; align-items: center; justify-content: space-between; padding: 10px 14px; background: var(--bg-card); border: 1px solid var(--border); border-radius: 8px; cursor: pointer; transition: 0.2s; }
-  .dev-music-item:active { background: var(--bg-input); }
-  .dev-music-item.active { border-color: var(--accent); }
-  .dev-music-info { display: flex; flex-direction: column; gap: 2px; }
-  .dev-music-title { font-size: 13px; font-weight: 600; color: #fff; }
-  .dev-music-artist { font-size: 10px; color: var(--text-2); }
-  .dev-music-icon { width: 28px; height: 28px; border-radius: 50%; background: var(--bg-input); display: flex; align-items: center; justify-content: center; color: var(--text-2); }
-  .dev-music-item.active .dev-music-icon { background: var(--accent); color: #fff; }
-  .settings-btn { display: flex; align-items: center; gap: 12px; padding: 12px 14px; border-radius: 12px; background: var(--bg-input); border: 1px solid transparent; color: var(--text); font-size: 13px; width: 100%; cursor: pointer; text-align: left; margin-bottom: 8px; transition: 0.2s; }
-  .settings-btn:active { background: #3f3f46; }
-  .settings-btn svg { width: 18px; height: 18px; color: #fff; }
-  .settings-btn.danger { color: #ef4444; } .settings-btn.danger svg { color: #ef4444; }
-  .toggle-wrap { display: flex; justify-content: space-between; align-items: center; padding: 12px 14px; background: var(--bg-input); border-radius: 12px; font-size: 13px; cursor: pointer; }
-  .toggle { width: 42px; height: 24px; background: #52525b; border-radius: 12px; position: relative; transition: 0.3s; }
-  .toggle::after { content: ''; position: absolute; top: 3px; left: 3px; width: 18px; height: 18px; background: #fff; border-radius: 50%; transition: 0.3s; }
-  .toggle.on { background: var(--accent); }
-  .toggle.on::after { transform: translateX(18px); }
-  .settings-info { padding: 12px; border-radius: 12px; background: rgba(255,255,255,0.03); border: 1px solid var(--border); font-size: 11.5px; color: var(--text-2); line-height: 1.5; margin-top: 10px; }
-  .music-player { display: flex; flex-direction: column; gap: 12px; padding: 14px; background: var(--bg-input); border-radius: 12px; margin-top: 10px; }
-  .music-info { display: flex; align-items: center; gap: 12px; }
-  .music-disc { width: 44px; height: 44px; border-radius: 50%; background: linear-gradient(135deg, var(--accent), var(--accent-2)); display: flex; align-items: center; justify-content: center; color: #fff; flex-shrink: 0; position: relative; overflow: hidden; }
-  .music-disc::after { content: ''; position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); width: 12px; height: 12px; border-radius: 50%; background: var(--bg-input); }
-  .music-disc svg { width: 18px; height: 18px; position: relative; z-index: 2; }
-  .music-disc.playing { animation: discSpin 3s linear infinite; }
-  @keyframes discSpin { to { transform: rotate(360deg); } }
-  .music-meta { flex: 1; min-width: 0; }
-  .music-title { font-size: 13px; font-weight: 600; color: var(--text); overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
-  .music-status { font-family: 'JetBrains Mono', monospace; font-size: 9.5px; letter-spacing: 1px; color: var(--text-3); text-transform: uppercase; display: flex; align-items: center; gap: 6px; margin-top: 2px;}
-  .music-status.playing { color: var(--accent-2); }
-  .music-controls { display: flex; align-items: center; gap: 10px; }
-  .music-play-btn { width: 36px; height: 36px; border-radius: 10px; border: none; background: var(--accent); color: #fff; display: flex; align-items: center; justify-content: center; cursor: pointer; flex-shrink: 0; }
-  .music-play-btn svg { width: 16px; height: 16px; }
-  .music-volume { flex: 1; display: flex; align-items: center; gap: 8px; }
-  .music-volume svg { width: 14px; height: 14px; color: var(--text-2); }
-  #music-volume-slider { flex: 1; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.1); outline: none; -webkit-appearance: none; }
-  #music-volume-slider::-webkit-slider-thumb { -webkit-appearance: none; width: 12px; height: 12px; border-radius: 50%; background: #fff; }
+  /* Kotak Info / Status */
+  .status-box {
+    background: #18181b;
+    border: 1px solid #27272a;
+    border-radius: 16px;
+    padding: 12px 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    font-family: 'JetBrains Mono', monospace;
+    font-size: 12px;
+    color: #4dd4ff;
+    width: 100%;
+    max-width: 320px;
+  }
 
-  #toast { position: fixed; bottom: 80px; left: 50%; transform: translateX(-50%) translateY(20px); background: #fff; color: #000; padding: 10px 20px; border-radius: 20px; font-size: 13px; font-weight: 500; z-index: 10000; opacity: 0; transition: 0.3s; pointer-events: none; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-  #toast.show { transform: translateX(-50%) translateY(0); opacity: 1; }
-  input[type="file"] { display: none; }
+  .dot {
+    width: 8px;
+    height: 8px;
+    background: #4dd4ff;
+    border-radius: 50%;
+    animation: blink 1.5s infinite;
+    flex-shrink: 0;
+  }
+
+  @keyframes blink {
+    0%, 100% { opacity: 1; }
+    50% { opacity: 0.3; }
+  }
+
+  /* Tombol Ikon ! di Kanan */
+  .info-btn {
+    background: rgba(124, 92, 255, 0.15);
+    border: 1px solid #7c5cff;
+    color: #7c5cff;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    margin-left: auto; /* Dorong ke paling kanan */
+    transition: 0.2s;
+    animation: warningPulse 2s infinite;
+    flex-shrink: 0;
+  }
+
+  .info-btn:active { transform: scale(0.9); }
+
+  @keyframes warningPulse {
+    0%, 100% { box-shadow: 0 0 0px rgba(124, 92, 255, 0); }
+    50% { box-shadow: 0 0 10px rgba(124, 92, 255, 0.8); }
+  }
+
+  .footer {
+    margin-top: 40px;
+    font-size: 10px;
+    color: #52525b;
+    letter-spacing: 1px;
+  }
+
+  /* --- STYLE POP-UP PESAN (KERTAS) --- */
+  .modal-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.8);
+    backdrop-filter: blur(5px);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+    padding: 20px;
+  }
+  .modal-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
+  
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+  .modal-content {
+    background: #18181b;
+    border: 1px solid #7c5cff;
+    border-radius: 20px;
+    padding: 30px 20px;
+    width: 100%;
+    max-width: 350px;
+    box-shadow: 0 20px 50px rgba(124, 92, 255, 0.2);
+    transform: scale(0.9);
+    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    text-align: center;
+    position: relative;
+  }
+
+  @keyframes popIn { to { transform: scale(1); } }
+
+  .modal-content h2 {
+    color: #7c5cff;
+    font-size: 20px;
+    margin-bottom: 20px;
+    letter-spacing: 1px;
+  }
+
+  .modal-content p {
+    color: #f4f4f5;
+    font-size: 14px;
+    line-height: 1.6;
+    margin-bottom: 25px;
+    max-width: 100%;
+  }
+
+  .modal-content strong {
+    display: block;
+    margin-top: 10px;
+    color: #4dd4ff;
+    font-size: 16px;
+    letter-spacing: 1px;
+  }
+
+  .modal-close-btn {
+    background: #7c5cff;
+    color: #fff;
+    border: none;
+    padding: 12px 24px;
+    border-radius: 12px;
+    font-weight: bold;
+    font-size: 14px;
+    cursor: pointer;
+    width: 100%;
+    transition: 0.2s;
+  }
+  .modal-close-btn:active { transform: scale(0.95); }
+
 </style>
 </head>
 <body>
 
-<!-- AUTH SCREEN -->
-<div id="auth-screen">
-  <div class="auth-box">
-    <h2>SYRANX</h2>
-    <p class="tag">PREMIUM AI SYSTEM</p>
-    <div id="login-form">
-      <div class="input-group"><input id="login-user" placeholder="Username" autocomplete="off"></div>
-      <div class="input-group">
-        <input id="login-pass" type="password" placeholder="Password">
-        <button class="eye-btn" onclick="togglePass('login-pass', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
-      </div>
-      <button class="btn-primary" onclick="login()">MASUK</button>
-      <p class="auth-switch">Belum punya akun? <a onclick="showRegister()">Daftar</a></p>
-    </div>
-    <div id="register-form" style="display:none">
-      <div class="input-group"><input id="reg-user" placeholder="Username baru" autocomplete="off"></div>
-      <div class="input-group">
-        <input id="reg-pass" type="password" placeholder="Password (min 4 karakter)">
-        <button class="eye-btn" onclick="togglePass('reg-pass', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
-      </div>
-      <div class="input-group">
-        <input id="reg-pass2" type="password" placeholder="Ulangi password">
-        <button class="eye-btn" onclick="togglePass('reg-pass2', this)"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg></button>
-      </div>
-      <button class="btn-primary" onclick="register()">BUAT AKUN</button>
-      <p class="auth-switch">Sudah punya akun? <a onclick="showLogin()">Masuk</a></p>
-    </div>
-    <div class="error-msg" id="auth-error"></div>
-    <div class="account-counter">
-      <span class="dot-live"></span>
-      <span><span class="counter-num" id="account-count">0</span> AKUN TERDAFTAR</span>
-    </div>
-  </div>
-</div>
-
-<!-- INTRO -->
-<div id="reg-intro">
-  <div id="clip-1" class="intro-clip active" onclick="transitionToClip2()">
-    <div class="clip-1-content">
-      <svg style="width: 64px; height: 64px; color: #22c55e; margin-bottom: 24px; filter: drop-shadow(0 0 20px rgba(34,197,94,0.4));" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path>
-        <polyline points="22 4 12 14.01 9 11.01"></polyline>
+  <div class="container">
+    <div class="icon-wrapper">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+        <circle cx="12" cy="12" r="3"></circle>
+        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
       </svg>
-      <div style="font-size: 20px; font-weight: 500; letter-spacing: 2px; color: #a1a1aa;">Selamat datang,</div>
-      <div style="font-size: 32px; font-weight: 800; color: #22c55e; letter-spacing: 4px; margin-top: 8px; text-shadow: 0 4px 20px rgba(0,0,0,0.5);" id="reg-username">USER</div>
-      <div style="margin-top: 40px; font-size: 10px; letter-spacing: 3px; color: #52525b;">MEMUAT VIDEO...</div>
     </div>
-  </div>
-  <div id="clip-2" class="intro-clip">
-    <video class="intro-video-bg" id="reg-intro-video" autoplay loop playsinline muted></video>
-    <div class="intro-overlay"></div>
-    <div class="intro-top-btns">
-      <div>
-        <button class="intro-btn" onclick="document.getElementById('intro-video-input').click()" title="Ganti Video Intro">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M15 10l4.553-2.276A1 1 0 0121 8.618v6.764a1 1 0 01-1.447.894L15 14M5 18h8a2 2 0 002-2V8a2 2 0 00-2-2H5a2 2 0 00-2 2v8a2 2 0 002 2z"></path></svg>
-          Ganti
-        </button>
-        <button class="intro-btn danger" onclick="resetIntroVideo(event)" title="Hapus Video Custom">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"></polyline><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path></svg>
-          Hapus
-        </button>
-      </div>
-      <button class="intro-btn" onclick="skipRegIntro(event)">
-        Skip <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="5 4 15 12 5 20 5 4"></polygon><line x1="19" y1="5" x2="19" y2="19"></line></svg>
-      </button>
-    </div>
-    <div class="intro-bottom-text">
-      <div class="intro-logo">SYRANX</div>
-      <div class="intro-sub">PREMIUM AI SYSTEM</div>
-    </div>
-  </div>
-</div>
 
-<!-- MENU UTAMA TOOLS -->
-<div id="tools-menu" class="tools-screen">
-  <div class="tools-header">
-    <button class="icon-btn" onclick="closeToolsMenu()" style="color:#fff;">
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-    </button>
-    <h2>Menu Utama</h2>
-  </div>
-  <div class="tools-grid" style="grid-template-columns: 1fr;">
-    <div class="tool-card" onclick="openMiniGames()" style="flex-direction: row; justify-content: flex-start; padding: 24px; gap: 20px;">
-      <div class="tool-icon" style="background: rgba(77, 212, 255, 0.15); color: #4dd4ff;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="2" y="6" width="20" height="12" rx="2"></rect><path d="M6 12h4m-2-2v4m8-2h.01m2.99 0h.01"></path></svg>
-      </div>
-      <div style="text-align: left;">
-        <div class="tool-name" style="font-size: 18px; margin-bottom: 4px;">Mini Games</div>
-        <div class="tool-desc" style="font-size: 13px;">Kotak Zour, Tic Tac Toe, Dadu</div>
-      </div>
-    </div>
-    <div class="tool-card" onclick="openUtilsMenu()" style="flex-direction: row; justify-content: flex-start; padding: 24px; gap: 20px;">
-      <div class="tool-icon" style="background: rgba(124, 92, 255, 0.15); color: #7c5cff;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path></svg>
-      </div>
-      <div style="text-align: left;">
-        <div class="tool-name" style="font-size: 18px; margin-bottom: 4px;">Tools Penting</div>
-        <div class="tool-desc" style="font-size: 13px;">Kalkulator, Konverter, Stopwatch</div>
-      </div>
-    </div>
-  </div>
-</div>
+    <h1>SYRANX SEDANG MAINTENANCE</h1>
+    <p>Kami sedang melakukan pembaruan sistem dan perbaikan server. Silakan kembali lagi nanti.</p>
 
-<!-- MENU MINI GAMES -->
-<div id="games-screen" class="tools-screen">
-  <div class="tools-header">
-    <button class="icon-btn" onclick="closeGames()" style="color:#fff;">
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-    </button>
-    <h2>Mini Games</h2>
-  </div>
-  <div class="tools-grid">
-    <div class="tool-card" onclick="openToolPlay('zour')">
-      <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><line x1="9" y1="3" x2="9" y2="21"></line><line x1="15" y1="3" x2="15" y2="21"></line><line x1="3" y1="9" x2="21" y2="9"></line><line x1="3" y1="15" x2="21" y2="15"></line></svg></div>
-      <div class="tool-name">Kotak Zour</div>
-      <div class="tool-desc">AI / Online</div>
+    <div class="status-box">
+      <span class="dot"></span>
+      <span>MENGERJAKAN UPDATE...</span>
+      <div class="info-btn" onclick="bukaPesan()">!</div>
     </div>
-    <div class="tool-card" onclick="openToolPlay('ttt')">
-      <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line><circle cx="12" cy="12" r="3"></circle></svg></div>
-      <div class="tool-name">Tic Tac Toe</div>
-      <div class="tool-desc">Klasik 3x3</div>
-    </div>
-    <div class="tool-card" onclick="openToolPlay('dice')">
-      <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="3" y="3" width="18" height="18" rx="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><circle cx="15.5" cy="8.5" r="1.5"></circle><circle cx="8.5" cy="15.5" r="1.5"></circle><circle cx="15.5" cy="15.5" r="1.5"></circle></svg></div>
-      <div class="tool-name">Lempar Dadu</div>
-      <div class="tool-desc">Dadu acak</div>
-    </div>
-    <div class="tool-card" onclick="openPrank()">
-      <div class="tool-icon" style="background: rgba(239,68,68,0.15); color: #ef4444;"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg></div>
-      <div class="tool-name" style="color: #ef4444;">Bokep</div>
-      <div class="tool-desc">Video 18+</div>
-    </div>
-  </div>
-</div>
 
-<!-- MENU TOOLS PENTING -->
-<div id="utils-screen" class="tools-screen">
-  <div class="tools-header">
-    <button class="icon-btn" onclick="closeUtils()" style="color:#fff;">
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-    </button>
-    <h2>Tools Penting</h2>
-  </div>
-  <div class="tools-grid">
-    <div class="tool-card" onclick="openToolPlay('calc')">
-      <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><rect x="4" y="2" width="16" height="20" rx="2"></rect><line x1="8" y1="6" x2="16" y2="6"></line><line x1="8" y1="10" x2="16" y2="10"></line><line x1="8" y1="14" x2="16" y2="14"></line><line x1="8" y1="18" x2="16" y2="18"></line></svg></div>
-      <div class="tool-name">Kalkulator</div>
-      <div class="tool-desc">Hitung cepat</div>
-    </div>
-    <div class="tool-card" onclick="openToolPlay('conv')">
-      <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><polyline points="17 1 21 5 17 9"></polyline><path d="M3 11V9a4 4 0 0 1 4-4h14"></path><polyline points="7 23 3 19 7 15"></polyline><path d="M21 13v2a4 4 0 0 1-4 4H3"></path></svg></div>
-      <div class="tool-name">Konverter</div>
-      <div class="tool-desc">Mata uang offline</div>
-    </div>
-    <div class="tool-card" onclick="openToolPlay('sw')">
-      <div class="tool-icon"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg></div>
-      <div class="tool-name">Stopwatch</div>
-      <div class="tool-desc">Hitung waktu</div>
-    </div>
-  </div>
-</div>
-
-<!-- TOOL PLAY SCREEN -->
-<div id="tool-play-screen">
-  <div class="play-header">
-    <button class="icon-btn" onclick="closeToolPlay()" style="color:#fff;">
-      <svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><line x1="19" y1="12" x2="5" y2="12"></line><polyline points="12 19 5 12 12 5"></polyline></svg>
-    </button>
-    <h2 id="play-title">Game</h2>
-  </div>
-  <div class="play-content" id="play-content-area"></div>
-</div>
-
-<!-- PRANK SCREEN -->
-<div id="prank-screen">
-  <div class="prank-title">NGAPAIN WOK 🗿</div>
-  <div class="prank-text">MAU NONTON?<br>ANDA BELUM CUKUP UMUR !!</div>
-  <button class="prank-btn" onclick="closePrank()">Kembali</button>
-</div>
-
-<!-- LOADING OVERLAY -->
-<div id="loading-overlay">
-  <div class="spinner"></div>
-  <div style="margin-top: 15px; font-size: 12px; color: var(--text-2); letter-spacing: 2px;" id="loading-text">MEMPROSES...</div>
-</div>
-
-<!-- APP MAIN -->
-<div id="app">
-  <div id="header">
-    <div class="avatar" id="user-avatar" onclick="document.getElementById('pp-input').click()">R</div>
-    <div class="info">
-      <h1>
-        <span id="user-name-text">USER</span>
-        <svg id="header-check" class="verified" style="display:none" viewBox="0 0 24 24" fill="currentColor"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z"/></svg>
-      </h1>
-      <p><span class="dot-live" style="width:5px;height:5px;background:#22c55e;"></span> <span id="theme-name">Violet Nexus</span></p>
-    </div>
-    <div style="display:flex; gap:2px;">
-      <button class="icon-btn" onclick="openToolsMenu()" title="Menu Tools">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-          <path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"></path>
-        </svg>
-      </button>
-      <button class="icon-btn" onclick="openSettings()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path></svg>
-      </button>
-      <button class="icon-btn" onclick="logout()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path><polyline points="16 17 21 12 16 7"></polyline><line x1="21" y1="12" x2="9" y2="12"></line></svg>
-      </button>
+    <div class="footer">
+      &copy; 2026 SYRANX AI • BY RAMSYAH
     </div>
   </div>
 
-  <div id="chat"></div>
-  <div id="input-area">
-    <div id="file-preview">
-      <div style="display:flex; align-items:center;">
-        <img id="file-thumb" style="display:none">
-        <span id="file-name-text" style="overflow:hidden; text-overflow:ellipsis; white-space:nowrap; max-width:150px;"></span>
-      </div>
-      <span class="remove-file" onclick="removeFile()">×</span>
-    </div>
-    <div class="input-row">
-      <button class="attach-btn" onclick="document.getElementById('file-input').click()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"></path></svg>
-      </button>
-      <button class="attach-btn" id="mic-btn" onclick="startVoice()">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2a3 3 0 0 0-3 3v7a3 3 0 0 0 6 0V5a3 3 0 0 0-3-3z"></path><path d="M19 10v2a7 7 0 0 1-14 0v-2"></path><line x1="12" y1="19" x2="12" y2="22"></line></svg>
-      </button>
-      <textarea id="prompt" placeholder="Ketik pesan..." rows="1"></textarea>
-      <button id="kirim" onclick="kirim()">
-        <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"></line><polygon points="22 2 15 22 11 13 2 9 22 2"></polygon></svg>
-      </button>
+  <div class="modal-overlay" id="pesanModal">
+    <div class="modal-content">
+      <h2>UPDATE SYRANX !!</h2>
+      <p>sorry we kalo di tutup, lagi update bre, tunggu ya mau fokus update besar-besaran</p>
+      <strong>- salam DEVELOPER RAMX -</strong>
+      <br>
+      <button class="modal-close-btn" onclick="tutupPesan()">Tutup</button>
     </div>
   </div>
-  <div id="footer">
-    <span>SYRANX_AI // PREMIUM // <b>RAMSYAH</b></span>
-    <svg class="verified-small" viewBox="0 0 24 24" fill="currentColor"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z"/></svg>
-  </div>
-</div>
 
-<!-- SETTINGS PANEL -->
-<div id="settings-overlay" onclick="closeSettings()"></div>
-<div id="settings-panel">
-  <div class="settings-header">
-    <h3>Pengaturan</h3>
-    <button class="icon-btn" onclick="closeSettings()">
-      <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" stroke-width="2"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
-    </button>
-  </div>
-  <div class="settings-body">
-    <div class="settings-section">
-      <h4>Tema Warna</h4>
-      <div class="theme-grid" id="theme-grid"></div>
-      <div class="toggle-wrap" onclick="toggleAutoRotate()" style="margin-top:12px;">
-        <span>Auto Ganti Tema (15s)</span>
-        <div class="toggle" id="toggle-auto"></div>
-      </div>
-    </div>
-    <div class="settings-section">
-      <h4>Background</h4>
-      <button class="settings-btn" onclick="toggleDevBgMenu()" style="border: 1px solid var(--border); background: var(--bg-input);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"></path></svg>
-        <span class="btn-label" style="font-weight: 600; color: var(--text);">Background Spesial Dev</span>
-        <svg id="dev-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="transition: transform 0.3s; color: var(--text-2);"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
-      <div class="dev-bg-grid" id="dev-bg-grid"></div>
-      <button class="settings-btn" onclick="document.getElementById('bg-input').click()" style="margin-top: 8px;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect><circle cx="8.5" cy="8.5" r="1.5"></circle><polyline points="21 15 16 10 5 21"></polyline></svg>
-        Upload Foto Background
-      </button>
-      <button class="settings-btn danger" onclick="clearBgPhoto()">Hapus Foto Background</button>
-      <div class="settings-info">💡 Warna UI <b>otomatis nyesuain</b> warna dominan dari foto yang kamu upload.</div>
-    </div>
-    <div class="settings-section">
-      <h4>Musik Latar</h4>
-      <button class="settings-btn" onclick="toggleDevMusicMenu()" style="border: 1px solid var(--border); background: var(--bg-input);">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" style="color: var(--accent);"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-        <span class="btn-label" style="font-weight: 600; color: var(--text);">Musik Spesial Dev</span>
-        <svg id="dev-music-chevron" viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2" style="transition: transform 0.3s; color: var(--text-2);"><polyline points="6 9 12 15 18 9"></polyline></svg>
-      </button>
-      <div class="dev-music-list" id="dev-music-list"></div>
-      <button class="settings-btn" id="upload-music-btn" onclick="document.getElementById('music-input').click()" style="margin-top: 8px;">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"></path><circle cx="6" cy="18" r="3"></circle><circle cx="18" cy="16" r="3"></circle></svg>
-        <span class="btn-label">Upload Lagu (MP3)</span>
-      </button>
-      <div class="music-player" id="music-player" style="display:none;">
-        <div class="music-info">
-          <div class="music-disc" id="music-disc"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M9 18V5l12-2v13M9 18a3 3 0 1 1-6 0 3 3 0 0 1 6 0zm12-2a3 3 0 1 1-6 0 3 3 0 0 1 6 0z"/></svg></div>
-          <div class="music-meta"><div class="music-title" id="music-title">-</div><div class="music-status" id="music-status">Siap diputar</div></div>
-        </div>
-        <div class="music-controls">
-          <button class="music-play-btn" id="music-play-btn" onclick="toggleMusic()">
-            <svg id="music-icon-play" viewBox="0 0 24 24" fill="currentColor"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
-            <svg id="music-icon-pause" viewBox="0 0 24 24" fill="currentColor" style="display:none;"><rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect></svg>
-          </button>
-          <div class="music-volume">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polygon points="11 5 6 9 2 9 2 15 6 15 11 19 11 5"></polygon><path d="M15.54 8.46a5 5 0 0 1 0 7.07"></path></svg>
-            <input type="range" id="music-volume-slider" min="0" max="100" value="50">
-          </div>
-        </div>
-      </div>
-      <button class="settings-btn danger" id="remove-music-btn" onclick="removeMusic()" style="display:none;">Hapus Lagu</button>
-    </div>
-    <div class="settings-section">
-      <h4>Lainnya</h4>
-      <button class="settings-btn danger" onclick="hapusRiwayatFromSettings()">Hapus Riwayat Chat</button>
-      <div class="settings-info" style="margin-top:15px;"><b>SYRANX_AI v2</b><br>Premium AI System<br>Dibuat oleh <b>Ramsyah</b><br>Powered by OpenRouter</div>
-    </div>
-  </div>
-</div>
-
-<!-- HIDDEN INPUTS -->
-<input type="file" id="pp-input" accept="image/*" onchange="uploadPP(event)">
-<input type="file" id="file-input" accept="image/*,application/pdf,text/plain" onchange="handleFile(event)">
-<input type="file" id="bg-input" accept="image/*" onchange="uploadBackground(event)">
-<input type="file" id="music-input" accept="audio/*" onchange="uploadMusic(event)">
-<input type="file" id="intro-video-input" accept="video/mp4,video/x-m4v,video/*" onchange="uploadIntroVideo(event)">
-<audio id="bg-music" loop></audio>
-<div id="toast"></div>
-
-<script>
-// ==================================================
-// KONFIGURASI FIREBASE (GANTI DENGAN PUNYA KAMU!)
-// ==================================================
-const firebaseConfig = {
-  apiKey: "AIzaSy...", // GANTI INI
-  authDomain: "syranx-games.firebaseapp.com", // GANTI INI
-  databaseURL: "https://syranx-games-default-rtdb.firebaseio.com", // GANTI INI
-  projectId: "syranx-games", // GANTI INI
-  storageBucket: "syranx-games.appspot.com", // GANTI INI
-  messagingSenderId: "...", // GANTI INI
-  appId: "..." // GANTI INI
-};
-
-let database = null;
-try {
-  firebase.initializeApp(firebaseConfig);
-  database = firebase.database();
-} catch(e) {
-  console.warn("Firebase belum dikonfigurasi. Fitur Online tidak akan jalan.");
-}
-
-const BACKEND_URL = 'https://syranx-ai.vercel.app/api/chat';
-const DEFAULT_INTRO_VIDEO = 'https://videotourl.com/videos/1792892207264-903138ce-c7b4-4062-94d9-85ed0ca94712.mp4';
-const INTRO_VIDEO_KEY = 'syranx_intro_video';
-
-const DEV_BACKGROUNDS = [
-  'https://cdn.phototourl.com/member/2026-10-24-70b2735f-50ce-407e-b3bb-a2a9071947e4.jpg',
-  'https://cdn.phototourl.com/member/2026-10-25-274e4386-0145-4749-9829-d40ba8b23063.jpg',
-  'https://cdn.phototourl.com/member/2026-10-25-d52a09cd-8087-402e-bb7c-674d69937d82.jpg',
-  'https://cdn.phototourl.com/member/2026-10-25-87fe2cf1-718b-42a2-96ca-ee4b8eb3f848.jpg'
-];
-
-const DEV_MUSIC = [
-  { name: 'Rumah Ke Rumah', artist: 'Hindia', url: 'https://videotourl.com/audio/1792889642278-5edd4108-6273-4a3c-b792-86ee9632169b.mp3' },
-  { name: 'Cinnamon Girl', artist: 'Lana Del Rey', url: 'https://videotourl.com/audio/1792890858123-a7b53288-95b4-4c30-b263-957f73d0fa5e.mp3' }
-];
-
-const MODELS = ['meta-llama/llama-3.3-70b-instruct:free', 'google/gemma-3-27b-it:free', 'mistralai/mistral-small-3.2-24b-instruct:free', 'qwen/qwen3-coder:free', 'deepseek/deepseek-chat-v3.1:free', 'openrouter/free'];
-const USERS_KEY = 'syranx_users'; const SESSION_KEY = 'syranx_session'; const CHAT_KEY = 'syranx_chat_'; const THEME_KEY = 'syranx_theme_idx'; const BG_KEY = 'syranx_bg'; const AUTO_ROTATE_KEY = 'syranx_auto_rotate'; const MUSIC_KEY = 'syranx_music'; const MUSIC_NAME_KEY = 'syranx_music_name'; const MUSIC_VOL_KEY = 'syranx_music_vol'; const DEV_USERNAME = 'RAMSYAH DEV';
-
-let recog = null; let isRec = false; let clip1Timeout = null;
-
-window.addEventListener('DOMContentLoaded', async () => {
-  const vReg = document.getElementById('reg-intro-video');
-  let savedVideo = localStorage.getItem(INTRO_VIDEO_KEY); vReg.src = savedVideo ? savedVideo : DEFAULT_INTRO_VIDEO;
-  try { await ensureDevAccount(); } catch(e) {}
-  applyTheme(currentThemeIndex); startThemeRotation(); loadSavedBackground(); buildThemeGrid(); initMusicPlayer(); updateAccountCount();
-  const toggle = document.getElementById('toggle-auto'); if (toggle) toggle.classList.toggle('on', autoRotate);
-  document.getElementById('prompt').addEventListener('input', function() { this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 120) + 'px'; });
-  const session = getSession();
-  if (session && getUsers()[session]) { masukApp(session); } 
-  else {
-    document.getElementById('auth-screen').classList.add('show');
-    const users = getUsers(); const realUsers = Object.keys(users).filter(k => k.toUpperCase() !== DEV_USERNAME);
-    if (realUsers.length === 0) showRegister();
-  }
-});
-
-function showWelcomeIntro(username) {
-  document.getElementById('reg-username').textContent = username.toUpperCase();
-  document.getElementById('auth-screen').classList.remove('show'); setTimeout(() => { document.getElementById('auth-screen').style.display = 'none'; }, 400);
-  if (musicAudio && musicPlaying) { musicAudio.pause(); }
-  const regIntro = document.getElementById('reg-intro'); regIntro.style.display = 'flex'; setTimeout(() => regIntro.classList.add('show'), 50);
-  document.getElementById('clip-1').classList.add('active'); document.getElementById('clip-2').classList.remove('active');
-  const v2 = document.getElementById('reg-intro-video'); v2.pause(); v2.currentTime = 0;
-  if (clip1Timeout) clearTimeout(clip1Timeout); clip1Timeout = setTimeout(() => { transitionToClip2(); }, 2500);
-}
-
-function transitionToClip2() {
-  if (clip1Timeout) clearTimeout(clip1Timeout);
-  const clip1 = document.getElementById('clip-1'); const clip2 = document.getElementById('clip-2');
-  if (clip2.classList.contains('active')) return;
-  clip1.classList.remove('active'); clip2.classList.add('active');
-  const v2 = document.getElementById('reg-intro-video'); v2.muted = true; v2.play().catch(()=>{});
-  const unmuteVideo = () => { v2.muted = false; document.removeEventListener('click', unmuteVideo); document.removeEventListener('touchstart', unmuteVideo); };
-  document.addEventListener('click', unmuteVideo); document.addEventListener('touchstart', unmuteVideo);
-}
-
-function skipRegIntro(e) {
-  if(e) e.stopPropagation();
-  if (clip1Timeout) clearTimeout(clip1Timeout);
-  const regIntro = document.getElementById('reg-intro'); const v2 = document.getElementById('reg-intro-video');
-  v2.pause(); v2.muted = true; regIntro.classList.remove('show');
-  setTimeout(() => { regIntro.style.display = 'none'; const user = getSession(); masukApp(user); }, 400);
-}
-
-function uploadIntroVideo(event) {
-  const file = event.target.files[0]; if (!file) return;
-  if (file.size > 4 * 1024 * 1024) { showToast('❌ Video terlalu besar (Maks 4MB).'); event.target.value = ''; return; }
-  const reader = new FileReader();
-  reader.onload = (e) => {
-    const base64 = e.target.result;
-    try { localStorage.setItem(INTRO_VIDEO_KEY, base64); const v2 = document.getElementById('reg-intro-video'); v2.src = base64; v2.muted = false; v2.play().catch(()=>{}); showToast('✅ Video Intro berhasil diganti!'); } 
-    catch (err) { showToast('❌ Memori penuh, gagal menyimpan video.'); }
-  };
-  reader.readAsDataURL(file); event.target.value = '';
-}
-
-function resetIntroVideo(e) {
-  if(e) e.stopPropagation(); localStorage.removeItem(INTRO_VIDEO_KEY);
-  const v2 = document.getElementById('reg-intro-video'); v2.src = DEFAULT_INTRO_VIDEO; v2.muted = false; v2.play().catch(()=>{}); showToast('🗑️ Video dikembalikan ke default');
-}
-
-function openToolsMenu() { document.getElementById('tools-menu').classList.add('show'); }
-function closeToolsMenu() { document.getElementById('tools-menu').classList.remove('show'); }
-function openMiniGames() { closeToolsMenu(); document.getElementById('games-screen').classList.add('show'); }
-function closeGames() { document.getElementById('games-screen').classList.remove('show'); closeToolPlay(); closePrank(); }
-function openUtilsMenu() { closeToolsMenu(); document.getElementById('utils-screen').classList.add('show'); }
-function closeUtils() { document.getElementById('utils-screen').classList.remove('show'); closeToolPlay(); }
-
-function openToolPlay(toolId) {
-  const playScreen = document.getElementById('tool-play-screen'); const content = document.getElementById('play-content-area'); const title = document.getElementById('play-title');
-  playScreen.classList.add('show');
-  if (swInterval) { clearInterval(swInterval); swInterval = null; }
-  if (toolId === 'ttt') { title.textContent = 'Tic Tac Toe'; initTTT(content); }
-  else if (toolId === 'zour') { title.textContent = 'Kotak Zour'; initZourMenu(content); } // Panggil menu awal Zour
-  else if (toolId === 'calc') { title.textContent = 'Kalkulator'; initCalc(content); }
-  else if (toolId === 'conv') { title.textContent = 'Konverter'; initConv(content); }
-  else if (toolId === 'sw') { title.textContent = 'Stopwatch'; initSW(content); }
-  else if (toolId === 'dice') { title.textContent = 'Lempar Dadu'; initDice(content); }
-}
-
-function closeToolPlay() { document.getElementById('tool-play-screen').classList.remove('show'); if (swInterval) { clearInterval(swInterval); swInterval = null; } closeDevCheat(); }
-function openPrank() { document.getElementById('prank-screen').classList.add('show'); }
-function closePrank() { document.getElementById('prank-screen').classList.remove('show'); }
-
-// ================= TIC TAC TOE =================
-let tttBoard = []; let tttGameActive = false;
-function initTTT(container) {
-  tttBoard = ['', '', '', '', '', '', '', '', '']; tttGameActive = true;
-  container.innerHTML = `<div class="ttt-container"><div style="font-size: 18px; font-weight: 600; color: #fff; margin-bottom: 20px;" id="ttt-status">Giliran Kamu (X)</div><div class="ttt-grid" id="ttt-grid"></div><button class="btn-primary" onclick="initTTT(document.getElementById('play-content-area'))" style="margin-top: 24px; max-width: 200px;">Main Lagi</button></div>`;
-  const grid = document.getElementById('ttt-grid');
-  tttBoard.forEach((_, i) => { const cell = document.createElement('div'); cell.className = 'ttt-cell'; cell.dataset.index = i; cell.onclick = () => handleTTTClick(i, cell); grid.appendChild(cell); });
-}
-function handleTTTClick(index, cell) {
-  if (!tttGameActive || tttBoard[index] !== '') return;
-  tttBoard[index] = 'X'; cell.textContent = 'X'; cell.classList.add('x');
-  if (checkTTTWin('X')) { document.getElementById('ttt-status').textContent = 'Kamu Menang! 🎉'; tttGameActive = false; return; }
-  if (!tttBoard.includes('')) { document.getElementById('ttt-status').textContent = 'Seri! 🤝'; tttGameActive = false; return; }
-  document.getElementById('ttt-status').textContent = 'Bot mikir...'; setTimeout(() => botTTT(), 500);
-}
-function botTTT() {
-  if (!tttGameActive) return;
-  let emptyIndices = tttBoard.map((v, i) => v === '' ? i : null).filter(v => v !== null);
-  if (emptyIndices.length === 0) return;
-  let randomIndex = emptyIndices[Math.floor(Math.random() * emptyIndices.length)];
-  tttBoard[randomIndex] = 'O'; const cell = document.querySelector(`.ttt-cell[data-index="${randomIndex}"]`); cell.textContent = 'O'; cell.classList.add('o');
-  if (checkTTTWin('O')) { document.getElementById('ttt-status').textContent = 'Bot Menang! 🤖'; tttGameActive = false; return; }
-  if (!tttBoard.includes('')) { document.getElementById('ttt-status').textContent = 'Seri! 🤝'; tttGameActive = false; return; }
-  document.getElementById('ttt-status').textContent = 'Giliran Kamu (X)';
-}
-function checkTTTWin(player) { const wins = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]]; return wins.some(combo => combo.every(i => tttBoard[i] === player)); }
-
-// ================= KOTAK ZOUR =================
-let zourState = { board: Array(9).fill(null), current: 'red', phase: 'place', placed: { red: 0, blue: 0 }, selected: null, winner: null, winLine: null };
-let zourScore = { red: 0, blue: 0 };
-let zourGameMode = 'ai'; 
-let zourDifficulty = 'medium'; 
-let zourAiThinking = false; let zourStuck = false; let zourSkipTimeout = null;
-let currentRoomId = null; let myColor = 'red'; let roomListener = null;
-
-const zourNodes = []; const zourMargin = 50; const zourStep = 100;
-for (let r = 0; r < 3; r++) { for (let c = 0; c < 3; c++) { zourNodes.push({ id: r*3 + c, r, c, x: zourMargin + (c * zourStep), y: zourMargin + (r * zourStep) }); } }
-const zourConnections = []; const addZourConn = (a, b) => zourConnections.push([a, b]);
-addZourConn(0,1); addZourConn(1,2); addZourConn(3,4); addZourConn(4,5); addZourConn(6,7); addZourConn(7,8); addZourConn(0,3); addZourConn(3,6); addZourConn(1,4); addZourConn(4,7); addZourConn(2,5); addZourConn(5,8); addZourConn(0,4); addZourConn(4,8); addZourConn(2,4); addZourConn(4,6);
-const zourWinLines = [[0,1,2],[3,4,5],[6,7,8],[0,3,6],[1,4,7],[2,5,8],[0,4,8],[2,4,6]];
-const zourAdjacency = {}; for (let i = 0; i < 9; i++) zourAdjacency[i] = []; for (const [a, b] of zourConnections) { zourAdjacency[a].push(b); zourAdjacency[b].push(a); }
-
-function isValidZourMoveOnBoard(board, from, to) { if (from === to) return false; if (board[to] !== null) return false; if (board[from] === null) return false; return zourAdjacency[from].includes(to); }
-function isValidZourMove(from, to) { return isValidZourMoveOnBoard(zourState.board, from, to); }
-function getZourValidTargets(board, from) { return zourAdjacency[from].filter(t => board[t] === null); }
-function hasZourLegalMove(player) { if (zourState.phase === 'place') return zourState.board.some(b => b === null); for (let i = 0; i < 9; i++) { if (zourState.board[i] === player) if (getZourValidTargets(zourState.board, i).length > 0) return true; } return false; }
-
-// ----- MENU AWAL ZOUR (OFFLINE / ONLINE) -----
-function initZourMenu(container) {
-  const isDev = isVerified(getSession());
-  container.innerHTML = `
-    <div class="zour-start-menu">
-      <div style="text-align:center; margin-bottom: 20px;">
-        <h2 style="color:#fff; font-size:24px; letter-spacing:4px;">KOTAK ZOUR</h2>
-        <p style="color:var(--text-2); font-size:12px;">Pilih mode permainan</p>
-      </div>
-      <div class="zour-start-btn" onclick="startZourOffline()">
-        <div class="icon" style="background: #22c55e;"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle></svg></div>
-        <div class="txt">
-          <h3>Main Offline</h3>
-          <p>Lawan AI (Mudah / Sedang / Sulit)</p>
-        </div>
-      </div>
-      <div class="zour-start-btn" onclick="startZourOnline()">
-        <div class="icon" style="background: #0ea5e9;"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="2"><path d="M5 12.55a11 11 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a6 6 0 0 1 6.95 0"></path><line x1="12" y1="20" x2="12.01" y2="20"></line></svg></div>
-        <div class="txt">
-          <h3>Main Online</h3>
-          <p>Lawan teman via Kode Room</p>
-        </div>
-      </div>
-      ${isDev ? `<div style="text-align:center; margin-top:20px; color:#ef4444; font-size:11px; font-weight:bold;">DEV MODE ACTIVE 🗿</div>` : ''}
-    </div>
-  `;
-}
-
-function startZourOffline() { zourGameMode = 'ai'; renderZourBoardUI(document.getElementById('play-content-area')); }
-function startZourOnline() { zourGameMode = 'online'; renderZourBoardUI(document.getElementById('play-content-area')); }
-
-function renderZourBoardUI(container) {
-  const isDev = isVerified(getSession());
-  container.innerHTML = `
-    <div class="tg-container">
-      
-      <!-- Pilihan Mode (Hanya tampil jika AI) -->
-      <div class="tg-diff-toggle" id="zour-diff-ui" style="display:${zourGameMode === 'ai' ? 'flex' : 'none'};">
-        <button id="zourDiffEasy" onclick="setZourDifficulty('easy')">Mudah</button>
-        <button id="zourDiffMedium" class="active" onclick="setZourDifficulty('medium')">Sedang</button>
-        <button id="zourDiffHard" onclick="setZourDifficulty('hard')">Sulit</button>
-      </div>
-
-      <!-- UI Online Room -->
-      <div id="zour-online-ui" class="online-room-ui" style="display:${zourGameMode === 'online' ? 'flex' : 'none'};">
-        <input type="text" id="room-code-input" placeholder="Kode Room (4 digit)" maxlength="4">
-        <div style="display:flex; gap:8px;">
-          <button onclick="joinOnlineRoom()" style="flex:1;">Join Room</button>
-          <button onclick="createOnlineRoom()" style="flex:1; background: #7c5cff; color: #fff;">Buat Room</button>
-        </div>
-        <div id="room-status" style="font-size: 12px; text-align: center; margin-top: 8px; color: #4ecdc4; font-weight: bold;"></div>
-      </div>
-
-      <div class="player-info" id="zour-player-info" style="display:${zourGameMode === 'online' ? 'flex' : 'none'};">
-        <div class="p1">P1: <span id="zour-p1-name">-</span> <svg id="zour-p1-check" class="verified-small" style="display:none" viewBox="0 0 24 24" fill="currentColor"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34..."/></svg></div>
-        <div class="p2">P2: <span id="zour-p2-name">-</span> <svg id="zour-p2-check" class="verified-small" style="display:none" viewBox="0 0 24 24" fill="currentColor"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34..."/></svg></div>
-      </div>
-
-      <div class="tg-status" id="zour-status">
-        <span class="tg-dot red"></span>
-        <span id="zour-statusText">Merah mulai - taruh pion</span>
-      </div>
-
-      <div class="tg-board-wrapper">
-        <div class="tg-board" id="zour-board">
-          <svg id="zour-lines" viewBox="0 0 300 300" preserveAspectRatio="none"></svg>
-        </div>
-      </div>
-
-      <div class="tg-info">
-        <span class="tg-phase-badge place" id="zour-phase">FASE: PENEMPATAN</span>
-        <div style="margin-top:8px">Klik titik untuk menaruh / memindahkan pion</div>
-      </div>
-
-      <div class="tg-controls">
-        <button onclick="resetZourGame(true)">Reset Game</button>
-        <button id="zour-skipBtn" class="skip-btn" style="display:none; background:#ff9a4d; color:#1a1a2e; font-weight:bold;">Lewati Giliran</button>
-      </div>
-
-      <div class="tg-wins">
-        <div class="score"><span class="tg-dot red"></span> <span id="zour-scoreRed">0</span></div>
-        <div class="score"><span class="tg-dot blue"></span> <span id="zour-scoreBlue">0</span></div>
-      </div>
-    </div>
-    
-    <!-- TOMBOL CHEAT DEV (Hanya muncul jika login sbg DEV) -->
-    ${isDev ? `
-    <div id="dev-cheat-menu">
-      <div style="color:#ef4444; font-size:10px; text-align:center; font-weight:bold; margin-bottom:4px;">DEV CHEAT</div>
-      <button onclick="cheatWinNow()">Auto Win (Red)</button>
-      <button onclick="cheatClearEnemy()">Hapus Pion Biru</button>
-    </div>` : ''}
-  `;
-  
-  drawZourLines(); createZourNodes(); resetZourGame(true);
-  if (zourGameMode === 'ai') setZourDifficulty(zourDifficulty);
-}
-
-function setZourDifficulty(diff) {
-  zourDifficulty = diff;
-  document.getElementById('zourDiffEasy').classList.toggle('active', diff === 'easy');
-  document.getElementById('zourDiffMedium').classList.toggle('active', diff === 'medium');
-  document.getElementById('zourDiffHard').classList.toggle('active', diff === 'hard');
-  showToast('Tingkat kesulitan: ' + diff.toUpperCase());
-}
-
-// ----- LOGIKA ONLINE FIREBASE -----
-function generateRoomCode() { return Math.floor(1000 + Math.random() * 9000).toString(); }
-
-function createOnlineRoom() {
-  if (!database) return showToast('Firebase belum di-setup!');
-  const code = generateRoomCode();
-  currentRoomId = code;
-  myColor = 'red';
-  const myName = getSession();
-  const isDev = isVerified(myName);
-  
-  const initialState = { board: Array(9).fill(null), current: 'red', phase: 'place', placed: { red: 0, blue: 0 }, winner: null, winLine: null, p1: myName, p1_dev: isDev, p2: 'Menunggu...', p2_dev: false };
-  database.ref('zour_rooms/' + code).set(initialState).then(() => {
-    document.getElementById('room-status').innerHTML = `Room: <b>${code}</b><br>Bagikan ke temanmu!`;
-    listenToRoom(code);
-  });
-}
-
-function joinOnlineRoom() {
-  if (!database) return showToast('Firebase belum di-setup!');
-  const code = document.getElementById('room-code-input').value.trim();
-  if (code.length !== 4) return showToast('Kode harus 4 digit!');
-  currentRoomId = code;
-  myColor = 'blue';
-  const myName = getSession();
-  const isDev = isVerified(myName);
-  
-  database.ref('zour_rooms/' + code).once('value').then(snapshot => {
-    if (snapshot.exists()) {
-      database.ref('zour_rooms/' + code).update({ p2: myName, p2_dev: isDev });
-      document.getElementById('room-status').innerHTML = `Berhasil join Room: <b>${code}</b>`;
-      listenToRoom(code);
-    } else {
-      showToast('Room tidak ditemukan!');
-      currentRoomId = null;
+  <script>
+    function bukaPesan() {
+      document.getElementById('pesanModal').classList.add('show');
     }
-  });
-}
-
-function listenToRoom(code) {
-  if (roomListener && database) database.ref('zour_rooms/' + code).off('value', roomListener);
-  roomListener = database.ref('zour_rooms/' + code).on('value', (snapshot) => {
-    const data = snapshot.val();
-    if (data) {
-      zourState.board = data.board; zourState.current = data.current; zourState.phase = data.phase; zourState.placed = data.placed; zourState.winner = data.winner; zourState.winLine = data.winLine;
-      
-      // Update Nama & Centang Biru
-      document.getElementById('zour-p1-name').textContent = data.p1;
-      document.getElementById('zour-p1-check').style.display = data.p1_dev ? 'inline-block' : 'none';
-      document.getElementById('zour-p2-name').textContent = data.p2;
-      document.getElementById('zour-p2-check').style.display = data.p2_dev ? 'inline-block' : 'none';
-      
-      renderZourPions(); updateZourStatus(); updateZourHints();
+    function tutupPesan() {
+      document.getElementById('pesanModal').classList.remove('show');
     }
-  });
-}
+  </script>
 
-// ----- CORE GAME ZOUR -----
-function drawZourLines() { const svg = document.getElementById('zour-lines'); if(!svg) return; let html = ''; for (const [a, b] of zourConnections) { const na = zourNodes[a], nb = zourNodes[b]; html += `<line x1="${na.x}" y1="${na.y}" x2="${nb.x}" y2="${nb.y}" stroke="rgba(80,60,40,0.45)" stroke-width="4" stroke-linecap="round" />`; } svg.innerHTML = html; }
-const zourNodeEls = {};
-function createZourNodes() {
-  const boardEl = document.getElementById('zour-board'); if(!boardEl) return;
-  boardEl.querySelectorAll('.tg-node').forEach(el => el.remove());
-  for (const n of zourNodes) { const el = document.createElement('div'); el.className = 'tg-node'; el.style.left = n.x + 'px'; el.style.top = n.y + 'px'; el.onclick = () => onZourNodeClick(n.id); zourNodeEls[n.id] = el; boardEl.appendChild(el); }
-}
-function renderZourPions() {
-  const boardEl = document.getElementById('zour-board'); if(!boardEl) return;
-  boardEl.querySelectorAll('.tg-pion').forEach(el => el.remove());
-  for (let i = 0; i < 9; i++) {
-    const owner = zourState.board[i]; if (!owner) continue; const n = zourNodes[i]; const p = document.createElement('div'); p.className = 'tg-pion ' + owner; p.style.left = n.x + 'px'; p.style.top = n.y + 'px';
-    if (zourState.selected === i) p.classList.add('selected'); if (zourState.winLine && zourState.winLine.includes(i)) p.classList.add('win-pion'); boardEl.appendChild(p);
-  }
-}
-function updateZourStatus() {
-  const statusEl = document.getElementById('zour-status'); if(!statusEl) return;
-  const textEl = document.getElementById('zour-statusText'); const phaseEl = document.getElementById('zour-phase'); const skipBtn = document.getElementById('zour-skipBtn');
-  statusEl.className = 'tg-status';
-  if (zourState.winner) { statusEl.classList.add('win'); textEl.textContent = (zourState.winner === 'red' ? 'Merah' : 'Biru') + ' MENANG!'; phaseEl.textContent = 'GAME SELESAI'; phaseEl.className = 'tg-phase-badge move'; skipBtn.style.display = 'none'; return; }
-  if (zourStuck) {
-    statusEl.classList.add('stuck'); const who = zourState.current === 'red' ? 'Merah' : 'Biru'; textEl.innerHTML = `<span class="tg-dot ${zourState.current}"></span> ${who} tidak punya langkah legal`; phaseEl.textContent = 'BUNTU - LEWATI'; phaseEl.className = 'tg-phase-badge stuck';
-    if (zourGameMode === 'ai' && zourState.current === 'blue') skipBtn.style.display = 'none'; else skipBtn.style.display = 'inline-block'; return;
-  }
-  skipBtn.style.display = 'none';
-  if (zourAiThinking) { statusEl.classList.add('thinking'); textEl.innerHTML = `AI sedang berpikir<span class="tg-thinking-dots"></span>`; phaseEl.textContent = zourState.phase === 'place' ? 'FASE: PENEMPATAN' : 'FASE: PERPINDAHAN'; phaseEl.className = 'tg-phase-badge ' + (zourState.phase === 'place' ? 'place' : 'move'); return; }
-  if (zourState.phase === 'place') { statusEl.classList.add(zourState.current); const who = zourState.current === 'red' ? 'Merah' : 'Biru'; textEl.innerHTML = `<span class="tg-dot ${zourState.current}"></span> ${who} - taruh pion`; phaseEl.textContent = 'FASE: PENEMPATAN'; phaseEl.className = 'tg-phase-badge place'; } 
-  else if (zourState.phase === 'move') { statusEl.classList.add(zourState.current); const who = zourState.current === 'red' ? 'Merah' : 'Biru'; let msg = zourState.selected === null ? 'pilih pion DULU (klik pionmu)' : 'sekarang pilih titik kosong tujuan (1 langkah saja)'; textEl.innerHTML = `<span class="tg-dot ${zourState.current}"></span> ${who} - ${msg}`; phaseEl.textContent = 'FASE: PERPINDAHAN'; phaseEl.className = 'tg-phase-badge move'; }
-}
-function updateZourHints() {
-  for (let i = 0; i < 9; i++) {
-    const el = zourNodeEls[i]; if(!el) continue; el.classList.remove('hint', 'selectable', 'occupied', 'blocked');
-    if (zourState.phase === 'over' || zourAiThinking || zourStuck) continue;
-    if (zourGameMode === 'ai' && zourState.current === 'blue') continue;
-    if (zourGameMode === 'online' && zourState.current !== myColor) continue;
-
-    if (zourState.board[i]) { el.classList.add('occupied'); if (zourState.phase === 'move' && zourState.board[i] === zourState.current && zourState.selected === null) el.classList.add('selectable'); continue; }
-    if (zourState.phase === 'place') el.classList.add('hint'); else if (zourState.phase === 'move' && zourState.selected !== null) { if (isValidZourMove(zourState.selected, i)) el.classList.add('hint'); else el.classList.add('blocked'); }
-  }
-}
-function checkZourWin() {
-  for (const line of zourWinLines) { const [a,b,c] = line; if (zourState.board[a] && zourState.board[a] === zourState.board[b] && zourState.board[a] === zourState.board[c]) { zourState.winner = zourState.board[a]; zourState.winLine = line; zourState.phase = 'over'; return true; } } return false;
-}
-function checkZourStuck() { if (zourState.phase === 'over') return false; if (!hasZourLegalMove(zourState.current)) { zourStuck = true; updateZourStatus(); updateZourHints(); if (zourGameMode === 'ai' && zourState.current === 'blue') zourSkipTimeout = setTimeout(() => doZourSkip(), 900); else zourSkipTimeout = setTimeout(() => { if (zourStuck) doZourSkip(); }, 2000); return true; } return false; }
-function doZourSkip() {
-  if (zourSkipTimeout) { clearTimeout(zourSkipTimeout); zourSkipTimeout = null; } if (!zourStuck) return;
-  zourStuck = false; zourState.selected = null; zourState.current = zourState.current === 'red' ? 'blue' : 'red';
-  updateZourStatus(); updateZourHints(); renderZourPions();
-  if (zourGameMode === 'online' && currentRoomId) database.ref('zour_rooms/' + currentRoomId).update({ current: zourState.current, selected: null });
-  setTimeout(() => { if (checkZourStuck()) return; maybeZourAIMove(); }, 100);
-}
-
-function onZourNodeClick(id) {
-  if (zourState.phase === 'over' || zourAiThinking || zourStuck) return;
-  if (zourGameMode === 'ai' && zourState.current === 'blue') return;
-  if (zourGameMode === 'online' && zourState.current !== myColor) return showToast('Bukan giliranmu!');
-
-  let changed = false;
-
-  if (zourState.phase === 'place') {
-    if (zourState.board[id]) return;
-    zourState.board[id] = zourState.current; zourState.placed[zourState.current]++;
-    changed = true;
-    if (checkZourWin()) { renderZourPions(); updateZourStatus(); updateZourHints(); if (zourGameMode === 'online') syncOnline(); return; }
-    if (zourState.placed.red === 3 && zourState.placed.blue === 3) { zourState.phase = 'move'; zourState.selected = null; }
-    zourState.current = zourState.current === 'red' ? 'blue' : 'red';
-    renderZourPions(); updateZourStatus(); updateZourHints();
-  } 
-  else if (zourState.phase === 'move') {
-    if (zourState.selected === null) {
-      if (zourState.board[id] === zourState.current) { zourState.selected = id; updateZourStatus(); updateZourHints(); renderZourPions(); changed = true; }
-      if (zourGameMode === 'online' && changed) syncOnline(); return;
-    }
-    if (id === zourState.selected) { zourState.selected = null; updateZourStatus(); updateZourHints(); renderZourPions(); return; }
-    if (zourState.board[id] === zourState.current) { zourState.selected = id; updateZourStatus(); updateZourHints(); renderZourPions(); if (zourGameMode === 'online') syncOnline(); return; }
-    if (zourState.board[id] === null) {
-      if (!isValidZourMove(zourState.selected, id)) return;
-      zourState.board[id] = zourState.current; zourState.board[zourState.selected] = null; zourState.selected = null; changed = true;
-      if (checkZourWin()) { renderZourPions(); updateZourStatus(); updateZourHints(); if (zourGameMode === 'online') syncOnline(); return; }
-      zourState.current = zourState.current === 'red' ? 'blue' : 'red';
-      renderZourPions(); updateZourStatus(); updateZourHints();
-    }
-  }
-
-  if (changed && zourGameMode === 'online') syncOnline();
-  if (checkZourStuck()) return; maybeZourAIMove();
-}
-
-function syncOnline() {
-  if (!database || !currentRoomId) return;
-  database.ref('zour_rooms/' + currentRoomId).update({
-    board: zourState.board, current: zourState.current, phase: zourState.phase, placed: zourState.placed, winner: zourState.winner, winLine: zourState.winLine, selected: null
-  });
-}
-
-function maybeZourAIMove() {
-  if (zourGameMode !== 'ai' || zourState.phase === 'over' || zourStuck || zourState.current !== 'blue') return;
-  zourAiThinking = true; updateZourStatus(); updateZourHints();
-  setTimeout(() => { const move = computeZourAIMove(); zourAiThinking = false; if (!move) { updateZourStatus(); updateZourHints(); return; } executeZourAIMove(move); }, 550);
-}
-
-function computeZourAIMove() {
-  const me = 'blue', opp = 'red'; 
-  const empty = []; 
-  const myPions = [];
-  for (let i = 0; i < 9; i++) { if (zourState.board[i] === null) empty.push(i); if (zourState.board[i] === me) myPions.push(i); }
-
-  if (zourDifficulty === 'easy') {
-    if (zourState.phase === 'place') return { type: 'place', to: empty[Math.floor(Math.random()*empty.length)] };
-    const legalMoves = []; for (const from of myPions) { const targets = getZourValidTargets(zourState.board, from); for (const to of targets) legalMoves.push({ from, to }); } 
-    if (!legalMoves.length) return null;
-    return { type: 'move', ...legalMoves[Math.floor(Math.random()*legalMoves.length)] };
-  }
-
-  if (zourDifficulty === 'medium') {
-    if (zourState.phase === 'place') { 
-      for (const e of empty) if (makesZourWin(e, me)) return { type: 'place', to: e }; 
-      for (const e of empty) if (makesZourWin(e, opp)) return { type: 'place', to: e }; 
-      if (empty.includes(4)) return { type: 'place', to: 4 }; 
-      const corners = [0,2,6,8].filter(i => empty.includes(i)); 
-      if (corners.length) return { type: 'place', to: corners[Math.floor(Math.random()*corners.length)] }; 
-      return { type: 'place', to: empty[Math.floor(Math.random()*empty.length)] }; 
-    }
-    const legalMoves = []; for (const from of myPions) { const targets = getZourValidTargets(zourState.board, from); for (const to of targets) legalMoves.push({ from, to }); } 
-    if (!legalMoves.length) return null;
-    for (const m of legalMoves) if (simulateZourWin(m.from, m.to, me)) return { type: 'move', ...m };
-    for (const m of legalMoves) if (blocksZourOpponentWin(m.from, m.to, opp)) return { type: 'move', ...m };
-    return { type: 'move', ...legalMoves[Math.floor(Math.random()*legalMoves.length)] };
-  }
-
-  if (zourDifficulty === 'hard') {
-    if (zourState.phase === 'place') { for (const e of empty) if (makesZourWin(e, me)) return { type: 'place', to: e }; for (const e of empty) if (makesZourWin(e, opp)) return { type: 'place', to: e }; if (empty.includes(4)) return { type: 'place', to: 4 }; const corners = [0,2,6,8].filter(i => empty.includes(i)); if (corners.length) return { type: 'place', to: corners[Math.floor(Math.random()*corners.length)] }; return { type: 'place', to: empty[Math.floor(Math.random()*empty.length)] }; }
-    const legalMoves = []; for (const from of myPions) { const targets = getZourValidTargets(zourState.board, from); for (const to of targets) legalMoves.push({ from, to }); } 
-    if (!legalMoves.length) return null;
-    for (const m of legalMoves) if (simulateZourWin(m.from, m.to, me)) return { type: 'move', ...m };
-    for (const m of legalMoves) if (blocksZourOpponentWin(m.from, m.to, opp)) return { type: 'move', ...m };
-    let bestDouble = null; for (const m of legalMoves) { if (countZourThreats(m.from, m.to, me) >= 2) { bestDouble = { type: 'move', ...m }; break; } } if (bestDouble) return bestDouble;
-    for (const m of legalMoves) if (m.to === 4) return { type: 'move', ...m };
-    const cornerMoves = legalMoves.filter(m => [0,2,6,8].includes(m.to)); if (cornerMoves.length) return { type: 'move', ...cornerMoves[Math.floor(Math.random()*cornerMoves.length)] };
-    return { type: 'move', ...legalMoves[Math.floor(Math.random()*legalMoves.length)] };
-  }
-}
-
-function makesZourWin(pos, player) { const temp = zourState.board.slice(); temp[pos] = player; for (const [a,b,c] of zourWinLines) if (temp[a] === player && temp[a] === temp[b] && temp[a] === temp[c]) return true; return false; }
-function simulateZourWin(from, to, player) { const temp = zourState.board.slice(); temp[from] = null; temp[to] = player; for (const [a,b,c] of zourWinLines) if (temp[a] === player && temp[a] === temp[b] && temp[a] === temp[c]) return true; return false; }
-function blocksZourOpponentWin(from, to, opp) { if (!opponentHasZourImmediateWin(opp)) return false; const temp = zourState.board.slice(); temp[from] = null; temp[to] = 'blue'; if (opponentHasZourImmediateWin(opp, temp)) return false; return true; }
-function opponentHasZourImmediateWin(opp, boardOverride = null) { const b = boardOverride || zourState.board; const oppPions = []; const empty = []; for (let i = 0; i < 9; i++) { if (b[i] === opp) oppPions.push(i); if (b[i] === null) empty.push(i); } for (const from of oppPions) { for (const to of empty) { if (!isValidZourMoveOnBoard(b, from, to)) continue; const temp = b.slice(); temp[from] = null; temp[to] = opp; for (const [a,b2,c] of zourWinLines) if (temp[a] === opp && temp[a] === temp[b2] && temp[a] === temp[c]) return true; } } return false; }
-function countZourThreats(from, to, player) { const temp = zourState.board.slice(); temp[from] = null; temp[to] = player; let count = 0; for (const line of zourWinLines) { let mine = 0, emptyCount = 0; for (const p of line) { if (temp[p] === player) mine++; else if (temp[p] === null) emptyCount++; } if (mine === 2 && emptyCount === 1) count++; } return count; }
-
-function executeZourAIMove(move) {
-  if (move.type === 'place') {
-    zourState.board[move.to] = 'blue'; zourState.placed.blue++;
-    if (checkZourWin()) { renderZourPions(); updateZourStatus(); updateZourHints(); return; }
-    if (zourState.placed.red === 3 && zourState.placed.blue === 3) { zourState.phase = 'move'; zourState.selected = null; }
-    zourState.current = 'red'; renderZourPions(); updateZourStatus(); updateZourHints();
-    if (checkZourStuck()) return;
-  } else if (move.type === 'move') {
-    zourState.board[move.to] = 'blue'; zourState.board[move.from] = null;
-    if (checkZourWin()) { renderZourPions(); updateZourStatus(); updateZourHints(); return; }
-    zourState.current = 'red'; renderZourPions(); updateZourStatus(); updateZourHints();
-    if (checkZourStuck()) return;
-  }
-}
-
-function resetZourGame(keepScore = true) {
-  if (zourSkipTimeout) { clearTimeout(zourSkipTimeout); zourSkipTimeout = null; }
-  zourState = { board: Array(9).fill(null), current: 'red', phase: 'place', placed: { red: 0, blue: 0 }, selected: null, winner: null, winLine: null };
-  zourAiThinking = false; zourStuck = false;
-  if (!keepScore) { zourScore = { red: 0, blue: 0 }; document.getElementById('zour-scoreRed').textContent = 0; document.getElementById('zour-scoreBlue').textContent = 0; }
-  updateZourStatus(); updateZourHints(); renderZourPions();
-  if (zourGameMode === 'online' && currentRoomId) syncOnline();
-}
-
-// ----- FITUR CHEAT DEVELOPER -----
-function cheatWinNow() {
-  if (!isVerified(getSession())) return;
-  zourState.board = ['red', 'red', 'red', 'blue', 'blue', null, null, null, null]; // Buat menang langsung
-  zourState.winner = 'red'; zourState.winLine = [0,1,2]; zourState.phase = 'over';
-  renderZourPions(); updateZourStatus(); updateZourHints();
-  showToast('🗿 CHEAT ACTIVATED: WIN');
-}
-
-function cheatClearEnemy() {
-  if (!isVerified(getSession())) return;
-  for (let i = 0; i < 9; i++) {
-    if (zourState.board[i] === 'blue') zourState.board[i] = null;
-  }
-  renderZourPions(); updateZourStatus(); updateZourHints();
-  showToast('🗿 CHEAT ACTIVATED: CLEAR ENEMY');
-}
-
-// ================= TOOLS LAINNYA =================
-function initCalc(container) { container.innerHTML = `<div class="calc-container"><div class="calc-display" id="calc-screen">0</div><div class="calc-buttons"><button class="calc-btn clear" onclick="calcClear()">C</button><button class="calc-btn op" onclick="calcInput('/')">÷</button><button class="calc-btn op" onclick="calcInput('*')">×</button><button class="calc-btn op" onclick="calcInput('-')">-</button><button class="calc-btn" onclick="calcInput('7')">7</button><button class="calc-btn" onclick="calcInput('8')">8</button><button class="calc-btn" onclick="calcInput('9')">9</button><button class="calc-btn op" onclick="calcInput('+')">+</button><button class="calc-btn" onclick="calcInput('4')">4</button><button class="calc-btn" onclick="calcInput('5')">5</button><button class="calc-btn" onclick="calcInput('6')">6</button><button class="calc-btn eq" onclick="calcResult()">=</button><button class="calc-btn" onclick="calcInput('1')">1</button><button class="calc-btn" onclick="calcInput('2')">2</button><button class="calc-btn" onclick="calcInput('3')">3</button><button class="calc-btn" onclick="calcInput('.')">.</button><button class="calc-btn" onclick="calcInput('0')" style="grid-column: span 4;">0</button></div></div>`; }
-let calcExpr = ''; function calcInput(val) { if (calcExpr === '0' && val !== '.') calcExpr = ''; calcExpr += val; document.getElementById('calc-screen').textContent = calcExpr || '0'; } function calcClear() { calcExpr = ''; document.getElementById('calc-screen').textContent = '0'; } function calcResult() { try { let safeExpr = calcExpr.replace(/x/g, '*').replace(/÷/g, '/'); let result = eval(safeExpr); document.getElementById('calc-screen').textContent = result; calcExpr = result.toString(); } catch (e) { document.getElementById('calc-screen').textContent = 'Error'; calcExpr = ''; } }
-
-function initConv(container) { container.innerHTML = `<div class="conv-container"><div class="conv-group"><label>Jumlah</label><input type="number" id="conv-amount" value="1" placeholder="Masukkan angka" oninput="calcConv()"></div><div class="conv-group"><label>Dari</label><select id="conv-from" onchange="calcConv()"><option value="IDR">IDR (Rupiah)</option><option value="USD">USD (Dollar AS)</option><option value="EUR">EUR (Euro)</option><option value="JPY">JPY (Yen)</option><option value="SGD">SGD (Singapore)</option></select></div><div class="conv-group"><label>Ke</label><select id="conv-to" onchange="calcConv()"><option value="USD">USD (Dollar AS)</option><option value="IDR">IDR (Rupiah)</option><option value="EUR">EUR (Euro)</option><option value="JPY">JPY (Yen)</option><option value="SGD">SGD (Singapore)</option></select></div><div class="conv-result"><small>Hasil Konversi</small><div id="conv-result-val">-</div></div><div style="font-size: 10px; color: var(--text-3); text-align: center; margin-top: 10px;">*Rate dasar offline, bukan realtime.</div></div>`; calcConv(); }
-function calcConv() { const amount = parseFloat(document.getElementById('conv-amount').value) || 0; const from = document.getElementById('conv-from').value; const to = document.getElementById('conv-to').value; const rates = { IDR: 1, USD: 15500, EUR: 16800, JPY: 105, SGD: 11500 }; let result = 0; if (from === to) { result = amount; } else { const inIDR = amount * rates[from]; result = inIDR / rates[to]; } const formatted = new Intl.NumberFormat('id-ID', { maximumFractionDigits: 2 }).format(result); document.getElementById('conv-result-val').textContent = formatted + ' ' + to; }
-
-let swInterval = null; let swStartTime = 0; let swElapsed = 0;
-function initSW(container) { container.innerHTML = `<div class="sw-container"><div class="sw-display" id="sw-display">00:00.00</div><div class="sw-btns"><button class="sw-btn start" onclick="startSW()">Mulai</button><button class="sw-btn stop" onclick="stopSW()">Berhenti</button><button class="sw-btn reset" onclick="resetSW()">Reset</button></div></div>`; swElapsed = 0; updateSWDisplay(0); }
-function startSW() { if (swInterval) return; swStartTime = Date.now() - swElapsed; swInterval = setInterval(() => { swElapsed = Date.now() - swStartTime; updateSWDisplay(swElapsed); }, 10); }
-function stopSW() { if (swInterval) { clearInterval(swInterval); swInterval = null; } }
-function resetSW() { stopSW(); swElapsed = 0; updateSWDisplay(0); }
-function updateSWDisplay(ms) { const totalSec = Math.floor(ms / 1000); const min = Math.floor(totalSec / 60); const sec = totalSec % 60; const centis = Math.floor((ms % 1000) / 10); const el = document.getElementById('sw-display'); if (el) el.textContent = `${String(min).padStart(2,'0')}:${String(sec).padStart(2,'0')}.${String(centis).padStart(2,'0')}`; }
-
-function initDice(container) { container.innerHTML = `<div class="dice-container"><div class="dice-face" id="dice-face">🎲</div><button class="action-btn" onclick="rollDice()">Lempar Dadu!</button></div>`; }
-function rollDice() { const faces = ['⚀', '⚁', '⚂', '⚃', '⚄', '⚅']; const el = document.getElementById('dice-face'); let count = 0; const interval = setInterval(() => { el.textContent = faces[Math.floor(Math.random() * 6)]; count++; if (count > 10) { clearInterval(interval); el.style.transform = 'scale(1.2)'; setTimeout(() => el.style.transform = 'scale(1)', 200); } }, 50); }
-
-// ============ FUNGSI UMUM ============
-function showToast(msg) { const t = document.getElementById('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(t._t); t._t = setTimeout(() => t.classList.remove('show'), 2500); }
-function delay(ms) { return new Promise(r => setTimeout(r, ms)); }
-function getUsers() { return JSON.parse(localStorage.getItem(USERS_KEY) || '{}'); }
-function saveUsers(u) { localStorage.setItem(USERS_KEY, JSON.stringify(u)); }
-function getSession() { return localStorage.getItem(SESSION_KEY); }
-function setSession(u) { localStorage.setItem(SESSION_KEY, u); }
-function clearSession() { localStorage.removeItem(SESSION_KEY); }
-function isVerified(username) { return username && username.toUpperCase() === DEV_USERNAME; }
-function getChat(u) { return JSON.parse(localStorage.getItem(CHAT_KEY + u) || '[]'); }
-function saveChat(u, arr) { localStorage.setItem(CHAT_KEY + u, JSON.stringify(arr)); }
-function tambahChat(u, role, text, fileData) { const arr = getChat(u); arr.push({ role, text, t: Date.now(), file: fileData || null }); saveChat(u, arr); }
-
-async function sha256(text) {
-  try { const buf = new TextEncoder().encode(text); const hash = await crypto.subtle.digest('SHA-256', buf); return Array.from(new Uint8Array(hash)).map(b => b.toString(16).padStart(2, '0')).join(''); } 
-  catch (e) { let h = 0; for (let i = 0; i < text.length; i++) h = ((h << 5) - h + text.charCodeAt(i)) | 0; return 'fallback_' + Math.abs(h).toString(16); }
-}
-function _getDevPass() { return String.fromCharCode(0x73, 0x69, 0x6B, 0x69, 0x74, 0x41, 0x41, 0x41); }
-async function ensureDevAccount() { const users = getUsers(); const dev = users[DEV_USERNAME]; if (!dev || !dev.passwordHash) { const hash = await sha256(_getDevPass()); users[DEV_USERNAME] = { passwordHash: hash, pp: dev && dev.pp ? dev.pp : null, created: Date.now(), isDev: true }; saveUsers(users); } }
-function updateAccountCount() { const users = getUsers(); const count = Object.keys(users).filter(k => k.toUpperCase() !== DEV_USERNAME).length; document.getElementById('account-count').textContent = count; }
-function startVoice() { const SR = window.SpeechRecognition || window.webkitSpeechRecognition; if (!SR) return showToast('❌ Browser ini belum support fitur suara. Coba pakai Chrome atau Edge.'); if (location.protocol !== 'https:' && location.hostname !== 'localhost') return showToast('❌ Mic butuh koneksi aman (HTTPS).'); if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) { navigator.mediaDevices.getUserMedia({ audio: true }).then(() => { mulaiRekam(SR); }).catch((err) => { showToast('❌ Izin mic ditolak. Buka Setelan HP > Izin Browser > Mikrofon.'); }); } else { mulaiRekam(SR); } }
-function mulaiRekam(SR) { const btn = document.getElementById('mic-btn'); const prompt = document.getElementById('prompt'); if (isRec) { recog.stop(); return; } recog = new SR(); recog.lang = 'id-ID'; recog.interimResults = true; recog.onstart = () => { isRec = true; btn.classList.add('recording'); showToast('🎙️ Mendengarkan...'); }; recog.onresult = (ev) => { let txt = ''; for (let i = ev.resultIndex; i < ev.results.length; i++) if (ev.results[i].isFinal) txt += ev.results[i][0].transcript; if (txt) prompt.value += txt + ' '; prompt.style.height = 'auto'; prompt.style.height = Math.min(prompt.scrollHeight, 120) + 'px'; }; recog.onend = () => { isRec = false; btn.classList.remove('recording'); }; recog.onerror = (event) => { isRec = false; btn.classList.remove('recording'); if (event.error === 'not-allowed') showToast('❌ Izin mic ditolak.'); else if (event.error === 'network') showToast('❌ Error jaringan. Cek koneksi internet.'); else showToast('❌ Gagal merekam: ' + event.error); }; recog.start(); }
-
-function showRegister() { document.getElementById('login-form').style.display = 'none'; document.getElementById('register-form').style.display = 'block'; document.getElementById('auth-error').textContent = ''; }
-function showLogin() { document.getElementById('register-form').style.display = 'none'; document.getElementById('login-form').style.display = 'block'; document.getElementById('auth-error').textContent = ''; }
-async function register() {
-  const u = document.getElementById('reg-user').value.trim(); const p = document.getElementById('reg-pass').value; const p2 = document.getElementById('reg-pass2').value; const err = document.getElementById('auth-error');
-  if (!u || !p) return err.textContent = '❌ Isi semua field'; if (u.length < 3) return err.textContent = '❌ Username min 3 karakter'; if (p.length < 4) return err.textContent = '❌ Password min 4 karakter'; if (p !== p2) return err.textContent = '❌ Password tidak sama'; if (u.toUpperCase() === DEV_USERNAME) return err.textContent = '❌ Username sudah dipakai';
-  const users = getUsers(); if (Object.keys(users).some(k => k.toUpperCase() === u.toUpperCase())) return err.textContent = '❌ Username sudah dipakai';
-  document.getElementById('loading-text').textContent = 'MEMBUAT AKUN...'; document.getElementById('loading-overlay').classList.add('show'); await delay(800);
-  users[u] = { passwordHash: await sha256(p), pp: null, created: Date.now() }; saveUsers(users); setSession(u); updateAccountCount();
-  document.getElementById('loading-overlay').classList.remove('show'); showWelcomeIntro(u);
-}
-async function login() {
-  const u = document.getElementById('login-user').value.trim(); const p = document.getElementById('login-pass').value; const err = document.getElementById('auth-error'); if (!u || !p) return err.textContent = '❌ Isi semua field';
-  document.getElementById('loading-text').textContent = 'VERIFIKASI...'; document.getElementById('loading-overlay').classList.add('show'); await delay(800);
-  const users = getUsers(); const realUser = Object.keys(users).find(k => k.toUpperCase() === u.toUpperCase());
-  if (!realUser) { document.getElementById('loading-overlay').classList.remove('show'); return err.textContent = '❌ Akun tidak ditemukan'; }
-  if (users[realUser].passwordHash !== await sha256(p)) { document.getElementById('loading-overlay').classList.remove('show'); return err.textContent = '❌ Password salah'; }
-  document.getElementById('loading-overlay').classList.remove('show'); setSession(realUser); showWelcomeIntro(realUser);
-}
-function logout() { if (!confirm('Keluar dari akun?')) return; clearSession(); document.getElementById('app').style.display = 'none'; document.getElementById('auth-screen').style.display = 'flex'; document.getElementById('auth-screen').classList.add('show'); showLogin(); }
-function masukApp(username) { document.getElementById('auth-screen').classList.remove('show'); document.getElementById('app').style.display = 'flex'; applyUserUI(username); renderChat(username); }
-function applyUserUI(username) { const users = getUsers(); const user = users[username]; if (!user) return; document.getElementById('user-name-text').textContent = username.toUpperCase(); document.getElementById('header-check').style.display = isVerified(username) ? 'inline-block' : 'none'; const av = document.getElementById('user-avatar'); if (user.pp) av.innerHTML = '<img src="' + user.pp + '" alt="pp">'; else av.innerHTML = username.charAt(0).toUpperCase(); }
-function hapusRiwayat() { const username = getSession(); if (!username) return; if (!confirm('Hapus semua riwayat chat?')) return; saveChat(username, []); document.getElementById('chat').innerHTML = ''; renderWelcome(); showToast('🗑️ Riwayat dihapus'); }
-
-// Themes
-const THEMES = [ { name: 'Violet Nexus', accent: '#7c5cff', accent2: '#4dd4ff', glow: 'rgba(124, 92, 255, 0.2)', bub1: '#7c5cff', bub2: '#5b3fff' }, { name: 'Crimson Rose', accent: '#ff2d55', accent2: '#ff6b9d', glow: 'rgba(255, 45, 85, 0.2)', bub1: '#ff2d55', bub2: '#c9184a' }, { name: 'Emerald Mist', accent: '#10b981', accent2: '#5eead4', glow: 'rgba(16, 185, 129, 0.2)', bub1: '#10b981', bub2: '#047857' }, { name: 'Amber Gold', accent: '#f59e0b', accent2: '#fbbf24', glow: 'rgba(245, 158, 11, 0.2)', bub1: '#f59e0b', bub2: '#d97706' }, { name: 'Ocean Deep', accent: '#0ea5e9', accent2: '#22d3ee', glow: 'rgba(14, 165, 233, 0.2)', bub1: '#0ea5e9', bub2: '#0369a1' }, { name: 'Sunset Blaze', accent: '#ec4899', accent2: '#f97316', glow: 'rgba(236, 72, 153, 0.2)', bub1: '#ec4899', bub2: '#c2410c' } ];
-let currentThemeIndex = parseInt(localStorage.getItem(THEME_KEY) || '0'); let themeInterval = null; const THEME_DURATION = 15000; let autoRotate = localStorage.getItem(AUTO_ROTATE_KEY) !== 'false';
-function applyTheme(index) { const t = THEMES[index]; if (!t) return; const root = document.documentElement; root.style.setProperty('--accent', t.accent); root.style.setProperty('--accent-2', t.accent2); root.style.setProperty('--accent-glow', t.glow); root.style.setProperty('--bubble-user-1', t.bub1); root.style.setProperty('--bubble-user-2', t.bub2); root.style.setProperty('--border-2', t.glow); const meta = document.querySelector('meta[name="theme-color"]'); if (meta) meta.setAttribute('content', t.accent); document.getElementById('theme-name').textContent = t.name; localStorage.setItem(THEME_KEY, index); updateThemeGrid(); }
-function startThemeRotation() { if (themeInterval) clearInterval(themeInterval); if (!autoRotate) return; themeInterval = setInterval(() => { if (localStorage.getItem(BG_KEY)) return; currentThemeIndex = (currentThemeIndex + 1) % THEMES.length; applyTheme(currentThemeIndex); }, THEME_DURATION); }
-function selectTheme(index) { currentThemeIndex = index; applyTheme(index); if (localStorage.getItem(BG_KEY)) { localStorage.removeItem(BG_KEY); removeBackgroundPhoto(); showToast('🖼️ Foto dihapus, tema aktif'); } showToast('🎨 ' + THEMES[index].name); renderDevBgs(); }
-function updateThemeGrid() { const grid = document.getElementById('theme-grid'); if (!grid) return; grid.querySelectorAll('.theme-card').forEach((card, idx) => card.classList.toggle('active', idx === currentThemeIndex)); }
-function buildThemeGrid() { const grid = document.getElementById('theme-grid'); if (!grid) return; grid.innerHTML = ''; THEMES.forEach((t, i) => { const card = document.createElement('button'); card.type = 'button'; card.className = 'theme-card' + (i === currentThemeIndex ? ' active' : ''); card.onclick = () => selectTheme(i); card.innerHTML = `<div class="orb orb1" style="background:${t.accent};"></div><div class="orb orb2" style="background:${t.accent2};"></div><div class="check">✓</div><div class="label">${t.name}</div>`; grid.appendChild(card); }); }
-function toggleAutoRotate() { autoRotate = !autoRotate; localStorage.setItem(AUTO_ROTATE_KEY, autoRotate); document.getElementById('toggle-auto').classList.toggle('on', autoRotate); if (autoRotate) { startThemeRotation(); showToast('🔄 Auto ganti tema: ON'); } else { clearInterval(themeInterval); showToast('⏸️ Auto ganti tema: OFF'); } }
-function openSettings() { document.getElementById('settings-overlay').classList.add('show'); document.getElementById('settings-panel').classList.add('show'); renderDevBgs(); renderDevMusic(); }
-function closeSettings() { document.getElementById('settings-overlay').classList.remove('show'); document.getElementById('settings-panel').classList.remove('show'); }
-function hapusRiwayatFromSettings() { closeSettings(); setTimeout(() => hapusRiwayat(), 300); }
-
-// BG & Custom Color
-function applyBackgroundPhoto(dataUrl) { document.body.style.backgroundImage = `url('${dataUrl}')`; document.body.classList.add('has-photo'); }
-function removeBackgroundPhoto() { document.body.style.backgroundImage = ''; document.body.classList.remove('has-photo'); }
-function toggleDevBgMenu() { const grid = document.getElementById('dev-bg-grid'); const chevron = document.getElementById('dev-chevron'); const isShowing = grid.classList.toggle('show'); chevron.style.transform = isShowing ? 'rotate(180deg)' : 'rotate(0deg)'; }
-function renderDevBgs() { const grid = document.getElementById('dev-bg-grid'); if (!grid) return; const currentBg = localStorage.getItem(BG_KEY); grid.innerHTML = DEV_BACKGROUNDS.map(url => { const isActive = currentBg === 'url:' + url; return `<div class="dev-bg-item ${isActive ? 'active' : ''}" onclick="setDevBackground('${url}')"><img src="${url}" loading="lazy" crossorigin="anonymous"><div class="check">✓</div></div>`; }).join(''); }
-async function setDevBackground(url) { try { localStorage.setItem(BG_KEY, 'url:' + url); applyBackgroundPhoto(url); showToast('🖼️ Background Spesial Dev Aktif'); renderDevBgs(); closeSettings(); const img = new Image(); img.crossOrigin = 'Anonymous'; img.onload = () => { try { const c = extractDominantColor(img); if (c) applyCustomTheme(c); } catch(e) { } }; img.src = url; } catch(e) { applyBackgroundPhoto(url); } }
-async function uploadBackground(event) { const file = event.target.files[0]; if (!file) return; if (file.size > 10 * 1024 * 1024) return showToast('❌ Foto terlalu besar (max 10MB)'); const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); let w = img.width, h = img.height, max = 1080; if (w > h) { h = h * max / w; w = max; } else { w = w * max / h; h = max; } canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h); const compressed = canvas.toDataURL('image/jpeg', 0.75); try { localStorage.setItem(BG_KEY, compressed); applyBackgroundPhoto(compressed); const domColor = extractDominantColor(img); if (domColor) applyCustomTheme(domColor); showToast('🖼️ Background & Warna UI diperbarui'); renderDevBgs(); } catch (err) { showToast('❌ Foto terlalu besar untuk disimpan'); } }; img.src = e.target.result; }; reader.readAsDataURL(file); event.target.value = ''; }
-function extractDominantColor(img) { try { const canvas = document.createElement('canvas'); const ctx = canvas.getContext('2d'); canvas.width = 50; canvas.height = 50; ctx.drawImage(img, 0, 0, 50, 50); const data = ctx.getImageData(0, 0, 50, 50).data; let r = 0, g = 0, b = 0, count = 0; for (let i = 0; i < data.length; i += 16) { const pr = data[i], pg = data[i+1], pb = data[i+2]; const brightness = (pr + pg + pb) / 3; if (brightness > 40 && brightness < 220) { r += pr; g += pg; b += pb; count++; } } if (count === 0) return null; return { r: Math.round(r / count), g: Math.round(g / count), b: Math.round(b / count) }; } catch (e) { return null; } }
-function rgbToHex(r, g, b) { return '#' + [r, g, b].map(x => Math.round(x).toString(16).padStart(2, '0')).join(''); }
-function applyCustomTheme(color) { const { r, g, b } = color; const r2 = Math.min(255, r * 1.3), g2 = Math.min(255, g * 1.3), b2 = Math.min(255, b * 1.3); const primary = rgbToHex(r2, g2, b2); const max = Math.max(r, g, b), min = Math.min(r, g, b); let h, s, l = (max + min) / 2; if (max === min) { h = s = 0; } else { const d = max - min; s = l > 0.5 ? d / (2 - max - min) : d / (max + min); switch (max) { case r: h = ((g - b) / d + (g < b ? 6 : 0)) / 6; break; case g: h = ((b - r) / d + 2) / 6; break; case b: h = ((r - g) / d + 4) / 6; break; } } h = (h + 0.5) % 1; const secondary = `hsl(${Math.round(h * 360)}, ${Math.round(s * 100)}%, ${Math.round(Math.min(0.7, l + 0.15) * 100)}%)`; const root = document.documentElement; root.style.setProperty('--accent', primary); root.style.setProperty('--accent-2', secondary); root.style.setProperty('--bubble-user-1', primary); root.style.setProperty('--bubble-user-2', secondary); document.getElementById('theme-name').textContent = 'Custom Photo'; updateThemeGrid(); }
-function clearBgPhoto() { if (!localStorage.getItem(BG_KEY)) return showToast('ℹ️ Belum ada foto background'); if (!confirm('Hapus foto background?')) return; localStorage.removeItem(BG_KEY); removeBackgroundPhoto(); applyTheme(currentThemeIndex); startThemeRotation(); renderDevBgs(); showToast('✅ Background foto dihapus'); }
-function loadSavedBackground() { const saved = localStorage.getItem(BG_KEY); if (saved) { let imgUrl = saved; if (saved.startsWith('url:')) imgUrl = saved.substring(4); applyBackgroundPhoto(imgUrl); const img = new Image(); if (saved.startsWith('url:')) img.crossOrigin = 'Anonymous'; img.onload = () => { try { const c = extractDominantColor(img); if (c) applyCustomTheme(c); } catch(e) {} }; img.src = imgUrl; } }
-
-// Music
-let musicAudio = null; let musicPlaying = false;
-function initMusicPlayer() { musicAudio = document.getElementById('bg-music'); const slider = document.getElementById('music-volume-slider'); const savedVol = parseFloat(localStorage.getItem(MUSIC_VOL_KEY) || '0.5'); musicAudio.volume = savedVol; slider.value = savedVol * 100; const savedMusic = localStorage.getItem(MUSIC_KEY); const savedName = localStorage.getItem(MUSIC_NAME_KEY); if (savedMusic) { musicAudio.src = savedMusic; document.getElementById('music-title').textContent = savedName || 'Lagu'; document.getElementById('music-player').style.display = 'flex'; document.getElementById('remove-music-btn').style.display = 'flex'; document.getElementById('upload-music-btn').querySelector('.btn-label').textContent = 'Ganti Lagu'; } slider.addEventListener('input', (e) => { const v = e.target.value / 100; musicAudio.volume = v; localStorage.setItem(MUSIC_VOL_KEY, v); }); musicAudio.addEventListener('play', () => { musicPlaying = true; document.getElementById('music-icon-play').style.display = 'none'; document.getElementById('music-icon-pause').style.display = 'block'; document.getElementById('music-disc').classList.add('playing'); const status = document.getElementById('music-status'); status.textContent = 'Playing'; status.classList.add('playing'); }); musicAudio.addEventListener('pause', () => { musicPlaying = false; document.getElementById('music-icon-play').style.display = 'block'; document.getElementById('music-icon-pause').style.display = 'none'; document.getElementById('music-disc').classList.remove('playing'); const status = document.getElementById('music-status'); status.textContent = 'Paused'; status.classList.remove('playing'); }); }
-function toggleMusic() { if (!musicAudio || !musicAudio.src) return showToast('⚠️ Upload lagu dulu'); if (musicPlaying) musicAudio.pause(); else musicAudio.play().catch(e => showToast('❌ Gagal play')); }
-function toggleDevMusicMenu() { const list = document.getElementById('dev-music-list'); const chevron = document.getElementById('dev-music-chevron'); const isShowing = list.classList.toggle('show'); chevron.style.transform = isShowing ? 'rotate(180deg)' : 'rotate(0deg)'; if (isShowing) renderDevMusic(); }
-function renderDevMusic() { const list = document.getElementById('dev-music-list'); if (!list) return; const currentMusic = localStorage.getItem(MUSIC_KEY); list.innerHTML = DEV_MUSIC.map(m => { const isActive = currentMusic === m.url; return `<div class="dev-music-item ${isActive ? 'active' : ''}" onclick="setDevMusic('${m.url}', '${m.name}')"><div class="dev-music-info"><span class="dev-music-title">${m.name}</span><span class="dev-music-artist">${m.artist}</span></div><div class="dev-music-icon"><svg viewBox="0 0 24 24" width="14" height="14" fill="${isActive ? 'currentColor' : 'none'}" stroke="currentColor" stroke-width="2">${isActive ? '<rect x="6" y="4" width="4" height="16" rx="1"></rect><rect x="14" y="4" width="4" height="16" rx="1"></rect>' : '<polygon points="5 3 19 12 5 21 5 3"></polygon>'}</svg></div></div>`; }).join(''); }
-function setDevMusic(url, name) { localStorage.setItem(MUSIC_KEY, url); localStorage.setItem(MUSIC_NAME_KEY, name); musicAudio.src = url; document.getElementById('music-title').textContent = name; document.getElementById('music-player').style.display = 'flex'; document.getElementById('remove-music-btn').style.display = 'flex'; document.getElementById('upload-music-btn').querySelector('.btn-label').textContent = 'Ganti Lagu'; musicAudio.play().then(() => { showToast('🎵 ' + name + ' diputar'); }).catch(() => { showToast('🎵 ' + name + ' siap diputar'); }); renderDevMusic(); toggleDevMusicMenu(); }
-async function uploadMusic(event) { const file = event.target.files[0]; if (!file) return; if (file.size > 5 * 1024 * 1024) return showToast('❌ Lagu terlalu besar (max 5MB)'); const reader = new FileReader(); reader.onload = (e) => { const base64 = e.target.result; try { localStorage.setItem(MUSIC_KEY, base64); localStorage.setItem(MUSIC_NAME_KEY, file.name); musicAudio.src = base64; document.getElementById('music-title').textContent = file.name.replace(/\.[^.]+$/, ''); document.getElementById('music-player').style.display = 'flex'; document.getElementById('remove-music-btn').style.display = 'flex'; document.getElementById('upload-music-btn').querySelector('.btn-label').textContent = 'Ganti Lagu'; musicAudio.play().then(() => showToast('🎵 Lagu diputar')).catch(() => showToast('🎵 Lagu diupload, tap play')); renderDevMusic(); } catch (err) { showToast('❌ Lagu terlalu besar untuk disimpan'); } }; reader.readAsDataURL(file); event.target.value = ''; }
-function removeMusic() { if (!confirm('Hapus lagu?')) return; if (musicAudio) { musicAudio.pause(); musicAudio.src = ''; } localStorage.removeItem(MUSIC_KEY); localStorage.removeItem(MUSIC_NAME_KEY); document.getElementById('music-player').style.display = 'none'; document.getElementById('remove-music-btn').style.display = 'none'; document.getElementById('upload-music-btn').querySelector('.btn-label').textContent = 'Upload Lagu (MP3)'; renderDevMusic(); showToast('🗑️ Lagu dihapus'); }
-
-// Image
-function compressImage(file, maxSize = 200) { return new Promise((resolve) => { const reader = new FileReader(); reader.onload = (e) => { const img = new Image(); img.onload = () => { const canvas = document.createElement('canvas'); let w = img.width, h = img.height; if (w > h) { h = h * maxSize / w; w = maxSize; } else { w = w * maxSize / h; h = maxSize; } canvas.width = w; canvas.height = h; canvas.getContext('2d').drawImage(img, 0, 0, w, h); resolve(canvas.toDataURL('image/jpeg', 0.85)); }; img.src = e.target.result; }; reader.readAsDataURL(file); }); }
-async function uploadPP(event) { const file = event.target.files[0]; if (!file) return; const username = getSession(); if (!username) return; const base64 = await compressImage(file, 200); const users = getUsers(); if (users[username]) { users[username].pp = base64; saveUsers(users); applyUserUI(username); renderChat(username); } event.target.value = ''; showToast('✅ Foto profil diperbarui'); }
-function togglePass(inputId, btn) { const input = document.getElementById(inputId); if (!input) return; if (input.type === 'password') { input.type = 'text'; btn.classList.add('showing'); btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19m-6.72-1.07a3 3 0 1 1-4.24-4.24"></path><line x1="1" y1="1" x2="23" y2="23"></line></svg>`; } else { input.type = 'password'; btn.classList.remove('showing'); btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>`; } }
-
-// Chat Logic
-const chatEl = document.getElementById('chat'); const promptEl = document.getElementById('prompt'); let attachedFile = null;
-function renderChat(username) { const history = getChat(username); chatEl.innerHTML = ''; if (history.length === 0) return renderWelcome(); const userPP = getUsers()[username]?.pp; history.forEach(m => buatRow(m.text, m.role, username, userPP, m.file, m.role === 'ai')); }
-function renderWelcome() { chatEl.innerHTML = `<div class="welcome"><h2>SYRANX</h2><div class="sub-title">PREMIUM AI • POWERED BY OPENROUTER</div><p>Kirim pesan, foto, atau dokumen.<br>AI akan membalas secara real-time.</p><div class="quick-hints"><button onclick="quickPrompt('Jelaskan tentang AI dalam 3 kalimat')">💡 Tentang AI</button><button onclick="quickPrompt('Buatkan puisi pendek tentang masa depan')">✍️ Puisi</button><button onclick="quickPrompt('Buatkan kode JavaScript faktorial')">💻 Kode JS</button></div></div>`; }
-function quickPrompt(t) { promptEl.value = t; kirim(); }
-function escapeHTML(s) { return String(s).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;'); }
-function highlightCode(code, lang) { let html = escapeHTML(code); html = html.replace(/(\/\/[^\n]*|#[^\n]*|\/\*[\s\S]*?\*\/)/g, '<span class="com">$1</span>'); html = html.replace(/(&quot;[^&]*?&quot;|&#039;[^&]*?&#039;|`[^`]*?`)/g, '<span class="str">$1</span>'); html = html.replace(/\b(\d+\.?\d*)\b/g, '<span class="num">$1</span>'); const kw = /\b(const|let|var|function|return|if|else|for|while|do|switch|case|break|continue|new|class|extends|import|export|from|default|async|await|try|catch|finally|throw|typeof|instanceof|in|of|this|super|null|undefined|true|false|def|elif|lambda|pass|None|True|False|self|print|public|private|static|void|int|float|double|string|bool|char|struct|enum|interface|type|namespace|using|package|func|go|defer|range|chan|map|select|match|where|yield|with|as|is|not|and|or|end)\b/g; html = html.replace(kw, '<span class="kw">$1</span>'); return html; }
-function parseMarkdown(text) {
-  let safe = escapeHTML(text); const codeBlocks = [];
-  safe = safe.replace(/```(\w+)?\n?([\s\S]*?)```/g, (match, lang, code) => { const idx = codeBlocks.length; codeBlocks.push({ lang: (lang || 'code').toLowerCase(), code: code.replace(/\n$/, '') }); return `\u0000CODEBLOCK${idx}\u0000`; });
-  safe = safe.replace(/^### (.*$)/gm, '<h3>$1</h3>').replace(/^## (.*$)/gm, '<h2>$1</h2>').replace(/^# (.*$)/gm, '<h1>$1</h1>');
-  safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/__(.+?)__/g, '<strong>$1</strong>');
-  safe = safe.replace(/(?<!\*)\*([^*\n]+?)\*(?!\*)/g, '<em>$1</em>').replace(/`([^`\n]+?)`/g, '<code>$1</code>');
-  safe = safe.replace(/^---+$/gm, '<hr>').replace(/^\* (.*$)/gm, '<li>$1</li>').replace(/^- (.*$)/gm, '<li>$1</li>');
-  safe = safe.replace(/(<li>[\s\S]*?<\/li>)(?!\s*<li>)/g, '<ul>$1</ul>').replace(/<\/ul>\s*<ul>/g, '');
-  const lines = safe.split('\n'); const out = []; let buf = '';
-  for (let line of lines) {
-    if (line.match(/^\u0000CODEBLOCK\d+\u0000$/)) { if (buf.trim()) { out.push('<p>' + buf + '</p>'); buf = ''; } out.push(line); }
-    else if (line.match(/^<(h[1-3]|ul|ol|li|hr|pre|div|code)/)) { if (buf.trim()) { out.push('<p>' + buf + '</p>'); buf = ''; } out.push(line); }
-    else if (line.trim() === '') { if (buf.trim()) { out.push('<p>' + buf + '</p>'); buf = ''; } }
-    else { buf += (buf ? '<br>' : '') + line; }
-  }
-  if (buf.trim()) out.push('<p>' + buf + '</p>'); safe = out.join('\n');
-  safe = safe.replace(/\u0000CODEBLOCK(\d+)\u0000/g, (m, idx) => { const cb = codeBlocks[parseInt(idx)]; const highlighted = highlightCode(cb.code, cb.lang); const dataAttr = encodeURIComponent(cb.code); return `<div class="code-block"><div class="code-header"><span class="code-lang">${escapeHTML(cb.lang)}</span><button class="code-copy-btn" onclick="copyCode(this, decodeURIComponent('${dataAttr}'))"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY</button></div><pre class="code-body">${highlighted}</pre></div>`; });
-  return safe;
-}
-window.copyCode = function(btn, code) { navigator.clipboard.writeText(code).then(() => { btn.classList.add('copied'); btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>COPIED`; showToast('📋 Kode disalin!'); setTimeout(() => { btn.classList.remove('copied'); btn.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>COPY`; }, 2000); }).catch(() => showToast('❌ Gagal menyalin')); };
-function buatRow(pesan, kelas, username, userPP, fileData, isMarkdown) {
-  const row = document.createElement('div'); row.className = 'row ' + kelas; const av = document.createElement('div'); av.className = 'mini-avatar';
-  if (kelas === 'user') { if (userPP) av.innerHTML = '<img src="' + userPP + '">'; else av.textContent = username ? username.charAt(0).toUpperCase() : 'K'; } else { av.textContent = 'S'; }
-  const wrap = document.createElement('div'); wrap.className = 'bubble-wrap'; const bubble = document.createElement('div'); bubble.className = 'bubble';
-  if (fileData) { if (fileData.type && fileData.type.startsWith('image/')) { const img = document.createElement('img'); img.src = fileData.data; img.style.cssText = 'max-width:100%;border-radius:12px;margin-bottom:' + (pesan ? '8px' : '0') + ';display:block;'; bubble.appendChild(img); } else { const badge = document.createElement('div'); badge.style.cssText = 'display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,0.1);border:1px solid rgba(255,255,255,0.2);padding:6px 12px;border-radius:8px;font-size:12px;margin-bottom:6px;color:#fff;'; badge.innerHTML = '📄 ' + escapeHTML(fileData.name || 'dokumen'); bubble.appendChild(badge); } }
-  if (pesan) { if (kelas === 'ai' && isMarkdown) bubble.innerHTML += parseMarkdown(pesan); else { const txt = document.createElement('span'); txt.textContent = pesan; bubble.appendChild(txt); } }
-  wrap.appendChild(bubble);
-  if (kelas === 'ai' && isMarkdown) { const actions = document.createElement('div'); actions.className = 'bubble-actions'; actions.innerHTML = `<button onclick="copyBubble(this)">COPY</button><button onclick="regenBubble(this)">ULANG</button>`; wrap.appendChild(actions); }
-  row.appendChild(av); row.appendChild(wrap); chatEl.appendChild(row); chatEl.scrollTop = chatEl.scrollHeight; return bubble;
-}
-function copyBubble(btn) { const wrap = btn.closest('.bubble-wrap'); navigator.clipboard.writeText(wrap.querySelector('.bubble').innerText).then(() => showToast('📋 Teks disalin')); }
-function regenBubble(btn) { const wrap = btn.closest('.bubble-wrap'); const bubble = wrap.querySelector('.bubble'); const username = getSession(); const history = getChat(username); const lastAIIndex = history.map(h => h.role).lastIndexOf('assistant'); if (lastAIIndex === -1) return; const lastUserMsg = [...history].slice(0, lastAIIndex).reverse().find(h => h.role === 'user'); if (!lastUserMsg) return; history.splice(lastAIIndex, 1); saveChat(username, history); bubble.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>'; prosesStreaming(username, bubble, lastUserMsg.file); }
-function handleFile(event) { const file = event.target.files[0]; if (!file) return; if (file.size > 5 * 1024 * 1024) { showToast('❌ File terlalu besar (max 5MB)'); event.target.value = ''; return; } const reader = new FileReader(); reader.onload = (e) => { const base64 = e.target.result; attachedFile = { name: file.name, type: file.type, size: file.size, data: base64 }; const preview = document.getElementById('file-preview'); const thumb = document.getElementById('file-thumb'); const nameEl = document.getElementById('file-name-text'); if (file.type.startsWith('image/')) { thumb.src = base64; thumb.style.display = 'block'; } else { thumb.style.display = 'none'; } nameEl.textContent = file.name + ' (' + (file.size / 1024).toFixed(1) + ' KB)'; preview.classList.add('show'); showToast('📎 File dilampirkan'); }; reader.readAsDataURL(file); event.target.value = ''; }
-function removeFile() { attachedFile = null; document.getElementById('file-preview').classList.remove('show'); document.getElementById('file-thumb').style.display = 'none'; }
-async function kirim() {
-  const teks = promptEl.value.trim(); if (!teks && !attachedFile) return; const username = getSession(); const users = getUsers(); const userPP = users[username] && users[username].pp; const welcome = chatEl.querySelector('.welcome'); if (welcome) welcome.remove(); const fileData = attachedFile ? { name: attachedFile.name, type: attachedFile.type, data: attachedFile.data } : null; buatRow(teks, 'user', username, userPP, fileData, false); tambahChat(username, 'user', teks, fileData); promptEl.value = ''; promptEl.style.height = 'auto'; const currentFile = attachedFile; removeFile(); const kirimBtn = document.getElementById('kirim'); kirimBtn.disabled = true; const bubbleAI = buatRow('', 'ai', username, userPP, null, false); bubbleAI.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>'; await prosesStreaming(username, bubbleAI, currentFile); kirimBtn.disabled = false;
-}
-async function prosesStreaming(username, bubbleAI, file) {
-  const history = getChat(username); const messages = [{ role: 'system', content: 'Kamu adalah Syranx, AI premium yang cerdas, cepat, dan ramah. Diciptakan oleh Ramsyah. Kamu bisa menganalisis gambar, menjawab pertanyaan, dan membantu berbagai tugas. Jawab dalam bahasa Indonesia yang natural.\n\nPENTING: Jika kamu memberikan KODE PROGRAM, WAJIB format pakai blok kode markdown dengan tanda ``` diikuti nama bahasa.\n\nJika ditanya namamu: "Namaku Syranx". Jika ditanya pembuatmu: "Aku dibuat oleh Ramsyah".' }];
-  for (const msg of history) { if (msg.file && msg.file.type && msg.file.type.startsWith('image/')) { messages.push({ role: msg.role === 'user' ? 'user' : 'assistant', content: [{ type: 'text', text: msg.text || 'Analisis gambar ini' }, { type: 'image_url', image_url: { url: msg.file.data } }] }); } else { let content = msg.text || ''; if (msg.file) content += '\n[Lampiran: ' + msg.file.name + ']'; if (content) messages.push({ role: msg.role === 'user' ? 'user' : 'assistant', content }); } }
-  let modelList = MODELS; const hasImage = history.some(m => m.file && m.file.type && m.file.type.startsWith('image/')); if (hasImage) modelList = ['meta-llama/llama-3.2-11b-vision-instruct:free', 'qwen/qwen-2.5-vl-7b-instruct:free', ...MODELS];
-  let lastError = '';
-  for (let i = 0; i < modelList.length; i++) {
-    const model = modelList[i]; try {
-      bubbleAI.textContent = ''; bubbleAI.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
-      const res = await fetch(BACKEND_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: model, messages, stream: true }) });
-      if (!res.ok) { const txt = await res.text(); try { const j = JSON.parse(txt); lastError = j.error?.message || ('Error ' + res.status); } catch(e) { lastError = 'Error ' + res.status; } continue; }
-      const reader = res.body.getReader(); const decoder = new TextDecoder(); let fullText = '', buffer = '', gotError = false;
-      while (true) {
-        const { done, value } = await reader.read(); if (done) break; buffer += decoder.decode(value, { stream: true }); const lines = buffer.split('\n'); buffer = lines.pop();
-        for (const line of lines) {
-          if (!line.startsWith('data: ')) continue; const data = line.slice(6).trim(); if (data === '[DONE]') continue;
-          try { const json = JSON.parse(data); if (json.error) { gotError = true; lastError = json.error.message || 'Error'; break; } const delta = json.choices?.[0]?.delta?.content; if (delta) { fullText += delta; bubbleAI.textContent = fullText; chatEl.scrollTop = chatEl.scrollHeight; } } catch(e) {}
-        }
-        if (gotError) break;
-      }
-      if (gotError) continue;
-      if (fullText) { bubbleAI.innerHTML = parseMarkdown(fullText); const wrap = bubbleAI.parentElement; if (!wrap.querySelector('.bubble-actions')) { const actions = document.createElement('div'); actions.className = 'bubble-actions'; actions.innerHTML = `<button onclick="copyBubble(this)">COPY</button><button onclick="regenBubble(this)">ULANG</button>`; wrap.appendChild(actions); } tambahChat(username, 'ai', fullText, null); chatEl.scrollTop = chatEl.scrollHeight; return; }
-      lastError = 'Kosong';
-    } catch (e) { lastError = e.message; }
-  }
-  bubbleAI.innerHTML = '❌ Semua model gagal.<br><span style="color:#ef4444;font-size:12px">' + escapeHTML(lastError) + '</span><br><br><span style="font-size:11px;color:#888">Coba lagi dalam beberapa detik.</span>';
-}
-promptEl.addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); kirim(); } });
-</script>
 </body>
 </html>
