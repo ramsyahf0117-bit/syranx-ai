@@ -377,13 +377,13 @@ const SUPABASE_ANON_KEY = 'sb_publishable_G7M780_MIBMjpdbwKy_qvw_YK_JtecB';
 const BACKEND_URL = 'https://syranx-ai.vercel.app/api/chat';
 
 const AI_MODELS = [
-  'meta-llama/llama-3.3-70b-instruct:free',
-  'google/gemma-3-27b-it:free',
-  'mistralai/mistral-small-3.2-24b-instruct:free',
-  'qwen/qwen3-coder:free',
-  'deepseek/deepseek-chat-v3.1:free'
+  'openrouter/free',
+  'nvidia/nemotron-3-ultra-550b-a55b:free',
+  'nvidia/nemotron-3.5-lightning:free',
+  'cohere/north-mini-code:free',
+  'nvidia/nemotron-3-nano-omni-30b-a3b-reasoning:free'
 ];
-const MODEL_LABELS = ['Llama 3.3', 'Gemma 3', 'Mistral Small', 'Qwen3 Coder', 'DeepSeek V3.1'];
+const MODEL_LABELS = ['Auto (Free)', 'Nemotron Ultra', 'Nemotron Lightning', 'North Mini Code', 'Nemotron Nano'];
 const STAFF = ['cs', 'owner', 'developer'];
 
 let supabaseClient = null;
@@ -919,7 +919,11 @@ async function prosesStreaming(bubbleAI) {
   let fullText = '';
   try {
     const res = await fetch(BACKEND_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: selectedModel, messages, stream: true }) });
-    if (!res.ok) throw new Error('HTTP ' + res.status);
+    if (!res.ok) {
+      let detail = '';
+      try { const t = await res.text(); try { const j = JSON.parse(t); detail = j.error?.message || j.message || t; } catch (_) { detail = t; } } catch (_) {}
+      throw new Error('HTTP ' + res.status + (detail ? ': ' + String(detail).slice(0, 160) : ''));
+    }
     const ctype = res.headers.get('content-type') || '';
     if (ctype.includes('application/json')) {
       const j = await res.json();
