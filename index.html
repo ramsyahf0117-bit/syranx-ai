@@ -2,276 +2,1027 @@
 <html lang="id">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-<meta name="theme-color" content="#09090b">
-<title>Syranx AI - Maintenance</title>
-<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
+<meta name="theme-color" content="#05050a">
+<title>Syranx AI - Aurora</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-  * { margin: 0; padding: 0; box-sizing: border-box; }
-  
-  html, body {
-    width: 100%;
-    max-width: 100vw;
-    overflow-x: hidden; /* Mencegah layar geser ke samping */
-    background-color: #09090b;
-    color: #f4f4f5;
-    font-family: 'Inter', sans-serif;
-    height: 100dvh; /* dvh lebih akurat di HP */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
+  :root {
+    --bg:#05050a; --bg-card:rgba(20,20,30,.6); --bg-input:rgba(255,255,255,.05);
+    --accent:#7c5cff; --accent-2:#4dd4ff; --accent-glow:rgba(124,92,255,.3);
+    --border:rgba(255,255,255,.08); --text:#f4f4f5; --text-2:#a1a1aa; --text-3:#71717a;
+    --aurora-1:rgba(77,212,255,.1); --aurora-2:rgba(124,92,255,.1); --verified-blue:#1d9bf0;
+    --badge-dev:#ef4444; --badge-owner:#f59e0b; --badge-cs:#10b981; --badge-admin:#8b5cf6; --badge-ceo:#ec4899; --badge-member:#71717a;
   }
+  html, body { font-family:'Inter',sans-serif; background:var(--bg); color:var(--text); height:100vh; height:100dvh; overflow:hidden; -webkit-font-smoothing:antialiased;
+    background-image:radial-gradient(circle at 15% 50%,var(--aurora-1),transparent 50%),radial-gradient(circle at 85% 30%,var(--aurora-2),transparent 50%); background-attachment:fixed; }
+  ::-webkit-scrollbar { width:5px; } ::-webkit-scrollbar-thumb { background:#3f3f46; border-radius:4px; }
+  @keyframes fadeUp { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:translateY(0)} }
+  @keyframes slideInRight { from{transform:translateX(100%)} to{transform:translateX(0)} }
+  @keyframes spin { to{transform:rotate(360deg)} }
+  @keyframes blink { 0%,80%,100%{opacity:.2} 40%{opacity:1} }
 
-  /* Efek Lampu Latar (Glow) - Dikunci biar ga bikin layar geser */
-  body::before {
-    content: '';
-    position: fixed;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    width: 100vw;
-    height: 100vh;
-    background: radial-gradient(circle, rgba(124, 92, 255, 0.2) 0%, rgba(9, 9, 11, 0) 70%);
-    z-index: -1;
-    pointer-events: none;
-  }
+  /* AUTH */
+  #auth-screen { position:fixed; inset:0; z-index:2000; background:var(--bg); display:none; align-items:center; justify-content:center; padding:20px; overflow-y:auto;
+    background-image:radial-gradient(circle at 15% 50%,var(--aurora-1),transparent 50%),radial-gradient(circle at 85% 30%,var(--aurora-2),transparent 50%); }
+  #auth-screen.show { display:flex; }
+  .auth-box { width:100%; max-width:380px; background:linear-gradient(135deg,rgba(30,30,45,.8),rgba(15,15,25,.9)); backdrop-filter:blur(24px); -webkit-backdrop-filter:blur(24px); border:1px solid rgba(255,255,255,.1); border-radius:24px; padding:40px 32px; box-shadow:0 20px 50px rgba(0,0,0,.7); animation:fadeUp .5s ease; }
+  .auth-logo-wrap { display:flex; justify-content:center; margin-bottom:16px; }
+  .auth-logo { width:60px; height:60px; border-radius:16px; background:linear-gradient(135deg,var(--accent),var(--accent-2)); display:flex; align-items:center; justify-content:center; box-shadow:0 8px 25px var(--accent-glow); }
+  .auth-logo svg { width:32px; height:32px; color:#fff; }
+  .auth-box h2 { text-align:center; font-size:26px; font-weight:800; margin-bottom:6px; color:#fff; letter-spacing:4px; }
+  .auth-box p.tag { text-align:center; color:var(--accent-2); font-size:11px; margin-bottom:32px; letter-spacing:3px; font-weight:600; text-transform:uppercase; }
+  .input-group { position:relative; margin-bottom:16px; }
+  .input-group input { width:100%; padding:16px; border-radius:12px; background:rgba(0,0,0,.2); border:1px solid var(--border); color:#fff; font-size:14px; outline:none; transition:all .3s; }
+  .input-group input:focus { border-color:var(--accent-2); background:rgba(0,0,0,.4); box-shadow:0 0 0 3px rgba(77,212,255,.15); }
+  .eye-btn { position:absolute; right:12px; top:50%; transform:translateY(-50%); width:32px; height:32px; border-radius:8px; background:transparent; border:none; color:var(--text-2); display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .eye-btn svg { width:18px; height:18px; }
+  .btn-primary { width:100%; padding:16px; border-radius:12px; background:linear-gradient(to right,var(--accent),#5b3fff); color:#fff; border:none; font-weight:700; font-size:15px; cursor:pointer; margin-top:10px; transition:.3s; box-shadow:0 8px 20px var(--accent-glow); }
+  .btn-primary:active { transform:scale(.98); }
+  .auth-switch { text-align:center; font-size:13px; color:var(--text-2); margin-top:24px; }
+  .auth-switch a { color:var(--accent-2); cursor:pointer; font-weight:600; }
+  .error-msg { color:#ef4444; font-size:12px; text-align:center; margin-top:12px; min-height:18px; font-weight:500; }
 
-  .container {
-    padding: 20px;
-    width: 100%;
-    max-width: 400px; /* Biar pas di tengah */
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    animation: fadeUp 0.8s ease-out;
-    z-index: 10;
-  }
+  /* SIDEBAR */
+  .sidebar-overlay { position:fixed; inset:0; background:rgba(0,0,0,.6); backdrop-filter:blur(4px); z-index:1000; opacity:0; visibility:hidden; transition:.3s; }
+  .sidebar-overlay.show { opacity:1; visibility:visible; }
+  .sidebar { position:fixed; top:0; left:0; bottom:0; width:280px; background:rgba(15,15,22,.97); backdrop-filter:blur(20px); border-right:1px solid var(--border); z-index:1001; transform:translateX(-100%); transition:transform .3s cubic-bezier(.16,1,.3,1); display:flex; flex-direction:column; }
+  .sidebar.show { transform:translateX(0); }
+  .sidebar-header { padding:24px 20px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:16px; }
+  .sidebar-avatar { width:50px; height:50px; border-radius:50%; background:var(--accent); display:flex; align-items:center; justify-content:center; font-weight:700; font-size:20px; color:#fff; border:2px solid var(--accent-2); }
+  .sidebar-user-info h3 { font-size:16px; font-weight:700; color:#fff; display:flex; align-items:center; gap:4px; }
+  .sidebar-user-info p { margin-top:4px; }
+  .sidebar-menu { flex:1; overflow-y:auto; padding:16px 12px; display:flex; flex-direction:column; gap:4px; }
+  .menu-item { display:flex; align-items:center; gap:12px; padding:14px 16px; border-radius:12px; background:transparent; border:none; color:var(--text); font-size:14px; font-weight:500; cursor:pointer; transition:.2s; text-align:left; width:100%; font-family:inherit; }
+  .menu-item:hover { background:var(--bg-input); }
+  .menu-item svg { width:20px; height:20px; color:var(--accent-2); flex-shrink:0; }
+  .menu-item.danger { color:#ef4444; } .menu-item.danger svg { color:#ef4444; }
+  .menu-divider { height:1px; background:var(--border); margin:8px 16px; }
 
-  @keyframes fadeUp {
-    from { opacity: 0; transform: translateY(20px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
+  .role-badge { font-size:10px; font-weight:800; padding:2px 8px; border-radius:10px; text-transform:uppercase; letter-spacing:.5px; display:inline-flex; align-items:center; }
+  .role-developer { background:rgba(239,68,68,.2); color:var(--badge-dev); border:1px solid var(--badge-dev); }
+  .role-owner { background:rgba(245,158,11,.2); color:var(--badge-owner); border:1px solid var(--badge-owner); }
+  .role-cs { background:rgba(16,185,129,.2); color:var(--badge-cs); border:1px solid var(--badge-cs); }
+  .role-admin { background:rgba(139,92,246,.2); color:var(--badge-admin); border:1px solid var(--badge-admin); }
+  .role-ceo { background:rgba(236,72,153,.2); color:var(--badge-ceo); border:1px solid var(--badge-ceo); }
+  .role-member { background:rgba(113,113,122,.2); color:var(--badge-member); border:1px solid var(--badge-member); }
 
-  .icon-wrapper {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 80px;
-    height: 80px;
-    background: #18181b;
-    border: 1px solid #27272a;
-    border-radius: 24px;
-    margin-bottom: 24px;
-    box-shadow: 0 10px 30px rgba(124, 92, 255, 0.15);
-  }
+  /* APP */
+  #app { display:none; flex-direction:column; height:100dvh; }
+  #header { display:flex; align-items:center; gap:12px; padding:12px 16px; background:rgba(5,5,10,.5); backdrop-filter:blur(20px); border-bottom:1px solid var(--border); z-index:10; }
+  .icon-btn { width:38px; height:38px; border-radius:10px; background:transparent; border:none; color:var(--text-2); display:flex; align-items:center; justify-content:center; cursor:pointer; font-size:20px; flex-shrink:0; }
+  .icon-btn:hover { background:var(--bg-input); color:#fff; }
+  .icon-btn svg { width:24px; height:24px; }
+  .header-title { flex:1; text-align:center; font-size:16px; font-weight:700; letter-spacing:2px; background:linear-gradient(to right,#fff,var(--accent-2)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+  .verified-badge { color:var(--verified-blue); width:16px; height:16px; }
 
-  .icon-wrapper svg {
-    width: 40px;
-    height: 40px;
-    color: #7c5cff;
-    animation: spin 4s linear infinite;
-  }
+  /* CHAT */
+  #chat, .chat-area { flex:1; overflow-y:auto; padding:20px 16px; display:flex; flex-direction:column; gap:16px; }
+  .welcome { margin:auto; text-align:center; max-width:340px; animation:fadeUp .5s ease; }
+  .welcome h2 { font-size:28px; letter-spacing:6px; font-weight:800; background:linear-gradient(to right,#fff,var(--accent-2)); -webkit-background-clip:text; background-clip:text; -webkit-text-fill-color:transparent; }
+  .welcome .sub-title { color:var(--accent-2); font-size:11px; letter-spacing:3px; margin:6px 0 20px; font-weight:600; }
+  .welcome p { color:var(--text-2); font-size:14px; line-height:1.6; }
+  .row { display:flex; align-items:flex-end; gap:8px; max-width:100%; animation:fadeUp .3s ease; }
+  .row.user { flex-direction:row-reverse; }
+  .bubble-wrap { display:flex; flex-direction:column; max-width:85%; min-width:0; }
+  .bubble { padding:12px 16px; border-radius:18px; font-size:14.5px; line-height:1.5; word-wrap:break-word; overflow-wrap:anywhere; }
+  .user .bubble { background:var(--accent); color:#fff; border-bottom-right-radius:4px; box-shadow:0 4px 15px var(--accent-glow); }
+  .ai .bubble, .other .bubble { background:var(--bg-card); backdrop-filter:blur(10px); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:4px; }
+  .bubble strong { color:#fff; font-weight:600; }
+  .bubble code { background:rgba(255,255,255,.1); color:var(--accent-2); padding:2px 6px; border-radius:4px; font-family:'JetBrains Mono',monospace; font-size:13px; }
+  .bubble pre { background:#0d1117; border:1px solid var(--border); border-radius:10px; padding:12px; margin:8px 0; overflow-x:auto; }
+  .bubble pre code { background:transparent; padding:0; color:#e6edf3; display:block; white-space:pre; }
+  .mini-avatar { width:32px; height:32px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:12px; font-weight:700; flex-shrink:0; }
+  .user .mini-avatar, .other .mini-avatar { background:var(--bg-input); color:#fff; }
+  .ai .mini-avatar { background:linear-gradient(135deg,var(--accent),var(--accent-2)); color:#fff; font-family:'JetBrains Mono',monospace; font-size:11px; }
+  .typing { display:flex; gap:4px; padding:4px 0; }
+  .typing span { width:7px; height:7px; border-radius:50%; background:var(--accent-2); animation:blink 1.2s infinite; }
+  .typing span:nth-child(2){animation-delay:.2s} .typing span:nth-child(3){animation-delay:.4s}
+  .meta { font-size:11px; font-weight:700; color:var(--accent-2); margin-bottom:4px; display:flex; align-items:center; gap:6px; }
 
-  @keyframes spin { 100% { transform: rotate(360deg); } }
+  /* INPUT */
+  #input-area, .input-wrap { padding:12px 16px; background:rgba(5,5,10,.7); backdrop-filter:blur(20px); border-top:1px solid var(--border); }
+  .input-row { display:flex; align-items:flex-end; gap:8px; background:var(--bg-card); border:1px solid var(--border); border-radius:24px; padding:6px; transition:.2s; }
+  .input-row:focus-within { border-color:var(--accent); box-shadow:0 0 15px var(--accent-glow); }
+  .input-row input, #prompt { flex:1; background:transparent; border:none; color:#fff; font-size:14.5px; padding:10px 8px; resize:none; outline:none; font-family:'Inter',sans-serif; min-width:0; }
+  .send-btn { width:38px; height:38px; border-radius:50%; background:var(--accent); border:none; color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 0 10px var(--accent-glow); flex-shrink:0; }
+  .send-btn:disabled { opacity:.5; }
 
-  h1 {
-    font-size: 26px;
-    font-weight: 800;
-    letter-spacing: 2px;
-    margin-bottom: 12px;
-    background: linear-gradient(135deg, #fff, #7c5cff);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    line-height: 1.2;
-  }
+  /* OVERLAYS */
+  .full-screen-overlay { position:fixed; inset:0; z-index:1500; background:var(--bg); background-image:radial-gradient(circle at 15% 50%,var(--aurora-1),transparent 50%),radial-gradient(circle at 85% 30%,var(--aurora-2),transparent 50%); display:none; flex-direction:column; }
+  .full-screen-overlay.show { display:flex; animation:slideInRight .3s ease; }
+  .overlay-header { display:flex; align-items:center; gap:12px; padding:16px; border-bottom:1px solid var(--border); background:rgba(5,5,10,.5); backdrop-filter:blur(20px); }
+  .overlay-header h2 { font-size:18px; font-weight:700; color:#fff; flex:1; }
+  .overlay-content { flex:1; overflow-y:auto; padding:20px; display:flex; flex-direction:column; align-items:center; }
 
-  p {
-    font-size: 14px;
-    color: #a1a1aa;
-    line-height: 1.6;
-    margin-bottom: 30px;
-    max-width: 90%;
-  }
+  .tools-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:16px; width:100%; max-width:600px; align-content:start; }
+  .tool-card { background:var(--bg-card); border:1px solid var(--border); border-radius:16px; padding:20px; display:flex; flex-direction:column; align-items:center; gap:12px; cursor:pointer; text-align:center; font-size:14px; font-weight:600; }
+  .tool-card:active { transform:scale(.97); }
+  .tool-icon { width:56px; height:56px; border-radius:16px; display:flex; align-items:center; justify-content:center; background:rgba(124,92,255,.15); color:var(--accent-2); font-size:26px; }
+  .role-card { background:var(--bg-card); border:1px solid var(--border); border-radius:12px; padding:16px; margin-bottom:12px; display:flex; justify-content:space-between; align-items:center; cursor:pointer; width:100%; max-width:400px; transition:.2s; gap:12px; }
+  .role-card:hover { border-color:var(--accent); background:var(--bg-input); }
+  .role-card-info h4 { font-size:15px; color:#fff; margin-bottom:4px; }
+  .role-card-info p { font-size:12px; color:var(--text-2); }
+  .role-price { font-size:14px; font-weight:700; color:var(--accent-2); white-space:nowrap; }
+  .av { border-radius:50%; flex-shrink:0; display:flex; align-items:center; justify-content:center; font-weight:700; color:#fff; overflow:hidden; background:var(--accent); border:2px solid var(--accent-2); }
+  .av img { width:100%; height:100%; object-fit:cover; display:block; }
+  .user-row { display:flex; align-items:center; gap:12px; flex:1; min-width:0; }
+  .user-row .role-card-info { min-width:0; }
+  .user-row .role-card-info h4 { display:flex; align-items:center; gap:6px; flex-wrap:wrap; }
+  .sidebar-avatar { cursor:pointer; position:relative; overflow:hidden; }
+  .sidebar-avatar img { width:100%; height:100%; object-fit:cover; }
+  .sec-title { font-size:11px; font-weight:700; letter-spacing:1.5px; text-transform:uppercase; color:var(--text-3); margin-bottom:10px; }
+  .mini-btn { padding:7px 12px; border-radius:10px; border:1px solid var(--accent-2); background:transparent; color:var(--accent-2); font-size:12px; font-weight:700; cursor:pointer; font-family:inherit; white-space:nowrap; flex-shrink:0; }
+  .mini-btn.saved { border-color:var(--border); color:var(--text-2); }
+  .mini-btn.danger { border-color:rgba(239,68,68,.5); color:#ef4444; }
+  .card-actions { display:flex; gap:6px; align-items:center; }
+  .wa-box { width:100%; max-width:400px; margin-top:8px; padding:16px; border-radius:14px; background:rgba(37,211,102,.07); border:1px solid rgba(37,211,102,.35); }
+  .wa-box h4 { color:#fff; font-size:14px; margin-bottom:4px; }
+  .wa-box > p { color:var(--text-2); font-size:12px; margin-bottom:12px; line-height:1.5; }
+  .wa-chips { display:flex; gap:8px; margin-bottom:12px; }
+  .wa-chip { flex:1; padding:10px; border-radius:10px; border:1px solid var(--border); background:var(--bg-input); color:var(--text-2); font-size:13px; font-weight:600; cursor:pointer; font-family:inherit; }
+  .wa-chip.active { background:rgba(37,211,102,.2); border-color:#25d366; color:#25d366; }
+  .wa-btn { display:flex; align-items:center; justify-content:space-between; gap:10px; width:100%; padding:13px 14px; margin-top:8px; border-radius:12px; border:1px solid rgba(37,211,102,.4); background:rgba(37,211,102,.12); color:#fff; font-size:14px; font-weight:600; cursor:pointer; font-family:inherit; text-align:left; }
+  .wa-btn small { display:block; color:var(--text-2); font-weight:400; font-size:11px; margin-top:2px; }
+  .wa-btn.rec { border-color:#25d366; background:rgba(37,211,102,.22); }
+  .wa-tag { font-size:9px; font-weight:800; letter-spacing:.5px; background:#25d366; color:#000; padding:2px 7px; border-radius:8px; margin-left:6px; vertical-align:middle; }
+  .av-hint { font-size:10px; color:var(--text-3); margin-top:4px; }
 
-  /* Kotak Info / Status */
-  .status-box {
-    background: #18181b;
-    border: 1px solid #27272a;
-    border-radius: 16px;
-    padding: 12px 16px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    gap: 10px;
-    font-family: 'JetBrains Mono', monospace;
-    font-size: 12px;
-    color: #4dd4ff;
-    width: 100%;
-    max-width: 320px;
-  }
+  .model-selector { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:16px; width:100%; max-width:600px; justify-content:center; }
+  .model-btn { background:var(--bg-input); border:1px solid var(--border); padding:10px 16px; border-radius:20px; color:var(--text-2); font-size:12px; cursor:pointer; font-family:inherit; }
+  .model-btn.active { background:var(--accent); color:#fff; border-color:var(--accent); }
 
-  .dot {
-    width: 8px;
-    height: 8px;
-    background: #4dd4ff;
-    border-radius: 50%;
-    animation: blink 1.5s infinite;
-    flex-shrink: 0;
-  }
+  /* CALCULATOR / CONVERTER */
+  .calc { width:100%; max-width:340px; }
+  .calc-display { background:rgba(0,0,0,.35); border:1px solid var(--border); border-radius:16px; padding:16px; text-align:right; margin-bottom:12px; min-height:84px; }
+  .calc-expr { color:var(--text-2); font-size:14px; min-height:20px; word-break:break-all; font-family:'JetBrains Mono',monospace; }
+  .calc-res { color:#fff; font-size:32px; font-weight:700; word-break:break-all; }
+  .calc-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
+  .calc-grid button { padding:18px 0; border-radius:14px; border:1px solid var(--border); background:var(--bg-card); color:#fff; font-size:18px; font-weight:600; cursor:pointer; font-family:inherit; }
+  .calc-grid button.op { color:var(--accent-2); } .calc-grid button.eq { background:var(--accent); border-color:var(--accent); }
+  .calc-grid button:active { transform:scale(.95); }
+  .conv { width:100%; max-width:400px; display:flex; flex-direction:column; gap:12px; }
+  .conv select, .conv input { width:100%; padding:14px; border-radius:12px; background:rgba(0,0,0,.3); border:1px solid var(--border); color:#fff; font-size:15px; outline:none; font-family:inherit; }
+  .conv select option { background:#111; }
+  .conv-out { padding:18px; text-align:center; font-size:22px; font-weight:700; color:var(--accent-2); background:var(--bg-card); border:1px solid var(--border); border-radius:14px; word-break:break-all; }
 
-  @keyframes blink {
-    0%, 100% { opacity: 1; }
-    50% { opacity: 0.3; }
-  }
-
-  /* Tombol Ikon ! di Kanan */
-  .info-btn {
-    background: rgba(124, 92, 255, 0.15);
-    border: 1px solid #7c5cff;
-    color: #7c5cff;
-    width: 24px;
-    height: 24px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: bold;
-    font-size: 14px;
-    cursor: pointer;
-    margin-left: auto; /* Dorong ke paling kanan */
-    transition: 0.2s;
-    animation: warningPulse 2s infinite;
-    flex-shrink: 0;
-  }
-
-  .info-btn:active { transform: scale(0.9); }
-
-  @keyframes warningPulse {
-    0%, 100% { box-shadow: 0 0 0px rgba(124, 92, 255, 0); }
-    50% { box-shadow: 0 0 10px rgba(124, 92, 255, 0.8); }
-  }
-
-  .footer {
-    margin-top: 40px;
-    font-size: 10px;
-    color: #52525b;
-    letter-spacing: 1px;
-  }
-
-  /* --- STYLE POP-UP PESAN (KERTAS) --- */
-  .modal-overlay {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.8);
-    backdrop-filter: blur(5px);
-    display: none;
-    align-items: center;
-    justify-content: center;
-    z-index: 100;
-    padding: 20px;
-  }
-  .modal-overlay.show { display: flex; animation: fadeIn 0.3s ease; }
-  
-  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-  .modal-content {
-    background: #18181b;
-    border: 1px solid #7c5cff;
-    border-radius: 20px;
-    padding: 30px 20px;
-    width: 100%;
-    max-width: 350px;
-    box-shadow: 0 20px 50px rgba(124, 92, 255, 0.2);
-    transform: scale(0.9);
-    animation: popIn 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-    text-align: center;
-    position: relative;
-  }
-
-  @keyframes popIn { to { transform: scale(1); } }
-
-  .modal-content h2 {
-    color: #7c5cff;
-    font-size: 20px;
-    margin-bottom: 20px;
-    letter-spacing: 1px;
-  }
-
-  .modal-content p {
-    color: #f4f4f5;
-    font-size: 14px;
-    line-height: 1.6;
-    margin-bottom: 25px;
-    max-width: 100%;
-  }
-
-  .modal-content strong {
-    display: block;
-    margin-top: 10px;
-    color: #4dd4ff;
-    font-size: 16px;
-    letter-spacing: 1px;
-  }
-
-  .modal-close-btn {
-    background: #7c5cff;
-    color: #fff;
-    border: none;
-    padding: 12px 24px;
-    border-radius: 12px;
-    font-weight: bold;
-    font-size: 14px;
-    cursor: pointer;
-    width: 100%;
-    transition: 0.2s;
-  }
-  .modal-close-btn:active { transform: scale(0.95); }
-
+  #toast { position:fixed; bottom:90px; left:50%; transform:translateX(-50%) translateY(20px); background:#fff; color:#000; padding:10px 20px; border-radius:20px; font-size:13px; font-weight:600; z-index:10000; opacity:0; transition:.3s; pointer-events:none; max-width:90%; text-align:center; }
+  #toast.show { transform:translateX(-50%) translateY(0); opacity:1; }
+  #loading-overlay { position:fixed; inset:0; z-index:4000; background:rgba(5,5,10,.9); backdrop-filter:blur(10px); display:none; flex-direction:column; align-items:center; justify-content:center; }
+  #loading-overlay.show { display:flex; }
+  .spinner { width:30px; height:30px; border:3px solid rgba(255,255,255,.1); border-top-color:var(--accent-2); border-radius:50%; animation:spin 1s linear infinite; }
 </style>
 </head>
 <body>
 
-  <div class="container">
-    <div class="icon-wrapper">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
-        <circle cx="12" cy="12" r="3"></circle>
-        <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"></path>
-      </svg>
+<!-- AUTH -->
+<div id="auth-screen">
+  <div class="auth-box">
+    <div class="auth-logo-wrap"><div class="auth-logo">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </div></div>
+    <h2>SYRANX</h2>
+    <p class="tag">AURORA PREMIUM AI</p>
+    <div id="login-form">
+      <div class="input-group"><input id="login-user" placeholder="Username" autocomplete="username"></div>
+      <div class="input-group">
+        <input id="login-pass" type="password" placeholder="Password" autocomplete="current-password">
+        <button class="eye-btn" type="button" onclick="togglePass('login-pass')"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+      </div>
+      <button class="btn-primary" onclick="login()">MASUK</button>
+      <p class="auth-switch">Belum punya akun? <a onclick="showRegister()">Daftar</a></p>
     </div>
-
-    <h1>SYRANX SEDANG MAINTENANCE</h1>
-    <p>Kami sedang melakukan pembaruan sistem dan perbaikan server. Silakan kembali lagi nanti.</p>
-
-    <div class="status-box">
-      <span class="dot"></span>
-      <span>MENGERJAKAN UPDATE...</span>
-      <div class="info-btn" onclick="bukaPesan()">!</div>
+    <div id="register-form" style="display:none">
+      <div class="input-group"><input id="reg-user" placeholder="Username baru (huruf/angka, tanpa spasi)" autocomplete="off"></div>
+      <div class="input-group"><input id="reg-pass" type="password" placeholder="Password (min 6 karakter)" autocomplete="new-password"></div>
+      <div class="input-group"><input id="reg-pass2" type="password" placeholder="Ulangi password" autocomplete="new-password"></div>
+      <button class="btn-primary" onclick="register()">BUAT AKUN</button>
+      <p class="auth-switch">Sudah punya akun? <a onclick="showLogin()">Masuk</a></p>
     </div>
+    <div class="error-msg" id="auth-error"></div>
+  </div>
+</div>
 
-    <div class="footer">
-      &copy; 2026 SYRANX AI • BY RAMSYAH
+<!-- SIDEBAR -->
+<div class="sidebar-overlay" id="sidebar-overlay" onclick="toggleSidebar()"></div>
+<div class="sidebar" id="sidebar">
+  <div class="sidebar-header">
+    <div class="sidebar-avatar" id="sidebar-avatar" onclick="$('avatar-file').click()" title="Ganti foto profil">R</div>
+    <input type="file" id="avatar-file" accept="image/*" style="display:none" onchange="uploadAvatar(this)">
+    <div class="sidebar-user-info">
+      <h3><span id="sidebar-username">USER</span>
+        <svg class="verified-badge" id="sidebar-check" style="display:none" viewBox="0 0 24 24" fill="currentColor"><path d="M22.25 12c0-1.43-.88-2.67-2.19-3.34.46-1.39.2-2.9-.81-3.91s-2.52-1.27-3.91-.81c-.66-1.31-1.91-2.19-3.34-2.19s-2.67.88-3.33 2.19c-1.4-.46-2.91-.2-3.92.81s-1.26 2.52-.8 3.91c-1.31.67-2.2 1.91-2.2 3.34s.89 2.67 2.2 3.34c-.46 1.39-.21 2.9.8 3.91s2.52 1.26 3.91.81c.67 1.31 1.91 2.19 3.34 2.19s2.68-.88 3.34-2.19c1.39.45 2.9.2 3.91-.81s1.27-2.52.81-3.91c1.31-.67 2.19-1.91 2.19-3.34zm-11.71 4.2L6.8 12.46l1.41-1.42 2.26 2.26 4.8-5.23 1.47 1.36-6.2 6.77z"/></svg>
+      </h3>
+      <p id="sidebar-role-badge" class="role-badge role-member">MEMBER</p>
+      <div class="av-hint">Ketuk foto untuk ganti</div>
     </div>
   </div>
+  <div class="sidebar-menu">
+    <button class="menu-item" onclick="toggleSidebar(); openOverlay('tools-menu')" id="menu-tools" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Tools Penting</button>
+    <button class="menu-item" onclick="toggleSidebar(); openGlobalChat()" id="menu-global" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/></svg>Global Chat</button>
+    <button class="menu-item" onclick="toggleSidebar(); openDM()" id="menu-dm" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>Pesan Pribadi (DM)</button>
+    <button class="menu-item" onclick="toggleSidebar(); openOrders()" id="menu-orders" style="display:none; color:#f59e0b">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Pesanan Masuk (CS)</button>
+    <div class="menu-divider"></div>
+    <button class="menu-item" onclick="hapusRiwayatFromMenu()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>Hapus Riwayat AI</button>
+    <button class="menu-item danger" onclick="logout()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>Logout</button>
+  </div>
+</div>
 
-  <div class="modal-overlay" id="pesanModal">
-    <div class="modal-content">
-      <h2>UPDATE SYRANX !!</h2>
-      <p>sorry we kalo di tutup, lagi update bre, tunggu ya mau fokus update besar-besaran</p>
-      <strong>- salam DEVELOPER RAMX -</strong>
-      <br>
-      <button class="modal-close-btn" onclick="tutupPesan()">Tutup</button>
+<!-- TOOLS -->
+<div id="tools-menu" class="full-screen-overlay">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('tools-menu')">←</button><h2>Tools Penting</h2></div>
+  <div class="overlay-content"><div class="tools-grid">
+    <div class="tool-card" onclick="openOverlay('calc-screen')"><div class="tool-icon">🧮</div>Kalkulator</div>
+    <div class="tool-card" onclick="openOverlay('conv-screen')"><div class="tool-icon">🔄</div>Konverter</div>
+  </div></div>
+</div>
+
+<div id="calc-screen" class="full-screen-overlay">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('calc-screen')">←</button><h2>Kalkulator</h2></div>
+  <div class="overlay-content"><div class="calc">
+    <div class="calc-display"><div class="calc-expr" id="calc-expr"></div><div class="calc-res" id="calc-res">0</div></div>
+    <div class="calc-grid" id="calc-grid"></div>
+  </div></div>
+</div>
+
+<div id="conv-screen" class="full-screen-overlay">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('conv-screen')">←</button><h2>Konverter</h2></div>
+  <div class="overlay-content"><div class="conv">
+    <select id="conv-type" onchange="convSetup()">
+      <option value="length">Panjang</option><option value="weight">Berat</option><option value="temp">Suhu</option><option value="data">Data</option>
+    </select>
+    <input id="conv-val" type="number" inputmode="decimal" placeholder="Masukkan nilai" oninput="convRun()">
+    <select id="conv-from" onchange="convRun()"></select>
+    <select id="conv-to" onchange="convRun()"></select>
+    <div class="conv-out" id="conv-out">—</div>
+  </div></div>
+</div>
+
+<!-- SHOP -->
+<div id="shop-screen" class="full-screen-overlay">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('shop-screen')">←</button><h2>Upgrade Role</h2></div>
+  <div class="overlay-content">
+    <p style="color:var(--text-2);font-size:13px;margin-bottom:20px;text-align:center">Pilih role yang ingin kamu beli. Pesanan akan langsung masuk ke CS (Pais).</p>
+    <div class="role-card" onclick="requestRole('admin','Rp 2.000')">
+      <div class="role-card-info"><h4>Role Admin (Gacor Min)</h4><p>Bisa chat global, DM & 2 pilihan model AI. (Tanpa Tools)</p></div>
+      <div class="role-price">Rp 2.000</div>
+    </div>
+    <div class="role-card" onclick="requestRole('ceo','Rp 5.000')">
+      <div class="role-card-info"><h4>Role CEO (Tuan Muda)</h4><p>Semua fitur terbuka & 5 pilihan model AI.</p></div>
+      <div class="role-price" style="color:#ec4899">Rp 5.000</div>
+    </div>
+    <div class="wa-box">
+      <h4>💬 Kelamaan nunggu CS?</h4>
+      <p>Chat staff langsung lewat WhatsApp. Pilih role dulu, lalu pilih staff. Pesan otomatis terisi, kamu tinggal tekan kirim di WhatsApp.</p>
+      <div class="wa-chips">
+        <button class="wa-chip active" id="wa-chip-admin" onclick="setWaRole('admin')">Admin · Rp 2.000</button>
+        <button class="wa-chip" id="wa-chip-ceo" onclick="setWaRole('ceo')">CEO · Rp 5.000</button>
+      </div>
+      <div id="wa-staff-list"></div>
+    </div>
+    <div style="margin-top:20px;padding:15px;background:rgba(255,255,255,.05);border-radius:12px;width:100%;max-width:400px;border:1px solid var(--border)">
+      <h4 style="color:#fff;font-size:13px;margin-bottom:8px">Status Pesanan Kamu:</h4>
+      <div id="my-order-status" style="font-size:12px;color:var(--text-2)">Belum ada pesanan.</div>
     </div>
   </div>
+</div>
 
-  <script>
-    function bukaPesan() {
-      document.getElementById('pesanModal').classList.add('show');
-    }
-    function tutupPesan() {
-      document.getElementById('pesanModal').classList.remove('show');
-    }
-  </script>
+<!-- ORDERS -->
+<div id="orders-screen" class="full-screen-overlay">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('orders-screen')">←</button><h2>Pesanan Masuk</h2></div>
+  <div class="overlay-content" id="orders-list-area"></div>
+</div>
 
+<!-- GLOBAL CHAT -->
+<div id="global-chat-screen" class="full-screen-overlay">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeGlobalChat()">←</button><h2>Global Chat 🌍</h2></div>
+  <div id="global-chat-area" class="chat-area"></div>
+  <div class="input-wrap"><div class="input-row">
+    <input type="text" id="global-prompt" placeholder="Ketik pesan global..." maxlength="500">
+    <button class="send-btn" onclick="kirimGlobal()">➤</button>
+  </div></div>
+</div>
+
+<!-- DM SEARCH -->
+<div id="dm-screen" class="full-screen-overlay">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('dm-screen')">←</button><h2>Pesan Pribadi</h2></div>
+  <div class="overlay-content">
+    <div class="sec-title" style="width:100%;max-width:400px">Kontak Saya</div>
+    <div id="dm-contacts-area" style="width:100%;max-width:400px;margin-bottom:18px"></div>
+    <div class="sec-title" style="width:100%;max-width:400px">Cari Pengguna</div>
+    <div class="input-group" style="width:100%;max-width:400px;display:flex;gap:8px">
+      <input type="text" id="dm-search" placeholder="Cari username..." style="flex:1">
+      <button class="btn-primary" style="margin-top:0;width:80px" onclick="searchUser()">Cari</button>
+    </div>
+    <div id="dm-result-area" style="width:100%;max-width:400px;margin-top:4px"></div>
+  </div>
+</div>
+
+<!-- DM ROOM -->
+<div id="dm-chat-screen" class="full-screen-overlay" style="z-index:1600">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeDMRoom()">←</button><h2 id="dm-chat-title">DM</h2></div>
+  <div id="dm-chat-area" class="chat-area"></div>
+  <div class="input-wrap"><div class="input-row">
+    <input type="text" id="dm-prompt" placeholder="Ketik pesan..." maxlength="500">
+    <button class="send-btn" onclick="kirimDM()">➤</button>
+  </div></div>
+</div>
+
+<!-- MODEL -->
+<div id="model-screen" class="full-screen-overlay">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('model-screen')">←</button><h2>Pilih Model AI</h2></div>
+  <div class="overlay-content"><div class="model-selector" id="model-list-container"></div></div>
+</div>
+
+<!-- MAIN -->
+<div id="app">
+  <div id="header">
+    <button class="icon-btn" onclick="toggleSidebar()" style="color:#fff">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="3" y1="12" x2="21" y2="12"/><line x1="3" y1="6" x2="21" y2="6"/><line x1="3" y1="18" x2="21" y2="18"/></svg>
+    </button>
+    <div class="header-title">SYRANX AI</div>
+    <button class="icon-btn" id="header-shop-btn" onclick="openShop()" style="color:#f59e0b;display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>
+    </button>
+    <button class="icon-btn" id="header-model-btn" onclick="openModelSelector()" style="color:var(--accent-2);display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
+    </button>
+  </div>
+  <div id="chat"></div>
+  <div id="input-area"><div class="input-row">
+    <textarea id="prompt" placeholder="Ketik pesan..." rows="1"></textarea>
+    <button id="kirim" class="send-btn" onclick="kirim()">
+      <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+    </button>
+  </div></div>
+</div>
+
+<div id="loading-overlay"><div class="spinner"></div><div style="margin-top:15px;font-size:12px;color:var(--text-2)" id="loading-text">MEMPROSES...</div></div>
+<div id="toast"></div>
+
+<script>
+// ================= KONFIGURASI =================
+const SUPABASE_URL = 'https://wiqqhjbkhegqspclfory.supabase.co';
+const SUPABASE_ANON_KEY = 'sb_publishable_G7M780_MIBMjpdbwKy_qvw_YK_JtecB';
+const BACKEND_URL = 'https://syranx-ai.vercel.app/api/chat';
+
+const AI_MODELS = [
+  'meta-llama/llama-3.3-70b-instruct:free',
+  'google/gemma-3-27b-it:free',
+  'mistralai/mistral-small-3.2-24b-instruct:free',
+  'qwen/qwen3-coder:free',
+  'deepseek/deepseek-chat-v3.1:free'
+];
+const MODEL_LABELS = ['Llama 3.3', 'Gemma 3', 'Mistral Small', 'Qwen3 Coder', 'DeepSeek V3.1'];
+const STAFF = ['cs', 'owner', 'developer'];
+
+let supabaseClient = null;
+try { supabaseClient = supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY); }
+catch (e) { console.warn('Gagal inisialisasi Supabase', e); }
+
+let selectedModel = AI_MODELS[0];
+let currentUsername = null, currentUserId = null, currentUserRole = 'member';
+let currentChatHistory = [];
+let currentAvatar = null;
+let isStreaming = false;
+let globalTimer = null, dmTimer = null, dmPeer = null;
+
+const $ = id => document.getElementById(id);
+function esc(s) { return String(s ?? '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
+function safeRole(r) { return ['developer','owner','cs','admin','ceo','member'].includes(r) ? r : 'member'; }
+function avatarHTML(url, name, size) {
+  const s = size || 44;
+  const init = esc((name || '?').charAt(0).toUpperCase());
+  const fs = Math.round(s * 0.42);
+  const safeUrl = /^https:\/\//.test(url || '') ? esc(url) : '';
+  return `<div class="av" style="width:${s}px;height:${s}px;font-size:${fs}px">${safeUrl ? `<img src="${safeUrl}" alt="" loading="lazy" onerror="this.remove()">` : init}</div>`;
+}
+function setSidebarAvatar() {
+  const el = $('sidebar-avatar');
+  const safeUrl = /^https:\/\//.test(currentAvatar || '') ? currentAvatar : '';
+  el.innerHTML = '';
+  if (safeUrl) { const i = document.createElement('img'); i.src = safeUrl; i.alt = ''; i.onerror = () => { el.textContent = currentUsername.charAt(0).toUpperCase(); }; el.appendChild(i); }
+  else el.textContent = currentUsername.charAt(0).toUpperCase();
+}
+async function uploadAvatar(input) {
+  const file = input.files && input.files[0]; input.value = '';
+  if (!file) return;
+  if (!file.type.startsWith('image/')) return showToast('❌ Pilih file gambar');
+  showLoading('MENGUNGGAH FOTO...');
+  try {
+    const blob = await resizeImage(file, 256);
+    const path = `${currentUserId}/avatar.jpg`;
+    const up = await supabaseClient.storage.from('avatars').upload(path, blob, { upsert: true, contentType: 'image/jpeg', cacheControl: '3600' });
+    if (up.error) throw up.error;
+    const { data } = supabaseClient.storage.from('avatars').getPublicUrl(path);
+    const url = data.publicUrl + '?v=' + Date.now();
+    const r = await supabaseClient.rpc('set_my_avatar', { url });
+    if (r.error) throw r.error;
+    currentAvatar = url; setSidebarAvatar();
+    showToast('✅ Foto profil diperbarui');
+  } catch (e) { showToast('❌ ' + (e.message || 'Gagal unggah')); }
+  hideLoading();
+}
+function resizeImage(file, max) {
+  return new Promise((resolve, reject) => {
+    const img = new Image(), u = URL.createObjectURL(file);
+    img.onload = () => {
+      const side = Math.min(img.width, img.height);
+      const c = document.createElement('canvas'); c.width = c.height = max;
+      c.getContext('2d').drawImage(img, (img.width - side) / 2, (img.height - side) / 2, side, side, 0, 0, max, max);
+      URL.revokeObjectURL(u);
+      c.toBlob(b => b ? resolve(b) : reject(new Error('Gagal proses gambar')), 'image/jpeg', 0.85);
+    };
+    img.onerror = () => reject(new Error('Gambar tidak valid'));
+    img.src = u;
+  });
+}
+function showLoading(t) { $('loading-text').textContent = t || 'MEMPROSES...'; $('loading-overlay').classList.add('show'); }
+function hideLoading() { $('loading-overlay').classList.remove('show'); }
+
+// ================= INIT =================
+window.addEventListener('DOMContentLoaded', async () => {
+  buildCalc(); convSetup();
+  $('prompt').addEventListener('input', function () { this.style.height = 'auto'; this.style.height = Math.min(this.scrollHeight, 120) + 'px'; });
+  $('prompt').addEventListener('keydown', e => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); kirim(); } });
+  $('global-prompt').addEventListener('keydown', e => { if (e.key === 'Enter') kirimGlobal(); });
+  $('dm-prompt').addEventListener('keydown', e => { if (e.key === 'Enter') kirimDM(); });
+  $('dm-search').addEventListener('keydown', e => { if (e.key === 'Enter') searchUser(); });
+  $('login-pass').addEventListener('keydown', e => { if (e.key === 'Enter') login(); });
+  $('reg-pass2').addEventListener('keydown', e => { if (e.key === 'Enter') register(); });
+
+  if (!supabaseClient) { $('auth-screen').classList.add('show'); $('auth-error').textContent = '⚠️ Supabase gagal dimuat (cek internet).'; return; }
+  try {
+    const { data: { session } } = await supabaseClient.auth.getSession();
+    if (session) {
+      currentUserId = session.user.id;
+      currentUsername = session.user.email.split('@')[0];
+      await fetchUserProfile();
+      await masukApp();
+    } else $('auth-screen').classList.add('show');
+  } catch (e) { $('auth-screen').classList.add('show'); }
+});
+
+// ================= AUTH =================
+function showRegister() { $('login-form').style.display = 'none'; $('register-form').style.display = 'block'; $('auth-error').textContent = ''; }
+function showLogin() { $('register-form').style.display = 'none'; $('login-form').style.display = 'block'; $('auth-error').textContent = ''; }
+function togglePass(id) { const el = $(id); el.type = el.type === 'password' ? 'text' : 'password'; }
+
+async function register() {
+  const u = $('reg-user').value.trim().toLowerCase(), p = $('reg-pass').value, p2 = $('reg-pass2').value, err = $('auth-error');
+  if (!u || !p) return err.textContent = '❌ Isi semua field';
+  if (!/^[a-z0-9_.-]{3,20}$/.test(u)) return err.textContent = '❌ Username 3-20 karakter: huruf, angka, _ . -';
+  if (p.length < 6) return err.textContent = '❌ Password min 6 karakter';
+  if (p !== p2) return err.textContent = '❌ Password tidak sama';
+  showLoading('MEMBUAT AKUN...');
+  try {
+    const { data, error } = await supabaseClient.auth.signUp({ email: `${u}@syranx.com`, password: p });
+    if (error) throw error;
+    if (!data.session) { hideLoading(); err.textContent = '⚠️ Akun dibuat, tapi konfirmasi email aktif di Supabase. Matikan "Confirm email" di Auth > Providers > Email.'; return; }
+    currentUserId = data.user.id; currentUsername = u;
+    await createProfile(u);
+    hideLoading();
+    await masukApp();
+  } catch (e) {
+    hideLoading();
+    err.textContent = /already registered/i.test(e.message) ? '❌ Username sudah dipakai' : '❌ ' + e.message;
+  }
+}
+
+async function login() {
+  const u = $('login-user').value.trim().toLowerCase(), p = $('login-pass').value, err = $('auth-error');
+  if (!u || !p) return err.textContent = '❌ Isi semua field';
+  showLoading('VERIFIKASI...');
+  try {
+    const { data, error } = await supabaseClient.auth.signInWithPassword({ email: `${u}@syranx.com`, password: p });
+    if (error) throw error;
+    currentUserId = data.user.id; currentUsername = u;
+    await fetchUserProfile();
+    hideLoading();
+    await masukApp();
+  } catch (e) { hideLoading(); err.textContent = '❌ Username atau password salah'; }
+}
+
+async function logout() {
+  if (!confirm('Keluar?')) return;
+  if (supabaseClient) await supabaseClient.auth.signOut();
+  location.reload();
+}
+
+// ================= PROFIL & ROLE =================
+// Role SELALU dimulai 'member'. Role staf (developer/owner/cs) diatur manual di dashboard Supabase.
+async function createProfile(username) {
+  const { error } = await supabaseClient.from('profiles').insert([{ id: currentUserId, username, role: 'member' }]);
+  if (error) console.warn('createProfile:', error.message);
+  currentUserRole = 'member';
+}
+
+async function fetchUserProfile() {
+  const { data, error } = await supabaseClient.from('profiles').select('role,username,avatar_url').eq('id', currentUserId).maybeSingle();
+  if (error || !data) await createProfile(currentUsername);
+  else { currentUserRole = safeRole(data.role); currentAvatar = data.avatar_url || null; }
+}
+
+function updateUIForRole() {
+  $('sidebar-username').textContent = currentUsername.toUpperCase();
+  setSidebarAvatar();
+  const badge = $('sidebar-role-badge');
+  badge.textContent = currentUserRole.toUpperCase();
+  badge.className = `role-badge role-${currentUserRole}`;
+  const isMember = currentUserRole === 'member';
+  const isStaff = STAFF.includes(currentUserRole);
+  const canTools = ['ceo', 'owner', 'developer', 'cs'].includes(currentUserRole);
+  $('menu-tools').style.display = canTools ? 'flex' : 'none';
+  $('menu-global').style.display = !isMember ? 'flex' : 'none';
+  $('menu-dm').style.display = !isMember ? 'flex' : 'none';
+  $('menu-orders').style.display = isStaff ? 'flex' : 'none';
+  $('header-shop-btn').style.display = isMember ? 'flex' : 'none';
+  $('header-model-btn').style.display = isMember ? 'none' : 'flex';
+  $('sidebar-check').style.display = isMember ? 'none' : 'inline-block';
+  // pastikan model terpilih diizinkan
+  const allowed = allowedModels();
+  if (allowed.length && !allowed.includes(selectedModel)) selectedModel = allowed[0];
+  if (!allowed.length) selectedModel = AI_MODELS[0];
+}
+
+async function masukApp() {
+  $('auth-screen').classList.remove('show');
+  $('app').style.display = 'flex';
+  updateUIForRole();
+  await fetchChatHistory();
+  renderChat();
+}
+
+// ================= HUBUNGI STAFF VIA WHATSAPP =================
+const WA_STAFF = [
+  { name: 'Staff 01', number: '6282275184586' },
+  { name: 'Staff 02', number: '6283131658423', rec: true },
+  { name: 'Staff 03', number: '6285835521714' }
+];
+const ROLE_INFO = { admin: { label: 'Admin', price: 'Rp 2.000' }, ceo: { label: 'CEO', price: 'Rp 5.000' } };
+let waRole = 'admin';
+
+function setWaRole(r) {
+  if (!ROLE_INFO[r]) return;
+  waRole = r;
+  ['admin', 'ceo'].forEach(x => $('wa-chip-' + x).classList.toggle('active', x === r));
+}
+function renderWaStaff() {
+  const list = $('wa-staff-list'); list.innerHTML = '';
+  WA_STAFF.forEach(st => {
+    const b = document.createElement('button');
+    b.className = 'wa-btn' + (st.rec ? ' rec' : '');
+    const shown = '+' + st.number.replace(/^(62)(\d{3})(\d{4})(\d+)$/, '$1 $2-$3-$4');
+    b.innerHTML = `<span>${esc(st.name)}${st.rec ? '<span class="wa-tag">REKOMENDASI</span>' : ''}<small>${esc(shown)}</small></span><span style="color:#25d366;font-size:13px">Chat WA ➜</span>`;
+    b.onclick = () => chatStaffWA(st);
+    list.appendChild(b);
+  });
+}
+function chatStaffWA(st) {
+  const r = ROLE_INFO[waRole];
+  const msg = `Halo bang, saya ${currentUsername} (akun Syranx AI). Mau beli Role ${r.label} seharga ${r.price}. Mohon diproses ya, terima kasih!`;
+  const url = `https://wa.me/${st.number}?text=${encodeURIComponent(msg)}`;
+  const w = window.open(url, '_blank', 'noopener');
+  if (!w) location.href = url;
+}
+
+// ================= SHOP & ORDERS =================
+async function openShop() {
+  openOverlay('shop-screen');
+  renderWaStaff();
+  const el = $('my-order-status');
+  const { data } = await supabaseClient.from('role_requests').select('*').eq('user_id', currentUserId).order('created_at', { ascending: false }).limit(1);
+  if (data && data.length) {
+    const r = data[0];
+    const color = r.status === 'pending' ? '#f59e0b' : r.status === 'done' ? '#22c55e' : '#ef4444';
+    const label = r.status === 'pending' ? 'MENUNGGU CS' : r.status === 'done' ? 'SELESAI' : 'DITOLAK';
+    el.innerHTML = `Pesanan: <b>${esc(r.requested_role).toUpperCase()}</b> (${esc(r.price)})<br>Status: <span style="color:${color};font-weight:bold">${label}</span>`;
+  } else el.textContent = 'Belum ada pesanan.';
+}
+
+async function requestRole(role, price) {
+  setWaRole(role);
+  const { data: ex } = await supabaseClient.from('role_requests').select('id').eq('user_id', currentUserId).eq('status', 'pending').limit(1);
+  if (ex && ex.length) return showToast('⏳ Kamu masih punya pesanan yang menunggu CS');
+  if (!confirm(`Ajukan pembelian Role ${role.toUpperCase()} seharga ${price}?`)) return;
+  showLoading();
+  const { error } = await supabaseClient.from('role_requests').insert([{ user_id: currentUserId, username: currentUsername, requested_role: role, price, status: 'pending' }]);
+  hideLoading();
+  if (error) return showToast('❌ Gagal: ' + error.message);
+  showToast('✅ Pesanan terkirim ke CS!');
+  openShop();
+}
+
+async function openOrders() {
+  openOverlay('orders-screen');
+  const area = $('orders-list-area');
+  area.innerHTML = '<p style="text-align:center;color:var(--text-2)">Memuat...</p>';
+  const { data, error } = await supabaseClient.from('role_requests').select('*').eq('status', 'pending').order('created_at', { ascending: true });
+  if (error) { area.innerHTML = `<p style="text-align:center;color:#ef4444">Gagal: ${esc(error.message)}</p>`; return; }
+  if (!data.length) { area.innerHTML = '<p style="text-align:center;color:var(--text-2)">Tidak ada pesanan masuk.</p>'; return; }
+  area.innerHTML = '';
+  data.forEach(req => {
+    const card = document.createElement('div');
+    card.className = 'role-card';
+    card.style.cssText = 'flex-direction:column;align-items:flex-start;gap:10px;cursor:default';
+    card.innerHTML = `
+      <div style="display:flex;justify-content:space-between;width:100%;gap:8px">
+        <h4 style="color:var(--accent-2)">${esc(req.username)}</h4>
+        <span style="font-size:12px;color:#f59e0b">${esc(req.requested_role).toUpperCase()} - ${esc(req.price)}</span>
+      </div>
+      <div style="display:flex;gap:8px;width:100%">
+        <button class="btn-primary" style="padding:10px;margin:0" data-a="ok">Setujui</button>
+        <button class="btn-primary" style="padding:10px;margin:0;background:#3f3f46;box-shadow:none" data-a="no">Tolak</button>
+      </div>`;
+    card.querySelector('[data-a=ok]').onclick = () => approveOrder(req.id, req.user_id, req.requested_role);
+    card.querySelector('[data-a=no]').onclick = () => rejectOrder(req.id);
+    area.appendChild(card);
+  });
+}
+
+async function approveOrder(reqId, userId, role) {
+  if (!['admin', 'ceo'].includes(role)) return showToast('Role tidak valid');
+  if (!confirm('Setujui pembayaran dan aktifkan role user ini?')) return;
+  showLoading();
+  const r1 = await supabaseClient.from('profiles').update({ role }).eq('id', userId);
+  if (r1.error) { hideLoading(); return showToast('❌ ' + r1.error.message); }
+  const r2 = await supabaseClient.from('role_requests').update({ status: 'done' }).eq('id', reqId);
+  hideLoading();
+  if (r2.error) return showToast('❌ ' + r2.error.message);
+  showToast('✅ Role berhasil diaktifkan!');
+  openOrders();
+}
+
+async function rejectOrder(reqId) {
+  if (!confirm('Tolak pesanan ini?')) return;
+  const { error } = await supabaseClient.from('role_requests').update({ status: 'rejected' }).eq('id', reqId);
+  if (error) return showToast('❌ ' + error.message);
+  showToast('Pesanan ditolak');
+  openOrders();
+}
+
+// ================= MODEL AI =================
+function allowedModels() {
+  if (currentUserRole === 'admin') return AI_MODELS.slice(0, 2);
+  if (currentUserRole === 'member') return [];
+  return AI_MODELS;
+}
+function openModelSelector() {
+  openOverlay('model-screen');
+  const c = $('model-list-container'); c.innerHTML = '';
+  allowedModels().forEach(m => {
+    const b = document.createElement('button');
+    b.className = 'model-btn' + (selectedModel === m ? ' active' : '');
+    b.textContent = MODEL_LABELS[AI_MODELS.indexOf(m)];
+    b.onclick = () => { selectedModel = m; openModelSelector(); showToast('Model: ' + b.textContent); };
+    c.appendChild(b);
+  });
+}
+
+// ================= GLOBAL CHAT =================
+function bubbleRow(isMe, name, role, text) {
+  const row = document.createElement('div');
+  row.className = 'row ' + (isMe ? 'user' : 'other');
+  const wrap = document.createElement('div'); wrap.className = 'bubble-wrap';
+  const b = document.createElement('div'); b.className = 'bubble';
+  if (!isMe && name) {
+    const m = document.createElement('div'); m.className = 'meta';
+    m.append(document.createTextNode(name));
+    if (role) { const rb = document.createElement('span'); rb.className = `role-badge role-${safeRole(role)}`; rb.style.fontSize = '9px'; rb.textContent = safeRole(role).toUpperCase(); m.append(rb); }
+    b.appendChild(m);
+  }
+  b.appendChild(document.createTextNode(text));
+  wrap.appendChild(b); row.appendChild(wrap);
+  return row;
+}
+
+async function loadGlobal(scroll) {
+  const area = $('global-chat-area');
+  const { data, error } = await supabaseClient.from('global_chat').select('*').order('created_at', { ascending: false }).limit(50);
+  if (error) { if (scroll) area.innerHTML = `<p style="text-align:center;color:#ef4444">${esc(error.message)}</p>`; return; }
+  const nearBottom = area.scrollHeight - area.scrollTop - area.clientHeight < 80;
+  area.innerHTML = '';
+  data.reverse().forEach(m => area.appendChild(bubbleRow(m.user_id === currentUserId, m.username, m.role, m.text)));
+  if (!data.length) area.innerHTML = '<p style="text-align:center;color:var(--text-2)">Belum ada pesan. Mulai obrolan!</p>';
+  if (scroll || nearBottom) area.scrollTop = area.scrollHeight;
+}
+function openGlobalChat() {
+  openOverlay('global-chat-screen');
+  $('global-chat-area').innerHTML = '<p style="text-align:center;color:var(--text-2)">Memuat pesan...</p>';
+  loadGlobal(true);
+  clearInterval(globalTimer); globalTimer = setInterval(() => loadGlobal(false), 3000);
+}
+function closeGlobalChat() { clearInterval(globalTimer); closeOverlay('global-chat-screen'); }
+async function kirimGlobal() {
+  const input = $('global-prompt'); const text = input.value.trim();
+  if (!text) return; input.value = '';
+  const { error } = await supabaseClient.from('global_chat').insert([{ user_id: currentUserId, username: currentUsername, role: currentUserRole, text }]);
+  if (error) { showToast('Gagal kirim: ' + error.message); input.value = text; return; }
+  loadGlobal(true);
+}
+
+// ================= DM =================
+let myContacts = new Map(); // contact_id -> {id,username,role,avatar_url}
+
+async function loadContacts() {
+  const { data: rows, error } = await supabaseClient.from('contacts').select('contact_id').eq('owner_id', currentUserId);
+  if (error) { myContacts = new Map(); return error; }
+  const ids = (rows || []).map(r => r.contact_id);
+  myContacts = new Map();
+  if (ids.length) {
+    const { data: profs } = await supabaseClient.from('profiles').select('id,username,role,avatar_url').in('id', ids);
+    (profs || []).forEach(u => myContacts.set(u.id, u));
+  }
+  return null;
+}
+
+function renderContacts() {
+  const area = $('dm-contacts-area');
+  if (!myContacts.size) { area.innerHTML = '<p style="color:var(--text-2);font-size:13px">Belum ada kontak. Cari pengguna di bawah lalu tekan "+ Kontak".</p>'; return; }
+  area.innerHTML = '';
+  [...myContacts.values()].sort((x, y) => x.username.localeCompare(y.username)).forEach(u => {
+    const c = document.createElement('div'); c.className = 'role-card';
+    const rl = safeRole(u.role);
+    c.innerHTML = `<div class="user-row">${avatarHTML(u.avatar_url, u.username, 48)}<div class="role-card-info"><h4>${esc(u.username)} <span class="role-badge role-${rl}" style="font-size:9px">${rl.toUpperCase()}</span></h4><p>Ketuk untuk chat</p></div></div><div class="card-actions"><button class="mini-btn danger">Hapus</button></div>`;
+    c.onclick = () => startDM(u.id, u.username, u.avatar_url);
+    c.querySelector('button').onclick = e => { e.stopPropagation(); removeContact(u.id, u.username); };
+    area.appendChild(c);
+  });
+}
+
+async function openDM() {
+  openOverlay('dm-screen');
+  $('dm-result-area').innerHTML = '';
+  $('dm-search').value = '';
+  $('dm-contacts-area').innerHTML = '<p style="color:var(--text-2);font-size:13px">Memuat kontak...</p>';
+  const err = await loadContacts();
+  if (err) { $('dm-contacts-area').innerHTML = `<p style="color:#ef4444;font-size:13px">Gagal memuat kontak: ${esc(err.message)}. Jalankan SQL kontak dulu.</p>`; return; }
+  renderContacts();
+}
+
+async function addContact(u) {
+  const { error } = await supabaseClient.from('contacts').insert([{ owner_id: currentUserId, contact_id: u.id }]);
+  if (error && !/duplicate|unique/i.test(error.message)) { showToast('❌ ' + error.message); return false; }
+  myContacts.set(u.id, u);
+  renderContacts();
+  showToast('✅ ' + u.username + ' ditambahkan ke kontak');
+  return true;
+}
+
+async function removeContact(id, name) {
+  if (!confirm('Hapus ' + name + ' dari kontak?')) return;
+  const { error } = await supabaseClient.from('contacts').delete().eq('owner_id', currentUserId).eq('contact_id', id);
+  if (error) return showToast('❌ ' + error.message);
+  myContacts.delete(id);
+  renderContacts();
+  const b = document.querySelector(`#dm-result-area [data-uid="${id}"]`);
+  if (b) { b.textContent = '+ Kontak'; b.classList.remove('saved'); }
+  showToast('Kontak dihapus');
+}
+
+async function searchUser() {
+  const q = $('dm-search').value.trim().toLowerCase().replace(/[%,()]/g, '');
+  if (!q) return;
+  const area = $('dm-result-area');
+  area.innerHTML = '<p style="color:var(--text-2)">Mencari...</p>';
+  const { data, error } = await supabaseClient.from('profiles').select('id,username,role,avatar_url').ilike('username', `%${q}%`).neq('id', currentUserId).limit(10);
+  if (error || !data || !data.length) { area.innerHTML = '<p style="color:var(--text-2)">User tidak ditemukan.</p>'; return; }
+  area.innerHTML = '';
+  data.forEach(u => {
+    const c = document.createElement('div'); c.className = 'role-card';
+    const rl = safeRole(u.role);
+    const saved = myContacts.has(u.id);
+    c.innerHTML = `<div class="user-row">${avatarHTML(u.avatar_url, u.username, 48)}<div class="role-card-info"><h4>${esc(u.username)} <span class="role-badge role-${rl}" style="font-size:9px">${rl.toUpperCase()}</span></h4><p>Ketuk untuk kirim pesan</p></div></div><div class="card-actions"><button class="mini-btn ${saved ? 'saved' : ''}" data-uid="${esc(u.id)}">${saved ? '✓ Kontak' : '+ Kontak'}</button></div>`;
+    c.onclick = () => startDM(u.id, u.username, u.avatar_url);
+    const btn = c.querySelector('button');
+    btn.onclick = async e => {
+      e.stopPropagation();
+      if (myContacts.has(u.id)) return showToast(u.username + ' sudah ada di kontak');
+      btn.disabled = true;
+      if (await addContact(u)) { btn.textContent = '✓ Kontak'; btn.classList.add('saved'); }
+      btn.disabled = false;
+    };
+    area.appendChild(c);
+  });
+}
+
+function startDM(id, name, avatar) {
+  dmPeer = { id, name };
+  $('dm-chat-title').innerHTML = `<span style="display:flex;align-items:center;gap:10px">${avatarHTML(avatar, name, 34)}<span>${esc(name)}</span></span>`;
+  $('dm-chat-area').innerHTML = '<p style="text-align:center;color:var(--text-2)">Memuat...</p>';
+  openOverlay('dm-chat-screen');
+  loadDM(true);
+  clearInterval(dmTimer); dmTimer = setInterval(() => loadDM(false), 3000);
+}
+function closeDMRoom() { clearInterval(dmTimer); dmPeer = null; closeOverlay('dm-chat-screen'); }
+
+async function loadDM(scroll) {
+  if (!dmPeer) return;
+  const me = currentUserId, peer = dmPeer.id;
+  const { data, error } = await supabaseClient.from('direct_messages').select('*')
+    .or(`and(sender_id.eq.${me},receiver_id.eq.${peer}),and(sender_id.eq.${peer},receiver_id.eq.${me})`)
+    .order('created_at', { ascending: false }).limit(100);
+  if (!dmPeer) return;
+  const area = $('dm-chat-area');
+  if (error) { if (scroll) area.innerHTML = `<p style="text-align:center;color:#ef4444">${esc(error.message)}</p>`; return; }
+  const nearBottom = area.scrollHeight - area.scrollTop - area.clientHeight < 80;
+  area.innerHTML = '';
+  data.reverse().forEach(m => area.appendChild(bubbleRow(m.sender_id === me, null, null, m.text)));
+  if (!data.length) area.innerHTML = '<p style="text-align:center;color:var(--text-2)">Belum ada pesan. Sapa duluan!</p>';
+  if (scroll || nearBottom) area.scrollTop = area.scrollHeight;
+}
+
+async function kirimDM() {
+  if (!dmPeer) return;
+  const input = $('dm-prompt'); const text = input.value.trim();
+  if (!text) return; input.value = '';
+  const { error } = await supabaseClient.from('direct_messages').insert([{ sender_id: currentUserId, receiver_id: dmPeer.id, sender_name: currentUsername, text }]);
+  if (error) { showToast('Gagal kirim: ' + error.message); input.value = text; return; }
+  loadDM(true);
+}
+
+// ================= AI CHAT =================
+const chatEl = $('chat'), promptEl = $('prompt');
+
+async function fetchChatHistory() {
+  const { data } = await supabaseClient.from('chats').select('*').eq('user_id', currentUserId).order('created_at', { ascending: true });
+  currentChatHistory = data || [];
+}
+
+async function saveChatToDB(role, text) {
+  const { data, error } = await supabaseClient.from('chats').insert([{ user_id: currentUserId, role, text, model_used: selectedModel }]).select();
+  if (error) { console.warn('saveChat:', error.message); return null; }
+  return data && data[0] ? data[0].id : null;
+}
+
+function renderChat() {
+  chatEl.innerHTML = '';
+  if (!currentChatHistory.length) return renderWelcome();
+  currentChatHistory.forEach(m => buatRow(m.text, m.role === 'user' ? 'user' : 'ai', currentUsername, m.role !== 'user'));
+}
+
+function renderWelcome() {
+  let extra = '';
+  if (currentUserRole === 'member')
+    extra = `<div style="background:rgba(245,158,11,.1);padding:10px;border-radius:8px;border:1px solid #f59e0b;margin-top:14px"><p style="color:#f59e0b;font-size:12px">Ingin fitur lengkap? Klik ikon toko di pojok kanan atas untuk upgrade role.</p></div>`;
+  chatEl.innerHTML = `<div class="welcome"><h2>SYRANX</h2><div class="sub-title">AURORA PREMIUM AI</div><p>Halo <b>${esc(currentUsername)}</b> (${esc(currentUserRole.toUpperCase())}). Ada yang bisa dibantu?</p>${extra}</div>`;
+}
+
+function buatRow(pesan, kelas, username, isMarkdown) {
+  const row = document.createElement('div'); row.className = 'row ' + kelas;
+  const av = document.createElement('div'); av.className = 'mini-avatar';
+  av.textContent = kelas === 'user' ? username.charAt(0).toUpperCase() : 'SX';
+  const wrap = document.createElement('div'); wrap.className = 'bubble-wrap';
+  const bubble = document.createElement('div'); bubble.className = 'bubble';
+  if (pesan) { if (isMarkdown) bubble.innerHTML = parseMarkdown(pesan); else bubble.textContent = pesan; }
+  wrap.appendChild(bubble); row.appendChild(av); row.appendChild(wrap); chatEl.appendChild(row);
+  chatEl.scrollTop = chatEl.scrollHeight;
+  return bubble;
+}
+
+function parseMarkdown(text) {
+  let safe = esc(text);
+  const blocks = [];
+  safe = safe.replace(/```(?:[\w+-]*)\n?([\s\S]*?)```/g, (_, code) => { blocks.push(code.replace(/\n$/, '')); return `\u0000${blocks.length - 1}\u0000`; });
+  safe = safe.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>').replace(/`([^`\n]+?)`/g, '<code>$1</code>').replace(/\n/g, '<br>');
+  safe = safe.replace(/\u0000(\d+)\u0000/g, (_, i) => `<pre><code>${blocks[i]}</code></pre>`);
+  return safe;
+}
+
+async function kirim() {
+  if (isStreaming) return;
+  const teks = promptEl.value.trim(); if (!teks) return;
+  const w = chatEl.querySelector('.welcome'); if (w) w.remove();
+  promptEl.value = ''; promptEl.style.height = 'auto';
+  buatRow(teks, 'user', currentUsername, false);
+  currentChatHistory.push({ id: null, role: 'user', text: teks });
+  saveChatToDB('user', teks);
+  const bubbleAI = buatRow('', 'ai', currentUsername, false);
+  bubbleAI.innerHTML = '<div class="typing"><span></span><span></span><span></span></div>';
+  await prosesStreaming(bubbleAI);
+}
+
+async function prosesStreaming(bubbleAI) {
+  isStreaming = true; $('kirim').disabled = true;
+  const messages = [{ role: 'system', content: `Kamu adalah Syranx AI, asisten yang ramah dan membantu. Jawab dalam bahasa yang dipakai user. User: ${currentUsername} (${currentUserRole}).` }];
+  currentChatHistory.slice(-20).forEach(m => messages.push({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text }));
+  let fullText = '';
+  try {
+    const res = await fetch(BACKEND_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: selectedModel, messages, stream: true }) });
+    if (!res.ok) throw new Error('HTTP ' + res.status);
+    const ctype = res.headers.get('content-type') || '';
+    if (ctype.includes('application/json')) {
+      const j = await res.json();
+      fullText = j.choices?.[0]?.message?.content || j.error?.message || '';
+      bubbleAI.innerHTML = parseMarkdown(fullText);
+    } else {
+      const reader = res.body.getReader(), decoder = new TextDecoder();
+      let buf = '';
+      while (true) {
+        const { done, value } = await reader.read(); if (done) break;
+        buf += decoder.decode(value, { stream: true });
+        const lines = buf.split('\n'); buf = lines.pop();
+        for (const raw of lines) {
+          const line = raw.trim();
+          if (!line.startsWith('data:')) continue;
+          const payload = line.slice(5).trim();
+          if (payload === '[DONE]') continue;
+          try {
+            const d = JSON.parse(payload).choices?.[0]?.delta?.content;
+            if (d) { fullText += d; bubbleAI.innerHTML = parseMarkdown(fullText); chatEl.scrollTop = chatEl.scrollHeight; }
+          } catch (e) {}
+        }
+      }
+    }
+    if (!fullText) { bubbleAI.textContent = '⚠️ Respon kosong. Coba lagi atau ganti model.'; }
+    else { currentChatHistory.push({ id: null, role: 'ai', text: fullText }); saveChatToDB('ai', fullText); }
+  } catch (e) {
+    bubbleAI.textContent = '❌ Gagal memuat respon (' + e.message + ').';
+  }
+  isStreaming = false; $('kirim').disabled = false;
+}
+
+// ================= KALKULATOR =================
+let calcExpr = '';
+function buildCalc() {
+  const keys = ['C','⌫','%','÷','7','8','9','×','4','5','6','−','1','2','3','+','0','.','(',')','='];
+  const g = $('calc-grid'); g.innerHTML = '';
+  keys.forEach(k => {
+    const b = document.createElement('button'); b.textContent = k;
+    if ('÷×−+%'.includes(k) || k === '⌫' || k === 'C') b.className = 'op';
+    if (k === '=') { b.className = 'eq'; b.style.gridColumn = 'span 1'; }
+    b.onclick = () => calcPress(k);
+    g.appendChild(b);
+  });
+}
+function calcEval(expr) {
+  const js = expr.replace(/÷/g, '/').replace(/×/g, '*').replace(/−/g, '-').replace(/(\d+(?:\.\d+)?)%/g, '($1/100)');
+  if (!/^[0-9+\-*/().\s]+$/.test(js)) throw new Error('bad');
+  const r = Function('"use strict";return (' + js + ')')();
+  if (typeof r !== 'number' || !isFinite(r)) throw new Error('bad');
+  return +r.toPrecision(12);
+}
+function calcPress(k) {
+  const exprEl = $('calc-expr'), resEl = $('calc-res');
+  if (k === 'C') { calcExpr = ''; resEl.textContent = '0'; }
+  else if (k === '⌫') calcExpr = calcExpr.slice(0, -1);
+  else if (k === '=') {
+    try { const r = calcEval(calcExpr); exprEl.textContent = calcExpr + ' ='; resEl.textContent = r; calcExpr = String(r); return; }
+    catch (e) { resEl.textContent = 'Error'; calcExpr = ''; return; }
+  } else calcExpr += k;
+  exprEl.textContent = calcExpr;
+  if (calcExpr) { try { resEl.textContent = calcEval(calcExpr); } catch (e) {} } else resEl.textContent = '0';
+}
+
+// ================= KONVERTER =================
+const UNITS = {
+  length: { 'Meter':1, 'Kilometer':1000, 'Centimeter':.01, 'Milimeter':.001, 'Mil':1609.344, 'Kaki':.3048, 'Inci':.0254 },
+  weight: { 'Kilogram':1, 'Gram':.001, 'Miligram':1e-6, 'Ton':1000, 'Pound':.45359237, 'Ons':.1 },
+  data:   { 'Byte':1, 'KB':1024, 'MB':1048576, 'GB':1073741824, 'TB':1099511627776 },
+  temp:   { 'Celsius':1, 'Fahrenheit':1, 'Kelvin':1 }
+};
+function convSetup() {
+  const t = $('conv-type').value, names = Object.keys(UNITS[t]);
+  ['conv-from', 'conv-to'].forEach((id, i) => {
+    const s = $(id); s.innerHTML = '';
+    names.forEach(n => { const o = document.createElement('option'); o.value = o.textContent = n; s.appendChild(o); });
+    s.selectedIndex = Math.min(i, names.length - 1);
+  });
+  convRun();
+}
+function convRun() {
+  const t = $('conv-type').value, v = parseFloat($('conv-val').value), f = $('conv-from').value, to = $('conv-to').value, out = $('conv-out');
+  if (isNaN(v)) { out.textContent = '—'; return; }
+  let r;
+  if (t === 'temp') {
+    const c = f === 'Celsius' ? v : f === 'Fahrenheit' ? (v - 32) * 5 / 9 : v - 273.15;
+    r = to === 'Celsius' ? c : to === 'Fahrenheit' ? c * 9 / 5 + 32 : c + 273.15;
+  } else r = v * UNITS[t][f] / UNITS[t][to];
+  out.textContent = (+r.toPrecision(10)).toLocaleString('id-ID', { maximumFractionDigits: 8 }) + ' ' + to;
+}
+
+// ================= HELPERS =================
+function toggleSidebar() { $('sidebar').classList.toggle('show'); $('sidebar-overlay').classList.toggle('show'); }
+function openOverlay(id) { $(id).classList.add('show'); }
+function closeOverlay(id) { $(id).classList.remove('show'); }
+async function hapusRiwayatFromMenu() {
+  if (!confirm('Hapus semua riwayat chat AI?')) return;
+  const { error } = await supabaseClient.from('chats').delete().eq('user_id', currentUserId);
+  if (error) return showToast('❌ ' + error.message);
+  currentChatHistory = []; renderChat(); toggleSidebar(); showToast('Riwayat dihapus');
+}
+let toastT;
+function showToast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
+</script>
 </body>
 </html>
