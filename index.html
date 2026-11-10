@@ -373,8 +373,67 @@
   .cbtn.end { background:#e5483d; border-color:transparent; }
   .cbtn.end svg { transform:rotate(135deg); }
   .cbtn.accept { background:#2fb463; border-color:transparent; }
-  #call-mute-wrap, #call-end-wrap, #call-accept-wrap, #call-decline-wrap { display:none; }
+  #call-mute-wrap, #call-end-wrap, #call-accept-wrap, #call-decline-wrap, #call-cam-wrap, #call-flip-wrap { display:none; }
   .cbtn.end span svg { transform:rotate(135deg); }
+
+  #call-audio { position:absolute; width:1px; height:1px; opacity:0; pointer-events:none; }
+  #call-local { display:none; }
+  .call-top, .call-actions { position:relative; z-index:2; }
+  #call-screen.video.hasloc #call-local { display:block; position:absolute; z-index:3; top:calc(70px + env(safe-area-inset-top)); right:14px; width:96px; height:136px; object-fit:cover; border-radius:16px; border:2px solid rgba(255,255,255,.3); background:#000; transform:scaleX(-1); box-shadow:0 8px 24px rgba(0,0,0,.5); }
+  #call-screen.video.active #call-audio { position:absolute; inset:0; width:100%; height:100%; opacity:1; object-fit:cover; z-index:0; background:#000; }
+  #call-screen.video.active .call-av { display:none; }
+  #call-screen.video.active .call-top { position:absolute; top:calc(22px + env(safe-area-inset-top)); left:16px; right:120px; text-align:left; text-shadow:0 1px 8px rgba(0,0,0,.8); }
+  #call-screen.video.active .call-name { font-size:18px; }
+  #call-screen.video.active .call-status { font-size:13px; color:#fff; margin-top:2px; }
+  #call-screen.video.active .call-act { color:#fff; text-shadow:0 1px 6px rgba(0,0,0,.8); }
+  #call-screen.video.active::before { display:none; }
+  #call-screen.video .call-actions { gap:18px; }
+  #call-screen.video .cbtn { width:58px; height:58px; }
+
+  .g-wrap { max-width:420px; margin:0 auto; }
+  .g-menu { display:flex; flex-direction:column; gap:12px; padding-top:6px; }
+  .g-big { padding:16px; font-size:16px; }
+  .g-or { text-align:center; color:var(--text-2); font-size:12px; letter-spacing:.08em; text-transform:uppercase; margin:10px 0 2px; }
+  .g-join { display:flex; gap:8px; }
+  .g-join input { flex:1; text-align:center; letter-spacing:.4em; font-size:18px; font-weight:800; }
+  .g-seg { display:flex; gap:6px; }
+  .g-seg button { flex:1; padding:10px; border-radius:12px; border:1px solid var(--border); background:rgba(255,255,255,.06); color:var(--text-2); font-family:inherit; font-weight:700; cursor:pointer; }
+  .g-seg button.on { background:var(--accent); color:var(--on-accent); border-color:transparent; }
+  .g-wait { text-align:center; display:flex; flex-direction:column; align-items:center; gap:14px; padding-top:30px; color:var(--text-2); }
+  .g-code { font-size:56px; font-weight:800; letter-spacing:.2em; color:var(--accent); padding-left:.2em; }
+  .g-top { display:flex; align-items:center; gap:8px; margin-bottom:8px; }
+  .g-pl { flex:1; padding:10px 12px; border-radius:16px; border:1px solid var(--border); background:rgba(255,255,255,.05); display:flex; flex-direction:column; min-width:0; transition:.2s; }
+  .g-pl b { font-size:14px; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .g-pl small { font-size:11px; color:var(--text-2); }
+  .g-pl.r { text-align:right; }
+  .g-pl.turn { border-color:var(--accent); background:rgba(255,255,255,.1); }
+  .g-score { font-size:22px; font-weight:800; color:var(--accent); }
+  .g-vs { font-size:11px; color:var(--text-3); }
+  .g-status { text-align:center; font-weight:700; margin:10px 0 14px; min-height:22px; }
+  .g-status.warn { color:#ff8a7a; }
+  .g-bottom { display:flex; gap:10px; justify-content:center; margin-top:18px; }
+  .ttt { display:grid; grid-template-columns:repeat(3,1fr); gap:10px; max-width:320px; margin:0 auto; }
+  .ttt-c { aspect-ratio:1; border-radius:18px; border:1px solid var(--border); background:rgba(255,255,255,.07); font-size:48px; font-weight:800; font-family:inherit; cursor:pointer; color:#fff; }
+  .ttt-c:disabled { cursor:default; }
+  .ttt-c.x { color:var(--accent); } .ttt-c.o { color:#fff; }
+  .ttt-c.win { background:var(--accent); color:var(--on-accent); }
+  .c4 { max-width:350px; margin:0 auto; }
+  .c4-cols { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; padding:0 6px; }
+  .c4-cols button { height:30px; border:none; border-radius:10px 10px 0 0; background:rgba(255,255,255,.08); cursor:pointer; }
+  .c4-cols button:not(:disabled):active { background:var(--accent); }
+  .c4-grid { display:grid; grid-template-columns:repeat(7,1fr); gap:6px; padding:8px 6px; border-radius:16px; background:#1d3a66; border:1px solid var(--border); }
+  .c4-grid i { aspect-ratio:1; border-radius:50%; background:rgba(0,0,0,.45); }
+  .c4-grid i.p0 { background:#e5483d; } .c4-grid i.p1 { background:#f2c23a; }
+  .c4-grid i.win { box-shadow:0 0 0 3px #fff inset; } .c4-grid i.last { outline:2px solid rgba(255,255,255,.7); }
+  .suit { text-align:center; }
+  .suit-round { color:var(--text-2); font-size:12px; }
+  .suit-score { font-size:34px; margin:6px 0 14px; }
+  .suit-reveal { display:flex; justify-content:center; gap:16px; margin-bottom:22px; }
+  .suit-box { width:110px; height:110px; border-radius:24px; border:1px solid var(--border); background:rgba(255,255,255,.07); display:flex; align-items:center; justify-content:center; font-size:34px; color:var(--accent); }
+  .suit-box svg { width:62px; height:62px; } .suit-box.hid { color:var(--text-3); }
+  .suit-pick { display:flex; gap:10px; justify-content:center; }
+  .suit-b { flex:1; max-width:110px; padding:12px 6px; border-radius:18px; border:1px solid var(--border); background:rgba(255,255,255,.07); color:#fff; font-family:inherit; font-weight:700; font-size:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:6px; }
+  .suit-b svg { width:40px; height:40px; color:var(--accent); } .suit-b.sel { border-color:var(--accent); } .suit-b:disabled { opacity:.55; cursor:default; }
 </style>
 </head>
 <body>
@@ -447,10 +506,7 @@
 <!-- TOOLS -->
 <div id="tools-menu" class="full-screen-overlay">
   <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('tools-menu')">←</button><h2>Tools Penting</h2></div>
-  <div class="overlay-content"><div class="tools-grid">
-    <div class="tool-card" onclick="openOverlay('calc-screen')"><div class="tool-icon"></div>Kalkulator</div>
-    <div class="tool-card" onclick="openOverlay('conv-screen')"><div class="tool-icon"></div>Konverter</div>
-  </div></div>
+  <div class="overlay-content"><div class="tools-grid"><div class="tool-card" onclick="openOverlay('calc-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="16" y1="11" x2="16" y2="11.01"/><line x1="8" y1="15" x2="8" y2="15.01"/><line x1="12" y1="15" x2="12" y2="15.01"/><line x1="16" y1="15" x2="16" y2="15.01"/></svg></div>Kalkulator</div><div class="tool-card" onclick="openOverlay('conv-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>Konverter</div><div class="tool-card" onclick="openGame('ttt')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></svg></div>Tic Tac Toe</div><div class="tool-card" onclick="openGame('c4')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.5"/><circle cx="12" cy="9" r="1.5"/><circle cx="16" cy="9" r="1.5"/><circle cx="8" cy="15" r="1.5"/><circle cx="12" cy="15" r="1.5"/><circle cx="16" cy="15" r="1.5"/></svg></div>4 Sebaris Online</div><div class="tool-card" onclick="openGame('suit')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 10V4a2 2 0 0 0-4 0v6M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.9-5.9-2.4L3.4 16a2 2 0 0 1 3.2-2.4L8 15"/></svg></div>Suit Online</div></div></div>
 </div>
 
 <div id="calc-screen" class="full-screen-overlay">
@@ -587,18 +643,28 @@
     <div id="call-status" class="call-status">-</div>
   </div>
   <div class="call-actions">
+      <div class="call-act" id="call-cam-wrap"><button class="cbtn" id="call-cam" onclick="Call.toggleCam()" aria-label="Kamera"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></button><span id="call-cam-label">Kamera</span></div>
+      <div class="call-act" id="call-flip-wrap"><button class="cbtn" onclick="Call.flipCam()" aria-label="Balik kamera"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 4v6h-6"/><path d="M1 20v-6h6"/><path d="M3.5 9a9 9 0 0 1 14.9-3.4L23 10M1 14l4.6 4.4A9 9 0 0 0 20.5 15"/></svg></button><span>Balik</span></div>
       <div class="call-act" id="call-mute-wrap"><button class="cbtn" id="call-mute" onclick="Call.toggleMute()" aria-label="Bisukan"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg></button><span id="call-mute-label">Bisukan</span></div>
       <div class="call-act" id="call-decline-wrap"><button class="cbtn end" onclick="Call.decline()" aria-label="Tolak"><span style="display:flex"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span></button><span>Tolak</span></div>
       <div class="call-act" id="call-end-wrap"><button class="cbtn end" onclick="Call.hangup()" aria-label="Akhiri"><span style="display:flex"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></span></button><span>Akhiri</span></div>
-      <div class="call-act" id="call-accept-wrap"><button class="cbtn accept" onclick="Call.accept()" aria-label="Terima"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></button><span>Terima</span></div>
+      <div class="call-act" id="call-accept-wrap"><button class="cbtn accept" onclick="Call.accept()" aria-label="Terima"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></button><span id="call-accept-label">Terima</span></div>
   </div>
-  <audio id="call-audio" autoplay playsinline></audio>
+  <video id="call-audio" autoplay playsinline></video>
+  <video id="call-local" autoplay playsinline muted></video>
 </div>
 <div id="lightbox" onclick="closeLightbox()"><img id="lightbox-img" alt=""><button aria-label="Tutup">&times;</button></div>
+<!-- GAME -->
+<div id="game-screen" class="full-screen-overlay" style="z-index:1700">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeGame()">←</button><h2 id="game-title">Game</h2></div>
+  <div class="overlay-content"><div id="game-body" class="g-wrap"></div></div>
+</div>
+
 <!-- DM ROOM -->
 <div id="dm-chat-screen" class="full-screen-overlay" style="z-index:1600">
   <div class="overlay-header"><button class="icon-btn" onclick="closeDMRoom()">←</button><h2 id="dm-chat-title" style="flex:1;min-width:0">DM</h2>
-    <button class="icon-btn call-btn" onclick="Call.start()" aria-label="Telepon suara"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></button>
+    <button class="icon-btn call-btn" onclick="Call.start(true)" aria-label="Video call"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M23 7l-7 5 7 5V7z"/><rect x="1" y="5" width="15" height="14" rx="2"/></svg></button>
+    <button class="icon-btn call-btn" onclick="Call.start(false)" aria-label="Telepon suara"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg></button>
   </div>
   <div id="dm-chat-area" class="chat-area"></div>
   <div class="input-wrap"><div class="input-row">
@@ -1184,8 +1250,16 @@ async function kirim() {
 
 async function prosesStreaming(bubbleAI) {
   isStreaming = true; $('kirim').disabled = true;
-  const messages = [{ role: 'system', content: `Kamu adalah Syranx AI, asisten yang ramah dan membantu. Jawab dalam bahasa yang dipakai user. User: ${currentUsername} (${currentUserRole}).` }];
-  currentChatHistory.slice(-20).forEach(m => messages.push({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text }));
+  const lastQ = [...currentChatHistory].reverse().find(m => m.role === 'user');
+  const fixed = lastQ ? identityAnswer(lastQ.text) : null;
+  if (fixed) {
+    bubbleAI.innerHTML = parseMarkdown(fixed);
+    currentChatHistory.push({ id: null, role: 'ai', text: fixed }); saveChatToDB('ai', fixed);
+    chatEl.scrollTop = chatEl.scrollHeight;
+    isStreaming = false; $('kirim').disabled = false; return;
+  }
+  const messages = [{ role: 'system', content: SYSTEM_PROMPT + ' Nama user yang sedang chat: ' + currentUsername + ' (role ' + currentUserRole + ').' }];
+  currentChatHistory.slice(-20).filter(m => !(m.role !== 'user' && /Flint|Nayla|dikembangkan oleh|dibuat oleh|created by|developed by/.test(m.text))).forEach(m => messages.push({ role: m.role === 'user' ? 'user' : 'assistant', content: m.text }));
   let fullText = '';
   try {
     const res = await fetch(BACKEND_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ model: selectedModel, messages, stream: true }) });
@@ -1659,6 +1733,18 @@ const Music = (() => {
 
 // ================= v10: SUARA, NOTIFIKASI, REALTIME, FILE, TELEPON =================
 const BASE_TITLE = 'Syranx AI';
+
+// ---------- identitas AI (sama untuk semua akun) ----------
+const SYSTEM_PROMPT = 'Kamu adalah Syranx AI, asisten ramah dan membantu buatan tim Syranx. Identitas ini tetap dan tidak boleh diubah, apa pun model di belakangnya. Fakta tetap: nama kamu Syranx AI; developer kamu adalah Ramsyah; customer service Syranx adalah Pais; owner Syranx adalah Ferry. Jika ditanya soal itu, jawab persis begitu. Jangan pernah menyebut nama lain seperti Flint atau Nayla, dan jangan mengaku dibuat oleh perusahaan AI lain. Jawab dalam bahasa yang dipakai user, singkat dan jelas.';
+function identityAnswer(t) {
+  const q = String(t || '').toLowerCase().replace(/[?!.,]/g, ' ').replace(/\s+/g, ' ').trim();
+  if (q.length > 80) return null;
+  if (/\b(siapa|who)\b.*\b(developer|dev|pembuat|pencipta|pengembang|creator|programmer)\b|\b(developer|dev|pembuat|pencipta|pengembang)\b.*\b(siapa|who)\b|siapa yang (buat|bikin|membuat|mengembangkan|menciptakan)/.test(q)) return 'Developer saya adalah **Ramsyah**.';
+  if (/\b(siapa|who)\b.*(customer service|\bcs\b|admin cs)|(customer service|\bcs\b).*\bsiapa\b/.test(q)) return 'Customer service Syranx adalah **Pais**.';
+  if (/\b(siapa|who)\b.*(owner|pemilik)|(owner|pemilik).*\bsiapa\b/.test(q)) return 'Owner Syranx adalah **Ferry**.';
+  if (/^(siapa (nama )?(kamu|mu|kau|anda|namamu|nama kamu)|kamu siapa|nama ?(mu|kamu) siapa|siapa namamu|who are you|what is your name|what's your name)$/.test(q)) return 'Saya **Syranx AI**, asisten yang siap membantu. Ada yang bisa saya bantu?';
+  return null;
+}
 const ICON_PHONE = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.13.96.36 1.9.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.91.34 1.85.57 2.81.7A2 2 0 0 1 22 16.92z"/></svg>';
 const ICON_DL = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>';
 
@@ -1958,6 +2044,7 @@ const Call = (() => {
     { urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] },
     { urls: ['turn:openrelay.metered.ca:80', 'turn:openrelay.metered.ca:443', 'turn:openrelay.metered.ca:443?transport=tcp'], username: 'openrelayproject', credential: 'openrelayproject' }
   ];
+  let isVideo = false, facing = 'user', camOff = false;
   let state = 'idle', pc = null, local = null, peer = null, role = null, callId = null;
   let pendingIce = [], remoteSet = false, tick = null, startAt = 0, ringTO = null, discTO = null, muted = false, vibT = null;
   const chans = {};
@@ -1975,23 +2062,31 @@ const Call = (() => {
   function ui(mode, status, who) {
     const sc = $('call-screen');
     sc.classList.add('show'); sc.classList.toggle('ringing', mode === 'incoming' || mode === 'outgoing');
+    sc.classList.toggle('video', isVideo); sc.classList.toggle('active', mode === 'active');
+    const cam = (isVideo && (mode === 'outgoing' || mode === 'active')) ? 'flex' : 'none';
+    $('call-cam-wrap').style.display = cam; $('call-flip-wrap').style.display = cam;
     if (who) { $('call-av').innerHTML = avatarHTML(who.avatar_url || who.avatar, who.username || who.name, 132); $('call-name').textContent = who.username || who.name; }
     $('call-status').textContent = status;
     $('call-mute-wrap').style.display = (mode === 'outgoing' || mode === 'active') ? 'flex' : 'none';
     $('call-end-wrap').style.display = (mode === 'outgoing' || mode === 'active') ? 'flex' : 'none';
     $('call-accept-wrap').style.display = mode === 'incoming' ? 'flex' : 'none';
+    $('call-accept-label').textContent = isVideo ? 'Terima video' : 'Terima';
     $('call-decline-wrap').style.display = mode === 'incoming' ? 'flex' : 'none';
   }
   async function getMic() {
     if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('Panggilan butuh HTTPS dan browser yang mendukung mikrofon');
-    try { return await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true }, video: false }); }
-    catch (e) { throw new Error('Izin mikrofon ditolak atau mikrofon tidak tersedia'); }
+    const audio = { echoCancellation: true, noiseSuppression: true, autoGainControl: true };
+    try {
+      const st = await navigator.mediaDevices.getUserMedia({ audio, video: isVideo ? { facingMode: facing, width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 24 } } : false });
+      if (isVideo) { const lv = $('call-local'); lv.srcObject = st; lv.play().catch(() => {}); $('call-screen').classList.add('hasloc'); }
+      return st;
+    } catch (e) { throw new Error(isVideo ? 'Izin kamera atau mikrofon ditolak' : 'Izin mikrofon ditolak atau mikrofon tidak tersedia'); }
   }
   function makePC() {
     pc = new RTCPeerConnection({ iceServers: ICE });
     local.getTracks().forEach(t => pc.addTrack(t, local));
     pc.onicecandidate = e => { if (e.candidate) sendSig(peer.id, { t: 'ice', cand: e.candidate.toJSON ? e.candidate.toJSON() : e.candidate }); };
-    pc.ontrack = e => { const a = $('call-audio'); a.srcObject = e.streams[0]; a.play().catch(() => {}); };
+    pc.ontrack = e => { const a = $('call-audio'); if (a.srcObject !== e.streams[0]) a.srcObject = e.streams[0]; a.play().catch(() => {}); };
     pc.onconnectionstatechange = () => {
       const st = pc.connectionState;
       if (st === 'connected') { clearTimeout(discTO); connected(); }
@@ -2019,25 +2114,26 @@ const Call = (() => {
     try { if (pc) { pc.onconnectionstatechange = null; pc.close(); } } catch (e) {}
     if (local) local.getTracks().forEach(t => t.stop());
     pc = null; local = null; pendingIce = []; remoteSet = false; muted = false;
-    $('call-audio').srcObject = null; $('call-mute').classList.remove('on');
+    $('call-audio').srcObject = null; $('call-local').srcObject = null; $('call-screen').classList.remove('hasloc'); $('call-mute').classList.remove('on'); $('call-cam').classList.remove('on'); $('call-cam-label').textContent = 'Kamera'; camOff = false; facing = 'user';
+    const sc0 = $('call-screen'); if (msg) { sc0.classList.remove('active'); }
     const was = state; state = 'idle'; callId = null;
-    if (msg) { $('call-status').textContent = msg; $('call-screen').classList.remove('ringing'); ['call-mute-wrap', 'call-end-wrap', 'call-accept-wrap', 'call-decline-wrap'].forEach(i => $(i).style.display = 'none'); if (was !== 'idle') SFX.end(); setTimeout(() => { if (state === 'idle') $('call-screen').classList.remove('show'); }, 1400); }
-    else $('call-screen').classList.remove('show');
+    if (msg) { $('call-status').textContent = msg; $('call-screen').classList.remove('ringing'); ['call-mute-wrap', 'call-end-wrap', 'call-accept-wrap', 'call-decline-wrap', 'call-cam-wrap', 'call-flip-wrap'].forEach(i => $(i).style.display = 'none'); if (was !== 'idle') SFX.end(); setTimeout(() => { if (state === 'idle') $('call-screen').classList.remove('show', 'video', 'active'); }, 1400); }
+    else { $('call-screen').classList.remove('show', 'video', 'active'); }
     peer = null; role = null;
   }
 
-  async function start() {
+  async function start(video) {
     if (!dmPeer) return;
     if (state !== 'idle') return showToast('Kamu sedang dalam panggilan');
     if (currentUserRole === 'member') return showToast('Panggilan untuk role Admin ke atas');
     if (dmPeer.role === 'member') return showToast(dmPeer.name + ' belum bisa menerima panggilan (role Member)');
-    SFX.unlock();
+    SFX.unlock(); isVideo = !!video;
     peer = { id: dmPeer.id, name: dmPeer.name, avatar: dmPeer.avatar, username: dmPeer.name }; role = 'caller'; callId = rid(); state = 'calling';
-    ui('outgoing', 'Memanggil...', peer);
+    ui('outgoing', isVideo ? 'Memanggil (video)...' : 'Memanggil...', peer);
     try { local = await getMic(); } catch (e) { cleanup(); showToast(e.message); return; }
     if (state !== 'calling') { local.getTracks().forEach(t => t.stop()); return; }
     SFX.ring('out');
-    sendSig(peer.id, { t: 'invite' });
+    sendSig(peer.id, { t: 'invite', video: isVideo });
     ringTO = setTimeout(() => { if (state === 'calling') { sendSig(peer.id, { t: 'cancel' }); logCall('Panggilan tidak dijawab'); cleanup('Tidak dijawab'); } }, 45000);
   }
 
@@ -2046,14 +2142,14 @@ const Call = (() => {
     if (s.t === 'invite') {
       if (state !== 'idle') { sendSig(s.from, { t: 'busy', id: s.id }); return; }
       if (currentUserRole === 'member') return;
-      state = 'ringing'; role = 'callee'; callId = s.id;
+      state = 'ringing'; role = 'callee'; callId = s.id; isVideo = !!s.video;
       const prof = await getProfile(s.from);
       if (state !== 'ringing' || callId !== s.id) return;
       peer = prof ? { id: prof.id, name: prof.username, username: prof.username, avatar: prof.avatar_url, avatar_url: prof.avatar_url } : { id: s.from, name: 'Seseorang', username: 'Seseorang' };
-      ui('incoming', 'Panggilan suara masuk', peer);
+      ui('incoming', isVideo ? 'Panggilan video masuk' : 'Panggilan suara masuk', peer);
       SFX.ring('in');
       if (navigator.vibrate) { const v = () => { try { navigator.vibrate([500, 300, 500]); } catch (e) {} }; v(); vibT = setInterval(v, 2200); }
-      if (document.hidden) Notif.show('Panggilan masuk', peer.username + ' menelepon kamu', 'call');
+      if (document.hidden) Notif.show(isVideo ? 'Video call masuk' : 'Panggilan masuk', peer.username + ' menelepon kamu', 'call');
       ringTO = setTimeout(() => { if (state === 'ringing') cleanup('Panggilan terlewat'); }, 45000);
       return;
     }
@@ -2061,7 +2157,7 @@ const Call = (() => {
     if (s.t === 'cancel' && state === 'ringing') { const n = peer ? peer.username : 'Seseorang'; if (document.hidden) Notif.show('Panggilan tak terjawab', n + ' menelepon kamu', 'call'); cleanup('Panggilan dibatalkan'); return; }
     if (s.t === 'busy' && role === 'caller') { logCall('Sedang sibuk'); cleanup('Sedang sibuk'); return; }
     if (s.t === 'reject' && role === 'caller') { logCall('Panggilan ditolak'); cleanup('Ditolak'); return; }
-    if (s.t === 'end') { if (role === 'caller') logCall(state === 'active' ? 'Panggilan suara · ' + elapsed() : 'Panggilan berakhir'); cleanup('Panggilan berakhir'); return; }
+    if (s.t === 'end') { if (role === 'caller') logCall(state === 'active' ? (isVideo ? 'Panggilan video · ' : 'Panggilan suara · ') + elapsed() : 'Panggilan berakhir'); cleanup('Panggilan berakhir'); return; }
     if (s.t === 'accept' && role === 'caller' && state === 'calling') {
       state = 'connecting'; SFX.stopRing(); clearTimeout(ringTO); $('call-status').textContent = 'Menyambungkan...';
       try { makePC(); const off = await pc.createOffer(); await pc.setLocalDescription(off); sendSig(peer.id, { t: 'offer', sdp: pc.localDescription.toJSON ? pc.localDescription.toJSON() : { type: off.type, sdp: off.sdp } }); }
@@ -2089,7 +2185,7 @@ const Call = (() => {
     if (state === 'idle') return;
     if (peer) {
       if (state === 'calling') { sendSig(peer.id, { t: 'cancel' }); logCall('Panggilan tidak dijawab'); }
-      else { sendSig(peer.id, { t: 'end' }); if (role === 'caller') logCall(state === 'active' ? 'Panggilan suara · ' + elapsed() : 'Panggilan berakhir'); }
+      else { sendSig(peer.id, { t: 'end' }); if (role === 'caller') logCall(state === 'active' ? (isVideo ? 'Panggilan video · ' : 'Panggilan suara · ') + elapsed() : 'Panggilan berakhir'); }
     }
     cleanup(typeof msg === 'string' ? msg : 'Panggilan berakhir');
   }
@@ -2099,7 +2195,27 @@ const Call = (() => {
     $('call-mute').classList.toggle('on', muted);
     $('call-mute-label').textContent = muted ? 'Suara mati' : 'Bisukan';
   }
-  return { start, onSignal, accept, decline, hangup, toggleMute, get state() { return state; } };
+  function toggleCam() {
+    if (!local || !isVideo) return; camOff = !camOff;
+    local.getVideoTracks().forEach(t => { t.enabled = !camOff; });
+    $('call-cam').classList.toggle('on', camOff);
+    $('call-cam-label').textContent = camOff ? 'Kamera mati' : 'Kamera';
+    $('call-local').style.opacity = camOff ? '0.15' : '1';
+  }
+  async function flipCam() {
+    if (!local || !isVideo) return;
+    const next = facing === 'user' ? 'environment' : 'user';
+    try {
+      const st = await navigator.mediaDevices.getUserMedia({ video: { facingMode: { exact: next }, width: { ideal: 640 }, height: { ideal: 480 } }, audio: false });
+      const nt = st.getVideoTracks()[0];
+      const old = local.getVideoTracks()[0];
+      if (pc) { const snd = pc.getSenders().find(x => x.track && x.track.kind === 'video'); if (snd) await snd.replaceTrack(nt); }
+      if (old) { local.removeTrack(old); old.stop(); }
+      nt.enabled = !camOff; local.addTrack(nt); facing = next;
+      const lv = $('call-local'); lv.srcObject = local; lv.style.transform = next === 'user' ? 'scaleX(-1)' : 'none';
+    } catch (e) { showToast('Kamera lain tidak tersedia'); }
+  }
+  return { start, toggleCam, flipCam, onSignal, accept, decline, hangup, toggleMute, get state() { return state; } };
 })();
 
 function v10Init() {
@@ -2115,6 +2231,265 @@ async function initRealtimeFeatures() {
   try { await Unread.fetch(); } catch (e) {}
 }
 
+// ================= GAME: Tic Tac Toe, 4 Sebaris, Suit (bot / online) =================
+const GAMES = {
+  ttt: { name: 'Tic Tac Toe', bot: true },
+  c4: { name: '4 Sebaris', bot: true },
+  suit: { name: 'Batu Gunting Kertas', bot: true }
+};
+const G = { game: null, mode: null, me: 0, names: ['', ''], ch: null, code: '', host: false, st: null, score: [0, 0], starter: 0, started: false, helloT: null, over: false, diff: 'sulit' };
+const gx = id => document.getElementById(id);
+
+function openGame(id) {
+  if (!GAMES[id]) return;
+  gameCleanup(true);
+  G.game = id; G.mode = null;
+  gx('game-title').textContent = GAMES[id].name;
+  gameMenu();
+  openOverlay('game-screen');
+}
+function closeGame() { gameCleanup(false); closeOverlay('game-screen'); }
+function gameCleanup(silent) {
+  clearTimeout(G.helloT);
+  if (G.ch) { try { if (G.started && !silent) G.ch.send({ type: 'broadcast', event: 'g', payload: { t: 'leave' } }); } catch (e) {} const c = G.ch; setTimeout(() => { try { supabaseClient.removeChannel(c); } catch (e) {} }, 150); }
+  G.ch = null; G.started = false; G.mode = null; G.score = [0, 0]; G.st = null; G.over = false;
+}
+
+// ---------- menu ----------
+function gameMenu() {
+  const bot = GAMES[G.game].bot;
+  gx('game-body').innerHTML = `<div class="g-menu">
+    ${bot ? '<button class="btn-primary g-big" onclick="gameStartBot()">Lawan Bot</button>' : ''}
+    ${bot && G.game === 'ttt' ? '<div class="g-seg"><button id="gd-mudah" onclick="gameDiff(\'mudah\')">Mudah</button><button id="gd-sulit" class="on" onclick="gameDiff(\'sulit\')">Sulit</button></div>' : ''}
+    <div class="g-or">Main online dengan teman</div>
+    <button class="set-btn" onclick="gameHost()"><span>Buat room baru</span><span>›</span></button>
+    <div class="g-join"><input id="game-code" class="glass-input" placeholder="Kode room" maxlength="4" inputmode="numeric" autocomplete="off"><button class="btn-primary" onclick="gameJoin()">Gabung</button></div>
+    <p class="muted" style="text-align:center;font-size:12px">Buat room lalu kirim kodenya ke teman lewat Chat Pribadi. Teman memasukkan kode itu untuk bergabung.</p>
+  </div>`;
+}
+function gameDiff(d) { G.diff = d; ['mudah', 'sulit'].forEach(x => { const b = gx('gd-' + x); if (b) b.classList.toggle('on', x === d); }); }
+
+// ---------- koneksi ----------
+function gameChannel(code) {
+  G.code = code;
+  G.ch = supabaseClient.channel('game-' + code, { config: { broadcast: { self: false } } });
+  G.ch.on('broadcast', { event: 'g' }, p => gameRecv(p.payload));
+  return G.ch;
+}
+function gameSend(o) { if (G.ch) try { G.ch.send({ type: 'broadcast', event: 'g', payload: o }); } catch (e) {} }
+function gameHost() {
+  if (!supabaseClient || !supabaseClient.channel) return showToast('Koneksi online belum siap');
+  const code = String(Math.floor(1000 + Math.random() * 9000));
+  G.mode = 'online'; G.host = true; G.me = 0; G.names = [currentUsername, '']; G.started = false;
+  gameChannel(code).subscribe();
+  gx('game-body').innerHTML = `<div class="g-wait"><div class="g-code">${code}</div><p>Kirim kode ini ke temanmu.<br>Menunggu pemain lain bergabung...</p><div class="typing" style="justify-content:center"><span></span><span></span><span></span></div><button class="mini-btn" onclick="navigator.clipboard&&navigator.clipboard.writeText('${code}').then(()=>showToast('Kode disalin'))">Salin kode</button><button class="mini-btn danger" onclick="gameBack()">Batal</button></div>`;
+}
+function gameJoin() {
+  const code = (gx('game-code').value || '').trim();
+  if (!/^\d{4}$/.test(code)) return showToast('Masukkan 4 digit kode room');
+  if (!supabaseClient || !supabaseClient.channel) return showToast('Koneksi online belum siap');
+  G.mode = 'online'; G.host = false; G.me = 1; G.names = ['', currentUsername]; G.started = false;
+  gx('game-body').innerHTML = '<div class="g-wait"><p>Mencari room ' + esc(code) + '...</p><div class="typing" style="justify-content:center"><span></span><span></span><span></span></div></div>';
+  let tries = 0;
+  gameChannel(code).subscribe(st => {
+    if (st !== 'SUBSCRIBED') return;
+    const ping = () => {
+      if (G.started) return;
+      if (++tries > 8) { gameCleanup(true); showToast('Room tidak ditemukan'); gameMenu(); return; }
+      gameSend({ t: 'hello', game: G.game, name: currentUsername });
+      G.helloT = setTimeout(ping, 1000);
+    };
+    ping();
+  });
+}
+function gameBack() { gameCleanup(false); gameMenu(); }
+function gameRecv(m) {
+  if (!m || !G.ch) return;
+  if (m.t === 'hello' && G.host) {
+    if (m.game !== G.game) { gameSend({ t: 'deny', why: 'Room ini untuk game ' + GAMES[G.game].name }); return; }
+    if (G.started && G.names[1] && G.names[1] !== m.name) { gameSend({ t: 'deny', why: 'Room sudah penuh' }); return; }
+    G.names[1] = m.name;
+    gameSend({ t: 'start', name: currentUsername, game: G.game });
+    if (!G.started) { G.started = true; gameBegin(); }
+  } else if (m.t === 'start' && !G.host) {
+    clearTimeout(G.helloT); G.names[0] = m.name;
+    if (!G.started) { G.started = true; gameBegin(); }
+  } else if (m.t === 'deny') { clearTimeout(G.helloT); const w = m.why || 'Ditolak'; gameCleanup(true); showToast(w); gameMenu(); }
+  else if (m.t === 'leave') { G.over = true; gx('game-status').textContent = G.names[1 - G.me] + ' keluar dari room'; gx('game-status').classList.add('warn'); }
+  else if (m.t === 'reset') { G.starter = m.starter; gameReset(); }
+  else if (m.t === 'a' && G.st) gameApply(m, false);
+}
+
+// ---------- bot ----------
+function gameStartBot() { G.mode = 'bot'; G.me = 0; G.host = true; G.names = [currentUsername, 'Syranx Bot']; G.started = true; gameBegin(); }
+
+// ---------- layar permainan ----------
+function gameBegin() {
+  G.score = [0, 0]; G.starter = 0; G.over = false;
+  gx('game-body').innerHTML = `<div class="g-top"><div class="g-pl" id="gp0"></div><div class="g-vs">vs</div><div class="g-pl r" id="gp1"></div></div>
+    <div id="game-status" class="g-status"></div>
+    <div id="game-board" class="g-area"></div>
+    <div class="g-bottom"><button class="mini-btn" onclick="gameRematch()">Main lagi</button><button class="mini-btn danger" onclick="gameBack()">Keluar</button></div>`;
+  gameReset();
+}
+function gameRematch() {
+  if (G.mode === 'online') { G.starter = 1 - G.starter; gameSend({ t: 'reset', starter: G.starter }); }
+  else G.starter = 1 - G.starter;
+  gameReset();
+}
+function gameReset() {
+  G.over = false;
+  const g = G.game;
+  if (g === 'ttt') G.st = { b: Array(9).fill(null), turn: G.starter, win: null };
+  else if (g === 'c4') G.st = { b: Array(42).fill(null), turn: G.starter, win: null, last: -1 };
+  else G.st = { pick: [null, null], wins: [0, 0], round: 1, res: null, rev: false };
+  const s = gx('game-status'); if (s) s.classList.remove('warn');
+  gameDraw();
+  gameBotMove();
+}
+function gameDrawHead() {
+  [0, 1].forEach(i => { const e = gx('gp' + i); if (e) e.innerHTML = `<b>${esc(G.names[i] || '-')}</b><small>${G.game === 'ttt' ? (i === 0 ? 'X' : 'O') : G.game === 'c4' ? (i === 0 ? 'Merah' : 'Kuning') : ''}</small><span class="g-score">${G.score[i]}</span>`; });
+  const e0 = gx('gp0'), e1 = gx('gp1');
+  if (G.st && G.game !== 'suit' && e0 && e1) { e0.classList.toggle('turn', !G.over && G.st.turn === 0); e1.classList.toggle('turn', !G.over && G.st.turn === 1); }
+}
+function gameStatus(t) { const s = gx('game-status'); if (s) s.textContent = t; }
+
+// ---------- aksi ----------
+function gameAct(a) {
+  if (!G.st || G.over) return;
+  if (G.game !== 'suit' && G.st.turn !== G.me) return;
+  if (G.mode === 'online') gameSend({ t: 'a', ...a });
+  gameApply({ ...a, who: G.me }, true);
+}
+function gameApply(a, local) {
+  const who = local ? G.me : 1 - G.me, st = G.st;
+  if (G.game === 'ttt') {
+    if (st.turn !== who || st.b[a.i] !== null || st.win || G.over) return;
+    st.b[a.i] = who; tttCheck(who);
+  } else if (G.game === 'c4') {
+    if (st.turn !== who || st.win || G.over) return;
+    const r = c4Drop(st.b, a.c, who); if (r < 0) return;
+    st.last = r; c4Check(who);
+  } else {
+    if (st.pick[who] !== null || st.rev) return;
+    st.pick[who] = a.v;
+    if (st.pick[0] !== null && st.pick[1] !== null) suitReveal();
+  }
+  gameDraw();
+  gameBotMove();
+}
+function gameBotMove() {
+  if (G.mode !== 'bot' || G.over || !G.st) return;
+  const st = G.st;
+  if (G.game === 'suit') { if (st.pick[1] === null && !st.rev) setTimeout(() => { if (G.mode === 'bot' && G.st === st && st.pick[1] === null) { st.pick[1] = ['batu', 'gunting', 'kertas'][Math.floor(Math.random() * 3)]; if (st.pick[0] !== null) suitReveal(); gameDraw(); } }, 500); return; }
+  if (st.turn !== 1) return;
+  const snap = st;
+  setTimeout(() => {
+    if (G.mode !== 'bot' || G.st !== snap || G.over) return;
+    if (G.game === 'ttt') { const i = tttBot(snap.b); snap.b[i] = 1; tttCheck(1); }
+    else { const c = c4Bot(snap.b); const r = c4Drop(snap.b, c, 1); snap.last = r; c4Check(1); }
+    gameDraw();
+  }, 550);
+}
+function gameEnd(winner) {
+  G.over = true;
+  if (winner === 0 || winner === 1) G.score[winner]++;
+}
+
+// ---------- tic tac toe ----------
+const TTT_L = [[0, 1, 2], [3, 4, 5], [6, 7, 8], [0, 3, 6], [1, 4, 7], [2, 5, 8], [0, 4, 8], [2, 4, 6]];
+function tttWinner(b) { for (const l of TTT_L) { const [x, y, z] = l; if (b[x] !== null && b[x] === b[y] && b[y] === b[z]) return { p: b[x], l }; } return null; }
+function tttCheck(who) {
+  const w = tttWinner(G.st.b);
+  if (w) { G.st.win = w; gameEnd(w.p); }
+  else if (G.st.b.every(v => v !== null)) { G.st.win = { p: -1, l: [] }; gameEnd(-1); }
+  else G.st.turn = 1 - who;
+}
+function tttBot(b) {
+  const empty = b.map((v, i) => v === null ? i : -1).filter(i => i >= 0);
+  if (G.diff === 'mudah' && Math.random() < 0.6) return empty[Math.floor(Math.random() * empty.length)];
+  let best = -9, move = empty[0];
+  const mm = (bd, turn, d) => {
+    const w = tttWinner(bd); if (w) return w.p === 1 ? 10 - d : d - 10;
+    const em = bd.map((v, i) => v === null ? i : -1).filter(i => i >= 0); if (!em.length) return 0;
+    let r = turn === 1 ? -99 : 99;
+    for (const i of em) { bd[i] = turn; const v = mm(bd, 1 - turn, d + 1); bd[i] = null; r = turn === 1 ? Math.max(r, v) : Math.min(r, v); }
+    return r;
+  };
+  for (const i of empty) { b[i] = 1; const v = mm(b, 0, 1); b[i] = null; if (v > best || (v === best && Math.random() < 0.3)) { best = v; move = i; } }
+  return move;
+}
+
+// ---------- 4 sebaris ----------
+function c4Drop(b, c, who) { for (let r = 5; r >= 0; r--) if (b[r * 7 + c] === null) { b[r * 7 + c] = who; return r * 7 + c; } return -1; }
+function c4Line(b, who) {
+  const D = [[0, 1], [1, 0], [1, 1], [1, -1]];
+  for (let r = 0; r < 6; r++) for (let c = 0; c < 7; c++) for (const [dr, dc] of D) {
+    const cells = []; for (let k = 0; k < 4; k++) { const rr = r + dr * k, cc = c + dc * k; if (rr < 0 || rr > 5 || cc < 0 || cc > 6) break; cells.push(rr * 7 + cc); }
+    if (cells.length === 4 && cells.every(i => b[i] === who)) return cells;
+  }
+  return null;
+}
+function c4Check(who) {
+  const l = c4Line(G.st.b, who);
+  if (l) { G.st.win = { p: who, l }; gameEnd(who); }
+  else if (G.st.b.every(v => v !== null)) { G.st.win = { p: -1, l: [] }; gameEnd(-1); }
+  else G.st.turn = 1 - who;
+}
+function c4Bot(b) {
+  const cols = [0, 1, 2, 3, 4, 5, 6].filter(c => b[c] === null);
+  const tryWin = who => { for (const c of cols) { const t = b.slice(); const r = c4Drop(t, c, who); if (r >= 0 && c4Line(t, who)) return c; } return -1; };
+  let c = tryWin(1); if (c >= 0) return c;
+  c = tryWin(0); if (c >= 0) return c;
+  const safe = cols.filter(cc => { const t = b.slice(); const r = c4Drop(t, cc, 1); if (r < 0) return false; const t2 = t.slice(); const r2 = c4Drop(t2, cc, 0); return !(r2 >= 0 && c4Line(t2, 0)); });
+  const pool = safe.length ? safe : cols;
+  const pref = [3, 2, 4, 1, 5, 0, 6].filter(x => pool.includes(x));
+  return Math.random() < 0.75 ? pref[0] : pool[Math.floor(Math.random() * pool.length)];
+}
+
+// ---------- suit ----------
+function suitBeats(a, b) { return (a === 'batu' && b === 'gunting') || (a === 'gunting' && b === 'kertas') || (a === 'kertas' && b === 'batu'); }
+function suitReveal() {
+  const st = G.st; st.rev = true;
+  const [a, b] = st.pick;
+  st.res = a === b ? -1 : (suitBeats(a, b) ? 0 : 1);
+  if (st.res >= 0) st.wins[st.res]++;
+  if (st.wins[0] >= 2 || st.wins[1] >= 2) { gameEnd(st.wins[0] >= 2 ? 0 : 1); st.win = { p: st.wins[0] >= 2 ? 0 : 1 }; }
+  else setTimeout(() => { if (G.st === st && !G.over) { st.pick = [null, null]; st.res = null; st.rev = false; st.round++; gameDraw(); gameBotMove(); } }, 2200);
+}
+
+// ---------- gambar ----------
+const SUIT_IC = {
+  batu: '<svg viewBox="0 0 48 48"><path d="M12 22c0-5 3-8 7-8h10c5 0 8 3 8 8v7c0 6-5 10-11 10h-3c-6 0-11-4-11-10z" fill="currentColor" opacity=".9"/></svg>',
+  kertas: '<svg viewBox="0 0 48 48"><path d="M13 8h16l8 8v24H13z" fill="currentColor" opacity=".9"/><path d="M29 8v8h8" fill="none" stroke="var(--bg)" stroke-width="2"/><path d="M18 24h14M18 30h14" stroke="var(--bg)" stroke-width="2" stroke-linecap="round"/></svg>',
+  gunting: '<svg viewBox="0 0 48 48"><circle cx="14" cy="34" r="6" fill="none" stroke="currentColor" stroke-width="3.5"/><circle cx="34" cy="34" r="6" fill="none" stroke="currentColor" stroke-width="3.5"/><path d="M18 29L36 8M30 29L12 8" stroke="currentColor" stroke-width="4" stroke-linecap="round"/></svg>'
+};
+function gameDraw() {
+  const bd = gx('game-board'); if (!bd || !G.st) return;
+  gameDrawHead();
+  const st = G.st, me = G.me, opp = G.names[1 - me];
+  if (G.game === 'ttt') {
+    const win = st.win ? st.win.l : [];
+    bd.innerHTML = '<div class="ttt">' + st.b.map((v, i) => `<button class="ttt-c ${v === 0 ? 'x' : v === 1 ? 'o' : ''} ${win.includes(i) ? 'win' : ''}" onclick="gameAct({i:${i}})" ${v !== null || G.over || st.turn !== me ? 'disabled' : ''}>${v === 0 ? 'X' : v === 1 ? 'O' : ''}</button>`).join('') + '</div>';
+    if (st.win) gameStatus(st.win.p === -1 ? 'Seri' : (st.win.p === me ? 'Kamu menang' : (G.mode === 'bot' ? 'Bot menang' : opp + ' menang')));
+    else gameStatus(st.turn === me ? 'Giliranmu' : 'Giliran ' + G.names[st.turn]);
+  } else if (G.game === 'c4') {
+    const win = st.win ? st.win.l : [];
+    let h = '<div class="c4"><div class="c4-cols">' + [0, 1, 2, 3, 4, 5, 6].map(c => `<button onclick="gameAct({c:${c}})" ${G.over || st.turn !== me || st.b[c] !== null ? 'disabled' : ''} aria-label="Kolom ${c + 1}"></button>`).join('') + '</div><div class="c4-grid">';
+    st.b.forEach((v, i) => { h += `<i class="${v === 0 ? 'p0' : v === 1 ? 'p1' : ''} ${win.includes(i) ? 'win' : ''} ${i === st.last ? 'last' : ''}"></i>`; });
+    bd.innerHTML = h + '</div></div>';
+    if (st.win) gameStatus(st.win.p === -1 ? 'Seri' : (st.win.p === me ? 'Kamu menang' : (G.mode === 'bot' ? 'Bot menang' : opp + ' menang')));
+    else gameStatus(st.turn === me ? 'Giliranmu, pilih kolom' : 'Giliran ' + G.names[st.turn]);
+  } else {
+    const mine = st.pick[me], theirs = st.pick[1 - me];
+    let h = `<div class="suit"><div class="suit-round">Ronde ${Math.min(st.round, 3)} · menang 2 kali</div><div class="suit-score"><b>${st.wins[me]}</b> : <b>${st.wins[1 - me]}</b></div><div class="suit-reveal"><div class="suit-box">${mine ? SUIT_IC[mine] : '?'}</div><div class="suit-box ${st.rev ? '' : 'hid'}">${st.rev ? SUIT_IC[theirs] : (theirs !== null ? '...' : '?')}</div></div><div class="suit-pick">`;
+    ['batu', 'gunting', 'kertas'].forEach(v => { h += `<button class="suit-b ${mine === v ? 'sel' : ''}" onclick="gameAct({v:'${v}'})" ${mine !== null || G.over ? 'disabled' : ''}>${SUIT_IC[v]}<span>${v[0].toUpperCase() + v.slice(1)}</span></button>`; });
+    bd.innerHTML = h + '</div></div>';
+    if (st.win) gameStatus(st.win.p === me ? 'Kamu menang pertandingan' : (G.mode === 'bot' ? 'Bot menang pertandingan' : opp + ' menang pertandingan'));
+    else if (st.rev) gameStatus(st.res === -1 ? 'Seri, ulang ronde' : (st.res === me ? 'Kamu menang ronde ini' : 'Kalah ronde ini'));
+    else gameStatus(mine === null ? 'Pilih batu, gunting, atau kertas' : 'Menunggu ' + (G.mode === 'bot' ? 'bot' : opp) + '...');
+  }
+}
 let toastT;
 function showToast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
 </script>
