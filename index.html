@@ -528,7 +528,7 @@
     <button class="menu-item" onclick="closeSidebar(); openShop()" id="menu-upgrade" style="display:none; color:#fbbf24">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Upgrade Role</button>
     <button class="menu-item" onclick="closeSidebar(); openOverlay('tools-menu')" id="menu-tools" style="display:none">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Tools Penting</button>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Tools dan Game</button>
     <button class="menu-item" onclick="closeSidebar(); openOrders()" id="menu-orders" style="display:none; color:#fbbf24">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Pesanan Masuk (CS)</button>
     <div class="menu-divider"></div>
@@ -548,7 +548,7 @@
 
 <!-- TOOLS -->
 <div id="tools-menu" class="full-screen-overlay">
-  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('tools-menu')">←</button><h2>Tools Penting</h2></div>
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('tools-menu')">←</button><h2>Tools dan Game</h2></div>
   <div class="overlay-content"><div class="tools-grid"><div class="tool-card" onclick="openOverlay('calc-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="16" y1="11" x2="16" y2="11.01"/><line x1="8" y1="15" x2="8" y2="15.01"/><line x1="12" y1="15" x2="12" y2="15.01"/><line x1="16" y1="15" x2="16" y2="15.01"/></svg></div>Kalkulator</div><div class="tool-card" onclick="openOverlay('conv-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>Konverter</div><div class="tool-card" onclick="openGame('ttt')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></svg></div>Tic Tac Toe</div><div class="tool-card" onclick="openGame('c4')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.5"/><circle cx="12" cy="9" r="1.5"/><circle cx="16" cy="9" r="1.5"/><circle cx="8" cy="15" r="1.5"/><circle cx="12" cy="15" r="1.5"/><circle cx="16" cy="15" r="1.5"/></svg></div>4 Sebaris Online</div><div class="tool-card" onclick="openGame('suit')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 10V4a2 2 0 0 0-4 0v6M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.9-5.9-2.4L3.4 16a2 2 0 0 1 3.2-2.4L8 15"/></svg></div>Suit Online</div><div class="tool-card" onclick="openGame('zour')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 12h18M3 3l18 18M21 3L3 21"/></svg></div>Zour RF</div></div></div>
 </div>
 
@@ -673,7 +673,7 @@
     <button class="mini-btn add-btn" onclick="$('music-file').click()">+ Tambah lagu dari HP</button>
     <input type="file" id="music-file" accept="audio/*" multiple style="display:none" onchange="Music.addFiles(this.files);this.value=''">
     <div id="track-list-user"></div>
-    <p class="muted" style="text-align:center;margin-top:14px;font-size:11px">Lagu dari HP tersimpan di perangkat ini saja dan tidak diunggah ke server.</p>
+    <p class="muted" style="text-align:center;margin-top:14px;font-size:11px">Lagu dari HP tersimpan di perangkat ini saja dan tidak diunggah ke server. Lagu bawaan butuh internet.</p>
   </div></div>
 </div>
 
@@ -1610,48 +1610,10 @@ const Music = (() => {
   function snare(t, p = 0.16) { noise(t, 0.16, 'bandpass', 1900, p); tone(190, t, 0.08, { gain: p * 0.5, attack: 0.002, release: 0.05, lp: 1200 }); }
   function hat(t, p = 0.04) { noise(t, 0.045, 'highpass', 7500, p); }
 
-  const SYNTH = [
-    { id: 's-aurora', name: 'Aurora Drift', sub: 'Ambient · bawaan', bpm: 72,
-      step(i, t, spb) {
-        const chords = [[57, 60, 64, 67, 71], [53, 57, 60, 64, 67], [48, 55, 60, 64, 67], [55, 59, 62, 66, 69]];
-        if (i % 32 === 0) {
-          chords[(i / 32) % 4].forEach((n, k) => tone(NOTE(n - 12), t, spb * 32, { types: ['sawtooth', 'triangle'], detune: 8, gain: 0.03, attack: 2.2, release: 2.6, lp: 700 + k * 80 }));
-        }
-        if (i % 4 === 0 && Math.random() < 0.4) tone(NOTE(pick([69, 72, 74, 76, 79, 81, 84])), t, 1.4, { gain: 0.045, release: 1.2, lp: 5000 });
-      } },
-    { id: 's-lofi', name: 'Lo-fi Malam', sub: 'Chill beat · bawaan', bpm: 78,
-      step(i, t, spb) {
-        const ch = [[50, 53, 57, 60], [55, 59, 62, 65], [48, 52, 55, 59], [45, 48, 52, 55]];
-        const c = ch[Math.floor(i / 16) % 4], s = i % 16, sw = (s % 4 === 2) ? spb * 0.2 : 0;
-        if (s === 0 || s === 6 || s === 10) c.forEach(n => tone(NOTE(n), t + sw, spb * 5, { types: ['triangle', 'sine'], gain: 0.04, release: 0.5, lp: 2000 }));
-        if (s === 0 || s === 8) tone(NOTE(c[0] - 12), t, spb * 6, { gain: 0.12, release: 0.2, lp: 300 });
-        if (s === 0 || s === 10) kick(t, 0.5);
-        if (s === 4 || s === 12) snare(t, 0.16);
-        if (s % 2 === 0) hat(t + sw, s % 4 === 0 ? 0.05 : 0.03);
-        if (s % 4 === 2 && Math.random() < 0.35) tone(NOTE(pick([74, 77, 79, 81, 84, 86])), t + sw, spb * 3, { gain: 0.04, release: 0.6, lp: 3000 });
-        if (Math.random() < 0.12) noise(t, 0.03, 'highpass', 3000, 0.012);
-      } },
-    { id: 's-neon', name: 'Neon Drive', sub: 'Synthwave · bawaan', bpm: 104,
-      step(i, t, spb) {
-        const ch = [[57, 60, 64], [53, 57, 60], [48, 52, 55], [55, 59, 62]];
-        const c = ch[Math.floor(i / 16) % 4], s = i % 16;
-        const n = c[[0, 1, 2, 1, 0, 1, 2, 1][s % 8]] + (s >= 8 ? 12 : 0) + 12;
-        tone(NOTE(n), t, spb * 0.9, { type: 'sawtooth', gain: 0.035, attack: 0.005, release: 0.12, lp: s % 4 === 0 ? 2600 : 1800 });
-        if (s % 2 === 0) tone(NOTE(c[0] - 24), t, spb * 1.8, { type: 'square', gain: 0.05, attack: 0.005, release: 0.1, lp: 380 });
-        if (s % 4 === 0) kick(t, 0.5);
-        if (s === 4 || s === 12) snare(t, 0.15);
-        if (s % 4 === 2) hat(t, 0.04);
-      } },
-    { id: 's-rain', name: 'Hujan Tenang', sub: 'Suara hujan · bawaan', bpm: 60,
-      init() {
-        const s = ctx.createBufferSource(); s.buffer = noiseBuf; s.loop = true;
-        const hp = ctx.createBiquadFilter(); hp.type = 'highpass'; hp.frequency.value = 600;
-        const lp = ctx.createBiquadFilter(); lp.type = 'lowpass'; lp.frequency.value = 6500;
-        const g = ctx.createGain(); g.gain.value = 0.11;
-        s.connect(hp); hp.connect(lp); lp.connect(g); g.connect(bus); s.start();
-        return () => { try { s.stop(); } catch (e) {} };
-      },
-      step(i, t) { if (Math.random() < 0.07) tone(NOTE(pick([72, 74, 76, 79, 81])), t, 2.2, { gain: 0.04, release: 1.6, lp: 4000 }); } }
+  const SYNTH = [];
+  const STREAM = [
+    { id: 'f-rumah', name: 'Rumah ke Rumah', sub: 'Hindia', url: 'https://videotourl.com/audio/1794304551705-a4f0ef7c-6807-4d7d-b0c0-c19d906a0707.mp3' },
+    { id: 'f-cinnamon', name: 'Cinnamon Girl', sub: 'Bawaan', url: 'https://videotourl.com/audio/1794304714736-9db7f443-5d22-47e0-8aac-ef186256cec4.mp3' }
   ];
 
   function startSynth(tr) {
@@ -1678,15 +1640,16 @@ const Music = (() => {
   function haltAll() { stopSynth(); audio.pause(); }
 
   function list() {
-    return [...SYNTH.map(t => ({ id: t.id, name: t.name, sub: t.sub, kind: 'synth' })),
-            ...userTracks.map(t => ({ id: t.id, name: t.name, sub: 'Dari HP', kind: 'file' }))];
+    const out = STREAM.map(t => ({ id: t.id, name: t.name, sub: t.sub, kind: 'file', stream: true }));
+    userTracks.forEach(t => out.push({ id: t.id, name: t.name, sub: 'Dari HP', kind: 'file' }));
+    return out;
   }
   function play(id) {
     const item = list().find(x => x.id === id); if (!item) return;
     haltAll(); curId = id;
     try {
       if (item.kind === 'synth') { stepN = 0; startSynth(SYNTH.find(t => t.id === id)); }
-      else { const ut = userTracks.find(t => t.id === id); audio.src = ut.url; audio.volume = vol; audio.play().catch(e => showToast('Gagal memutar: ' + e.message)); }
+      else { const ut = STREAM.find(t => t.id === id) || userTracks.find(t => t.id === id); audio.preload = 'auto'; audio.src = ut.url; audio.volume = vol; audio.play().catch(e => showToast('Gagal memutar: ' + e.message)); }
       playing = true;
     } catch (e) { playing = false; showToast('' + e.message); }
     ui();
@@ -1701,7 +1664,7 @@ const Music = (() => {
     } catch (e) { showToast('' + e.message); }
     ui();
   }
-  function toggle() { if (!curId) { play(SYNTH[0].id); return; } playing ? pause() : resume(); }
+  function toggle() { if (!curId) { play(STREAM[0].id); return; } playing ? pause() : resume(); }
   function next(d = 1) {
     const l = list(); if (!l.length) return;
     let i = l.findIndex(x => x.id === curId); if (i < 0) i = d > 0 ? -1 : 0;
@@ -1716,13 +1679,14 @@ const Music = (() => {
     $('np-cur').textContent = fmt(audio.currentTime); $('np-dur').textContent = fmt(d);
   }
   audio.addEventListener('ended', () => next(1));
+  audio.addEventListener('error', () => { if (curId && STREAM.some(t => t.id === curId)) { playing = false; ui(); showToast('Lagu gagal dimuat. Cek koneksi internet.'); } });
   audio.addEventListener('timeupdate', seekUI);
   audio.addEventListener('loadedmetadata', seekUI);
 
   async function loadUser() {
     try {
       const all = await MusicDB.all(); all.sort((a, b) => a.added - b.added);
-      all.forEach(t => userTracks.push({ id: t.id, name: t.name, url: URL.createObjectURL(t.blob) }));
+      all.forEach(t => { if (t.id.startsWith('f-')) { MusicDB.del(t.id).catch(() => {}); return; } userTracks.push({ id: t.id, name: t.name, url: URL.createObjectURL(t.blob) }); });
     } catch (e) { /* mode privat: tidak ada penyimpanan */ }
     ui();
   }
@@ -1770,8 +1734,8 @@ const Music = (() => {
         box.appendChild(d);
       });
     };
-    mk(l.filter(x => x.kind === 'synth'), $('track-list-builtin'), false, '');
-    mk(l.filter(x => x.kind === 'file'), $('track-list-user'), true, 'Belum ada lagu. Tekan tombol di atas untuk menambah.');
+    mk(l.filter(x => x.stream), $('track-list-builtin'), false, '');
+    mk(l.filter(x => x.kind === 'file' && !x.stream), $('track-list-user'), true, 'Belum ada lagu. Tekan tombol di atas untuk menambah.');
   }
   return { play, pause, toggle, next, setVol, seek, addFiles, remove, loadUser, ui };
 })();
