@@ -434,6 +434,49 @@
   .suit-pick { display:flex; gap:10px; justify-content:center; }
   .suit-b { flex:1; max-width:110px; padding:12px 6px; border-radius:18px; border:1px solid var(--border); background:rgba(255,255,255,.07); color:#fff; font-family:inherit; font-weight:700; font-size:12px; cursor:pointer; display:flex; flex-direction:column; align-items:center; gap:6px; }
   .suit-b svg { width:40px; height:40px; color:var(--accent); } .suit-b.sel { border-color:var(--accent); } .suit-b:disabled { opacity:.55; cursor:default; }
+  /* perbaikan v10.2: menu game tidak kepotong, tombol telepon di bawah */
+  .g-wrap, .g-wrap * { box-sizing:border-box; }
+  .g-wrap { width:100%; max-width:420px; overflow-x:hidden; }
+  .g-menu > * { width:100%; max-width:100%; }
+  .g-join { display:flex; gap:8px; width:100%; }
+  .g-join input { flex:1 1 auto; min-width:0; width:auto; }
+  .g-join .btn-primary { width:auto; flex:0 0 auto; padding:0 22px; }
+  .g-seg { width:100%; }
+  .g-seg button { min-width:0; }
+  #game-screen .overlay-content { overflow-x:hidden; }
+  #call-screen .call-actions { margin-top:auto; width:100%; flex-wrap:wrap; }
+  #call-screen.video.active { justify-content:flex-end; }
+  #call-screen.video.active .call-actions { position:relative; margin-top:0; padding-bottom:0; }
+
+  .g-pl { flex-direction:row; align-items:center; gap:8px; cursor:pointer; }
+  .g-pl.r { text-align:left; }
+  .g-pl .av { flex-shrink:0; }
+  .g-pi { flex:1; min-width:0; display:flex; flex-direction:column; }
+  .g-pi b { display:flex; align-items:center; gap:4px; font-size:13px; }
+  .g-pi small { white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .vchk { width:15px; height:15px; flex-shrink:0; display:inline-block; vertical-align:-2px; margin-left:3px; }
+  .g-pi b .vchk { margin-left:0; }
+  .g-score { font-size:20px; }
+  .g-voice { display:flex; flex-wrap:wrap; gap:8px; align-items:center; justify-content:center; margin:6px 0 2px; }
+  .g-voice span { width:100%; text-align:center; font-size:11px; color:var(--text-3); }
+  .g-voice .mini-btn.on, .g-cheat .mini-btn.on { background:var(--accent); color:var(--on-accent); border-color:transparent; }
+  .g-prof { position:absolute; inset:0; z-index:5; background:rgba(0,0,0,.7); display:none; align-items:center; justify-content:center; padding:20px; }
+  .g-prof.show { display:flex; }
+  .g-prof-card { background:var(--bg); border:1px solid var(--border); border-radius:24px; padding:26px 22px; text-align:center; display:flex; flex-direction:column; align-items:center; gap:10px; width:100%; max-width:300px; }
+  .g-prof-card h3 { display:flex; align-items:center; gap:4px; font-size:20px; margin:4px 0 0; }
+  .g-prof-card .vchk { width:20px; height:20px; }
+  .g-prof-card p { color:var(--text-2); font-size:13px; margin:0; }
+  .g-prof-card small { color:var(--text-3); font-size:11px; }
+  .zour { display:block; width:100%; max-width:340px; margin:0 auto; border-radius:20px; background:rgba(255,255,255,.05); border:1px solid var(--border); }
+  .zour .zl { fill:none; stroke:var(--text-3); stroke-width:1.2; stroke-linecap:round; }
+  .zour .zn { fill:var(--text-3); transition:.15s; } .zour .zn.hl { fill:var(--accent); opacity:.85; }
+  .zour .zp { stroke:rgba(0,0,0,.35); stroke-width:1; transition:.15s; } .zour .zp.sel { stroke:var(--accent); stroke-width:2; }
+  .zour .zwin { stroke:#fff; stroke-width:2.4; stroke-linecap:round; opacity:.85; }
+  .zour .zh { fill:transparent; cursor:pointer; -webkit-tap-highlight-color:transparent; }
+  .g-cheat { margin-top:16px; text-align:center; }
+  .g-cheat-box { margin-top:10px; padding:14px; border-radius:18px; border:1px dashed var(--accent); background:rgba(255,255,255,.05); display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+  .g-cheat-t { width:100%; font-size:11px; letter-spacing:.1em; text-transform:uppercase; color:var(--accent); font-weight:800; }
+  .g-cheat-box p { width:100%; margin:4px 0 0; font-size:12px; color:var(--text-2); line-height:1.5; }
 </style>
 </head>
 <body>
@@ -506,7 +549,7 @@
 <!-- TOOLS -->
 <div id="tools-menu" class="full-screen-overlay">
   <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('tools-menu')">←</button><h2>Tools Penting</h2></div>
-  <div class="overlay-content"><div class="tools-grid"><div class="tool-card" onclick="openOverlay('calc-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="16" y1="11" x2="16" y2="11.01"/><line x1="8" y1="15" x2="8" y2="15.01"/><line x1="12" y1="15" x2="12" y2="15.01"/><line x1="16" y1="15" x2="16" y2="15.01"/></svg></div>Kalkulator</div><div class="tool-card" onclick="openOverlay('conv-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>Konverter</div><div class="tool-card" onclick="openGame('ttt')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></svg></div>Tic Tac Toe</div><div class="tool-card" onclick="openGame('c4')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.5"/><circle cx="12" cy="9" r="1.5"/><circle cx="16" cy="9" r="1.5"/><circle cx="8" cy="15" r="1.5"/><circle cx="12" cy="15" r="1.5"/><circle cx="16" cy="15" r="1.5"/></svg></div>4 Sebaris Online</div><div class="tool-card" onclick="openGame('suit')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 10V4a2 2 0 0 0-4 0v6M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.9-5.9-2.4L3.4 16a2 2 0 0 1 3.2-2.4L8 15"/></svg></div>Suit Online</div></div></div>
+  <div class="overlay-content"><div class="tools-grid"><div class="tool-card" onclick="openOverlay('calc-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="16" y1="11" x2="16" y2="11.01"/><line x1="8" y1="15" x2="8" y2="15.01"/><line x1="12" y1="15" x2="12" y2="15.01"/><line x1="16" y1="15" x2="16" y2="15.01"/></svg></div>Kalkulator</div><div class="tool-card" onclick="openOverlay('conv-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>Konverter</div><div class="tool-card" onclick="openGame('ttt')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></svg></div>Tic Tac Toe</div><div class="tool-card" onclick="openGame('c4')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.5"/><circle cx="12" cy="9" r="1.5"/><circle cx="16" cy="9" r="1.5"/><circle cx="8" cy="15" r="1.5"/><circle cx="12" cy="15" r="1.5"/><circle cx="16" cy="15" r="1.5"/></svg></div>4 Sebaris Online</div><div class="tool-card" onclick="openGame('suit')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 10V4a2 2 0 0 0-4 0v6M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.9-5.9-2.4L3.4 16a2 2 0 0 1 3.2-2.4L8 15"/></svg></div>Suit Online</div><div class="tool-card" onclick="openGame('zour')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 12h18M3 3l18 18M21 3L3 21"/></svg></div>Zour RF</div></div></div>
 </div>
 
 <div id="calc-screen" class="full-screen-overlay">
@@ -658,6 +701,8 @@
 <div id="game-screen" class="full-screen-overlay" style="z-index:1700">
   <div class="overlay-header"><button class="icon-btn" onclick="closeGame()">←</button><h2 id="game-title">Game</h2></div>
   <div class="overlay-content"><div id="game-body" class="g-wrap"></div></div>
+  <audio id="game-voice" autoplay playsinline></audio>
+  <div id="game-prof" class="g-prof" onclick="this.classList.remove('show')"></div>
 </div>
 
 <!-- DM ROOM -->
@@ -2235,9 +2280,15 @@ async function initRealtimeFeatures() {
 const GAMES = {
   ttt: { name: 'Tic Tac Toe', bot: true },
   c4: { name: '4 Sebaris', bot: true },
-  suit: { name: 'Batu Gunting Kertas', bot: true }
+  suit: { name: 'Batu Gunting Kertas', bot: true },
+  zour: { name: 'Zour RF', bot: true }
 };
-const G = { game: null, mode: null, me: 0, names: ['', ''], ch: null, code: '', host: false, st: null, score: [0, 0], starter: 0, started: false, helloT: null, over: false, diff: 'sulit' };
+const VERIFIED_ROLES = ['developer', 'owner', 'cs', 'ceo'];
+const RTC_ICE = window.SYRANX_ICE || [{ urls: ['stun:stun.l.google.com:19302', 'stun:stun1.l.google.com:19302'] }, { urls: ['turn:openrelay.metered.ca:80', 'turn:openrelay.metered.ca:443', 'turn:openrelay.metered.ca:443?transport=tcp'], username: 'openrelayproject', credential: 'openrelayproject' }];
+const isDev = () => currentUserRole === 'developer';
+const ownProf = () => ({ id: currentUserId, username: currentUsername, role: currentUserRole, avatar_url: typeof currentAvatar !== 'undefined' ? currentAvatar : null });
+const BOT_PROF = { id: 'bot', username: 'Syranx Bot', role: 'bot', avatar_url: null };
+const G = { game: null, mode: null, me: 0, names: ['', ''], ch: null, code: '', host: false, st: null, score: [0, 0], starter: 0, started: false, helloT: null, over: false, diff: 'sedang', prof: [null, null], free: false, cheatOpen: false };
 const gx = id => document.getElementById(id);
 
 function openGame(id) {
@@ -2250,7 +2301,7 @@ function openGame(id) {
 }
 function closeGame() { gameCleanup(false); closeOverlay('game-screen'); }
 function gameCleanup(silent) {
-  clearTimeout(G.helloT);
+  clearTimeout(G.helloT); GVoice.stop(); G.free = false; G.cheatOpen = false;
   if (G.ch) { try { if (G.started && !silent) G.ch.send({ type: 'broadcast', event: 'g', payload: { t: 'leave' } }); } catch (e) {} const c = G.ch; setTimeout(() => { try { supabaseClient.removeChannel(c); } catch (e) {} }, 150); }
   G.ch = null; G.started = false; G.mode = null; G.score = [0, 0]; G.st = null; G.over = false;
 }
@@ -2260,27 +2311,28 @@ function gameMenu() {
   const bot = GAMES[G.game].bot;
   gx('game-body').innerHTML = `<div class="g-menu">
     ${bot ? '<button class="btn-primary g-big" onclick="gameStartBot()">Lawan Bot</button>' : ''}
-    ${bot && G.game === 'ttt' ? '<div class="g-seg"><button id="gd-mudah" onclick="gameDiff(\'mudah\')">Mudah</button><button id="gd-sulit" class="on" onclick="gameDiff(\'sulit\')">Sulit</button></div>' : ''}
+    ${bot && G.game !== 'suit' ? '<div class="g-seg">' + ['mudah', 'sedang', 'sulit'].map(d => `<button id="gd-${d}" class="${G.diff === d ? 'on' : ''}" onclick="gameDiff('${d}')">${d[0].toUpperCase() + d.slice(1)}</button>`).join('') + '</div>' : ''}
     <div class="g-or">Main online dengan teman</div>
     <button class="set-btn" onclick="gameHost()"><span>Buat room baru</span><span>›</span></button>
     <div class="g-join"><input id="game-code" class="glass-input" placeholder="Kode room" maxlength="4" inputmode="numeric" autocomplete="off"><button class="btn-primary" onclick="gameJoin()">Gabung</button></div>
     <p class="muted" style="text-align:center;font-size:12px">Buat room lalu kirim kodenya ke teman lewat Chat Pribadi. Teman memasukkan kode itu untuk bergabung.</p>
   </div>`;
 }
-function gameDiff(d) { G.diff = d; ['mudah', 'sulit'].forEach(x => { const b = gx('gd-' + x); if (b) b.classList.toggle('on', x === d); }); }
+function gameDiff(d) { G.diff = d; ['mudah', 'sedang', 'sulit'].forEach(x => { const b = gx('gd-' + x); if (b) b.classList.toggle('on', x === d); }); }
 
 // ---------- koneksi ----------
 function gameChannel(code) {
   G.code = code;
   G.ch = supabaseClient.channel('game-' + code, { config: { broadcast: { self: false } } });
   G.ch.on('broadcast', { event: 'g' }, p => gameRecv(p.payload));
+  G.ch.on('broadcast', { event: 'v' }, p => GVoice.recv(p.payload));
   return G.ch;
 }
 function gameSend(o) { if (G.ch) try { G.ch.send({ type: 'broadcast', event: 'g', payload: o }); } catch (e) {} }
 function gameHost() {
   if (!supabaseClient || !supabaseClient.channel) return showToast('Koneksi online belum siap');
   const code = String(Math.floor(1000 + Math.random() * 9000));
-  G.mode = 'online'; G.host = true; G.me = 0; G.names = [currentUsername, '']; G.started = false;
+  G.mode = 'online'; G.host = true; G.me = 0; G.names = [currentUsername, '']; G.prof = [ownProf(), null]; G.started = false;
   gameChannel(code).subscribe();
   gx('game-body').innerHTML = `<div class="g-wait"><div class="g-code">${code}</div><p>Kirim kode ini ke temanmu.<br>Menunggu pemain lain bergabung...</p><div class="typing" style="justify-content:center"><span></span><span></span><span></span></div><button class="mini-btn" onclick="navigator.clipboard&&navigator.clipboard.writeText('${code}').then(()=>showToast('Kode disalin'))">Salin kode</button><button class="mini-btn danger" onclick="gameBack()">Batal</button></div>`;
 }
@@ -2288,7 +2340,7 @@ function gameJoin() {
   const code = (gx('game-code').value || '').trim();
   if (!/^\d{4}$/.test(code)) return showToast('Masukkan 4 digit kode room');
   if (!supabaseClient || !supabaseClient.channel) return showToast('Koneksi online belum siap');
-  G.mode = 'online'; G.host = false; G.me = 1; G.names = ['', currentUsername]; G.started = false;
+  G.mode = 'online'; G.host = false; G.me = 1; G.names = ['', currentUsername]; G.prof = [null, ownProf()]; G.started = false;
   gx('game-body').innerHTML = '<div class="g-wait"><p>Mencari room ' + esc(code) + '...</p><div class="typing" style="justify-content:center"><span></span><span></span><span></span></div></div>';
   let tries = 0;
   gameChannel(code).subscribe(st => {
@@ -2296,7 +2348,7 @@ function gameJoin() {
     const ping = () => {
       if (G.started) return;
       if (++tries > 8) { gameCleanup(true); showToast('Room tidak ditemukan'); gameMenu(); return; }
-      gameSend({ t: 'hello', game: G.game, name: currentUsername });
+      gameSend({ t: 'hello', game: G.game, name: currentUsername, id: currentUserId });
       G.helloT = setTimeout(ping, 1000);
     };
     ping();
@@ -2308,11 +2360,11 @@ function gameRecv(m) {
   if (m.t === 'hello' && G.host) {
     if (m.game !== G.game) { gameSend({ t: 'deny', why: 'Room ini untuk game ' + GAMES[G.game].name }); return; }
     if (G.started && G.names[1] && G.names[1] !== m.name) { gameSend({ t: 'deny', why: 'Room sudah penuh' }); return; }
-    G.names[1] = m.name;
-    gameSend({ t: 'start', name: currentUsername, game: G.game });
+    G.names[1] = m.name; if (m.id) gameLoadProf(1, m.id);
+    gameSend({ t: 'start', name: currentUsername, game: G.game, id: currentUserId });
     if (!G.started) { G.started = true; gameBegin(); }
   } else if (m.t === 'start' && !G.host) {
-    clearTimeout(G.helloT); G.names[0] = m.name;
+    clearTimeout(G.helloT); G.names[0] = m.name; if (m.id) gameLoadProf(0, m.id);
     if (!G.started) { G.started = true; gameBegin(); }
   } else if (m.t === 'deny') { clearTimeout(G.helloT); const w = m.why || 'Ditolak'; gameCleanup(true); showToast(w); gameMenu(); }
   else if (m.t === 'leave') { G.over = true; gx('game-status').textContent = G.names[1 - G.me] + ' keluar dari room'; gx('game-status').classList.add('warn'); }
@@ -2321,15 +2373,17 @@ function gameRecv(m) {
 }
 
 // ---------- bot ----------
-function gameStartBot() { G.mode = 'bot'; G.me = 0; G.host = true; G.names = [currentUsername, 'Syranx Bot']; G.started = true; gameBegin(); }
+function gameStartBot() { G.mode = 'bot'; G.me = 0; G.host = true; G.names = [currentUsername, 'Syranx Bot']; G.prof = [ownProf(), BOT_PROF]; G.started = true; gameBegin(); }
 
 // ---------- layar permainan ----------
 function gameBegin() {
   G.score = [0, 0]; G.starter = 0; G.over = false;
   gx('game-body').innerHTML = `<div class="g-top"><div class="g-pl" id="gp0"></div><div class="g-vs">vs</div><div class="g-pl r" id="gp1"></div></div>
+    ${G.mode === 'online' ? '<div class="g-voice"><button id="gv-mic" class="mini-btn" onclick="GVoice.toggleMic()">Mic: mati</button><button id="gv-spk" class="mini-btn" onclick="GVoice.toggleSpk()">Suara lawan: nyala</button><span id="gv-st">Suara: menyambung</span></div>' : ''}
     <div id="game-status" class="g-status"></div>
     <div id="game-board" class="g-area"></div>
     <div class="g-bottom"><button class="mini-btn" onclick="gameRematch()">Main lagi</button><button class="mini-btn danger" onclick="gameBack()">Keluar</button></div>`;
+  if (G.mode === 'online') GVoice.start();
   gameReset();
 }
 function gameRematch() {
@@ -2342,15 +2396,32 @@ function gameReset() {
   const g = G.game;
   if (g === 'ttt') G.st = { b: Array(9).fill(null), turn: G.starter, win: null };
   else if (g === 'c4') G.st = { b: Array(42).fill(null), turn: G.starter, win: null, last: -1 };
+  else if (g === 'zour') G.st = { b: {}, turn: G.starter, phase: 'P', placed: [0, 0], sel: null, csel: null, win: null, note: '' };
   else G.st = { pick: [null, null], wins: [0, 0], round: 1, res: null, rev: false };
   const s = gx('game-status'); if (s) s.classList.remove('warn');
   gameDraw();
   gameBotMove();
 }
+const VCHK = '<svg class="vchk" viewBox="0 0 24 24" aria-label="Terverifikasi"><circle cx="12" cy="12" r="11" fill="#2f8cf0"/><path d="M7 12.5l3.2 3.2L17 9" stroke="#fff" stroke-width="2.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/></svg>';
+const isVerified = p => !!p && VERIFIED_ROLES.includes(p.role);
+async function gameLoadProf(i, id) { try { const p = await getProfile(id); if (p) { G.prof[i] = p; G.names[i] = p.username || G.names[i]; gameDrawHead(); } } catch (e) {} }
 function gameDrawHead() {
-  [0, 1].forEach(i => { const e = gx('gp' + i); if (e) e.innerHTML = `<b>${esc(G.names[i] || '-')}</b><small>${G.game === 'ttt' ? (i === 0 ? 'X' : 'O') : G.game === 'c4' ? (i === 0 ? 'Merah' : 'Kuning') : ''}</small><span class="g-score">${G.score[i]}</span>`; });
+  const sym = i => G.game === 'ttt' ? (i === 0 ? 'X' : 'O') : G.game === 'c4' ? (i === 0 ? 'Merah' : 'Kuning') : G.game === 'zour' ? (i === 0 ? 'Merah' : 'Biru') : '';
+  [0, 1].forEach(i => {
+    const e = gx('gp' + i); if (!e) return;
+    const p = G.prof[i] || { username: G.names[i] || '-' };
+    const rl = p.role ? String(p.role).toUpperCase() : '';
+    e.innerHTML = `${avatarHTML(p.avatar_url, p.username, 38)}<div class="g-pi"><b>${esc(p.username)}${isVerified(p) ? VCHK : ''}</b><small>${p.role === 'bot' ? 'BOT · ' : ''}${sym(i)}</small></div><span class="g-score">${G.score[i]}</span>`;
+    e.onclick = () => gameShowProf(i);
+  });
   const e0 = gx('gp0'), e1 = gx('gp1');
   if (G.st && G.game !== 'suit' && e0 && e1) { e0.classList.toggle('turn', !G.over && G.st.turn === 0); e1.classList.toggle('turn', !G.over && G.st.turn === 1); }
+}
+function gameShowProf(i) {
+  const p = G.prof[i] || { username: G.names[i] || '-' }; const rl = p.role ? String(p.role).toUpperCase() : 'PEMAIN';
+  const el = gx('game-prof');
+  el.innerHTML = `<div class="g-prof-card">${avatarHTML(p.avatar_url, p.username, 96)}<h3>${esc(p.username)}${isVerified(p) ? VCHK : ''}</h3><span class="role-badge role-${safeRole(p.role)}">${esc(rl)}</span><p>${isVerified(p) ? 'Akun terverifikasi Syranx' : (p.role === 'bot' ? 'Lawan komputer' : 'Pengguna Syranx')}</p><small>Tutup dengan mengetuk di mana saja</small></div>`;
+  el.classList.add('show');
 }
 function gameStatus(t) { const s = gx('game-status'); if (s) s.textContent = t; }
 
@@ -2370,6 +2441,8 @@ function gameApply(a, local) {
     if (st.turn !== who || st.win || G.over) return;
     const r = c4Drop(st.b, a.c, who); if (r < 0) return;
     st.last = r; c4Check(who);
+  } else if (G.game === 'zour') {
+    if (!zApply(a, who)) return;
   } else {
     if (st.pick[who] !== null || st.rev) return;
     st.pick[who] = a.v;
@@ -2381,6 +2454,7 @@ function gameApply(a, local) {
 function gameBotMove() {
   if (G.mode !== 'bot' || G.over || !G.st) return;
   const st = G.st;
+  if (G.game === 'zour') { if (st.turn !== 1 || st.win) return; setTimeout(() => { if (G.mode !== 'bot' || G.st !== st || G.over || st.turn !== 1) return; const m = zBot(); if (m) { zApply({ k: m.f === undefined ? 'place' : 'move', f: m.f, n: m.n }, 1); gameDraw(); gameBotMove(); } }, 650); return; }
   if (G.game === 'suit') { if (st.pick[1] === null && !st.rev) setTimeout(() => { if (G.mode === 'bot' && G.st === st && st.pick[1] === null) { st.pick[1] = ['batu', 'gunting', 'kertas'][Math.floor(Math.random() * 3)]; if (st.pick[0] !== null) suitReveal(); gameDraw(); } }, 500); return; }
   if (st.turn !== 1) return;
   const snap = st;
@@ -2407,7 +2481,7 @@ function tttCheck(who) {
 }
 function tttBot(b) {
   const empty = b.map((v, i) => v === null ? i : -1).filter(i => i >= 0);
-  if (G.diff === 'mudah' && Math.random() < 0.6) return empty[Math.floor(Math.random() * empty.length)];
+  if (Math.random() < ({ mudah: 0.6, sedang: 0.25, sulit: 0 })[G.diff]) return empty[Math.floor(Math.random() * empty.length)];
   let best = -9, move = empty[0];
   const mm = (bd, turn, d) => {
     const w = tttWinner(bd); if (w) return w.p === 1 ? 10 - d : d - 10;
@@ -2444,7 +2518,7 @@ function c4Bot(b) {
   const safe = cols.filter(cc => { const t = b.slice(); const r = c4Drop(t, cc, 1); if (r < 0) return false; const t2 = t.slice(); const r2 = c4Drop(t2, cc, 0); return !(r2 >= 0 && c4Line(t2, 0)); });
   const pool = safe.length ? safe : cols;
   const pref = [3, 2, 4, 1, 5, 0, 6].filter(x => pool.includes(x));
-  return Math.random() < 0.75 ? pref[0] : pool[Math.floor(Math.random() * pool.length)];
+  return Math.random() < ({ mudah: 0.3, sedang: 0.75, sulit: 0.97 })[G.diff] ? pref[0] : pool[Math.floor(Math.random() * pool.length)];
 }
 
 // ---------- suit ----------
@@ -2480,6 +2554,8 @@ function gameDraw() {
     bd.innerHTML = h + '</div></div>';
     if (st.win) gameStatus(st.win.p === -1 ? 'Seri' : (st.win.p === me ? 'Kamu menang' : (G.mode === 'bot' ? 'Bot menang' : opp + ' menang')));
     else gameStatus(st.turn === me ? 'Giliranmu, pilih kolom' : 'Giliran ' + G.names[st.turn]);
+  } else if (G.game === 'zour') {
+    zDraw(bd);
   } else {
     const mine = st.pick[me], theirs = st.pick[1 - me];
     let h = `<div class="suit"><div class="suit-round">Ronde ${Math.min(st.round, 3)} · menang 2 kali</div><div class="suit-score"><b>${st.wins[me]}</b> : <b>${st.wins[1 - me]}</b></div><div class="suit-reveal"><div class="suit-box">${mine ? SUIT_IC[mine] : '?'}</div><div class="suit-box ${st.rev ? '' : 'hid'}">${st.rev ? SUIT_IC[theirs] : (theirs !== null ? '...' : '?')}</div></div><div class="suit-pick">`;
@@ -2490,6 +2566,181 @@ function gameDraw() {
     else gameStatus(mine === null ? 'Pilih batu, gunting, atau kertas' : 'Menunggu ' + (G.mode === 'bot' ? 'bot' : opp) + '...');
   }
 }
+
+// ---------- Zour RF ----------
+const ZN = ['TL', 'TM', 'TR', 'ML', 'C', 'MR', 'BL', 'BM', 'BR'];
+const ZPOS = { TL: [14, 14], TM: [50, 14], TR: [86, 14], ML: [14, 50], C: [50, 50], MR: [86, 50], BL: [14, 86], BM: [50, 86], BR: [86, 86] };
+const ZADJ = { TL: ['TM', 'ML', 'C'], TM: ['TL', 'TR', 'C'], TR: ['TM', 'MR', 'C'], ML: ['TL', 'BL', 'C'], C: ['TL', 'TR', 'BL', 'BR', 'TM', 'BM', 'ML', 'MR'], MR: ['TR', 'BR', 'C'], BL: ['ML', 'BM', 'C'], BM: ['BL', 'BR', 'C'], BR: ['BM', 'MR', 'C'] };
+const ZLINES = [['TL', 'TM', 'TR'], ['ML', 'C', 'MR'], ['BL', 'BM', 'BR'], ['TL', 'ML', 'BL'], ['TM', 'C', 'BM'], ['TR', 'MR', 'BR'], ['TL', 'C', 'BR'], ['TR', 'C', 'BL']];
+const zLine = (b, p) => ZLINES.find(l => l.every(n => b[n] === p)) || null;
+function zMoves(s) {
+  const p = s.turn, out = [];
+  if (s.phase === 'P') { if (s.placed[p] < 3) ZN.forEach(n => { if (s.b[n] === undefined) out.push({ n }); }); }
+  else ZN.forEach(f => { if (s.b[f] === p) ZADJ[f].forEach(n => { if (s.b[n] === undefined) out.push({ f, n }); }); });
+  return out;
+}
+function zStep(s, m) {
+  const b = { ...s.b }, p = s.turn, placed = s.placed.slice(); let phase = s.phase;
+  if (m.f !== undefined) delete b[m.f]; else placed[p]++;
+  b[m.n] = p;
+  if (phase === 'P' && placed[0] >= 3 && placed[1] >= 3) phase = 'M';
+  return { b, phase, placed, turn: 1 - p };
+}
+function zApply(a, who) {
+  const st = G.st;
+  if (a.k === 'cheat') { zCheat(a); return true; }
+  if (st.turn !== who || st.win) return false;
+  let m;
+  if (st.phase === 'P') { if (a.k !== 'place' || st.b[a.n] !== undefined || st.placed[who] >= 3) return false; m = { n: a.n }; }
+  else { if (a.k !== 'move' || st.b[a.f] !== who || st.b[a.n] !== undefined || !ZADJ[a.f].includes(a.n)) return false; m = { f: a.f, n: a.n }; }
+  const ns = zStep(st, m); st.b = ns.b; st.phase = ns.phase; st.placed = ns.placed; st.turn = ns.turn; st.sel = null; st.note = '';
+  const l = zLine(st.b, who);
+  if (l) { st.win = { p: who, l }; st.turn = who; gameEnd(who); return true; }
+  zPassCheck();
+  return true;
+}
+function zPassCheck() {
+  const st = G.st;
+  if (zMoves(st).length) return;
+  const o = { ...st, turn: 1 - st.turn };
+  if (zMoves(o).length) { st.note = G.names[st.turn] + ' tidak bisa bergerak, giliran dilewati'; st.turn = 1 - st.turn; }
+  else { st.win = { p: -1, l: [] }; gameEnd(-1); }
+}
+function zCheat(a) {
+  const st = G.st;
+  if (a.kind === 'skip') { st.turn = 1 - st.turn; st.sel = null; st.note = 'Giliran dilewati'; }
+  else if (a.kind === 'move') {
+    const p = st.b[a.f]; if (p === undefined || st.b[a.n] !== undefined) return;
+    delete st.b[a.f]; st.b[a.n] = p; st.sel = null; st.csel = null; st.note = '';
+    for (const q of [p, 1 - p]) { const l = zLine(st.b, q); if (l) { st.win = { p: q, l }; gameEnd(q); break; } }
+  }
+}
+function gameCheat(a) {
+  if (!isDev() || !G.st || G.game !== 'zour') return;
+  const m = { k: 'cheat', ...a };
+  if (G.mode === 'online') gameSend({ t: 'a', ...m });
+  gameApply({ ...m, who: G.me }, true);
+}
+function gameZClick(n) {
+  const st = G.st; if (!st || G.over) return;
+  if (G.free && isDev()) {
+    if (st.csel == null) { if (st.b[n] !== undefined) st.csel = n; }
+    else if (st.b[n] === undefined) { const f = st.csel; st.csel = null; gameCheat({ kind: 'move', f, n }); return; }
+    else st.csel = n;
+    gameDraw(); return;
+  }
+  if (st.turn !== G.me) return;
+  if (st.phase === 'P') { if (st.b[n] === undefined) gameAct({ k: 'place', n }); }
+  else if (st.b[n] === G.me) { st.sel = n; gameDraw(); }
+  else if (st.sel != null && st.b[n] === undefined) gameAct({ k: 'move', f: st.sel, n });
+}
+function gameFreeToggle() { G.free = !G.free; if (G.st) G.st.csel = null; gameDraw(); }
+function gameCheatToggle() { G.cheatOpen = !G.cheatOpen; gameDraw(); }
+
+// bot: minimax alpha-beta, kedalaman menurut level
+const zEval = (s, me) => s.b.C === me ? 1 : (s.b.C === undefined ? 0 : -1);
+function zAB(s, d, al, be, me, ply) {
+  const mv = zMoves(s);
+  if (!mv.length) { const s2 = { ...s, turn: 1 - s.turn }; if (!zMoves(s2).length) return 0; if (d <= 1) return zEval(s, me); return zAB(s2, d - 1, al, be, me, ply + 1); }
+  const max = s.turn === me; let best = max ? -1e9 : 1e9;
+  for (const m of mv) {
+    const s2 = zStep(s, m); let v;
+    if (zLine(s2.b, s.turn)) v = (max ? 1 : -1) * (100 - ply);
+    else if (d <= 1) v = zEval(s2, me);
+    else v = zAB(s2, d - 1, al, be, me, ply + 1);
+    if (max) { if (v > best) best = v; if (best > al) al = best; } else { if (v < best) best = v; if (best < be) be = best; }
+    if (al >= be) break;
+  }
+  return best;
+}
+function zBot() {
+  const st = G.st, mv = zMoves(st); if (!mv.length) return null;
+  if (G.diff === 'mudah' && Math.random() < 0.6) return mv[Math.floor(Math.random() * mv.length)];
+  const depth = ({ mudah: 1, sedang: 3, sulit: 7 })[G.diff] || 3;
+  let best = -1e9, pick = [];
+  for (const m of mv) {
+    const s2 = zStep(st, m);
+    const v = zLine(s2.b, 1) ? 100 : (depth <= 1 ? zEval(s2, 1) : zAB(s2, depth - 1, -1e9, 1e9, 1, 1));
+    if (v > best) { best = v; pick = [m]; } else if (v === best) pick.push(m);
+  }
+  return pick[Math.floor(Math.random() * pick.length)];
+}
+
+function zDraw(bd) {
+  const st = G.st, me = G.me, W = st.win ? st.win.l : [];
+  const col = ['#e5483d', '#3b8be8'];
+  const tgt = st.phase === 'M' && st.sel != null && st.turn === me && !G.over ? ZADJ[st.sel].filter(n => st.b[n] === undefined) : [];
+  let h = '<svg class="zour" viewBox="0 0 100 100"><rect x="14" y="14" width="72" height="72" class="zl"/><path class="zl" d="M50 14V86M14 50H86M14 14L86 86M86 14L14 86"/>';
+  if (W.length === 3) h += `<line class="zwin" x1="${ZPOS[W[0]][0]}" y1="${ZPOS[W[0]][1]}" x2="${ZPOS[W[2]][0]}" y2="${ZPOS[W[2]][1]}"/>`;
+  ZN.forEach(n => {
+    const [x, y] = ZPOS[n], p = st.b[n];
+    h += `<circle cx="${x}" cy="${y}" r="${tgt.includes(n) ? 4.2 : 2.2}" class="zn ${tgt.includes(n) ? 'hl' : ''}"/>`;
+    if (p !== undefined) h += `<circle cx="${x}" cy="${y}" r="8.5" fill="${col[p]}" class="zp ${st.sel === n || st.csel === n ? 'sel' : ''}"/>`;
+    h += `<circle cx="${x}" cy="${y}" r="14" class="zh" onclick="gameZClick('${n}')"/>`;
+  });
+  h += '</svg>';
+  if (isDev()) {
+    h += `<div class="g-cheat"><button class="mini-btn" onclick="gameCheatToggle()">${G.cheatOpen ? 'Tutup panel cheat' : 'Panel cheat'}</button>`;
+    if (G.cheatOpen) h += `<div class="g-cheat-box"><div class="g-cheat-t">Panel developer</div><button class="mini-btn ${G.free ? 'on' : ''}" onclick="gameFreeToggle()">Pindah bebas: ${G.free ? 'ON' : 'OFF'}</button><button class="mini-btn" onclick="gameCheat({kind:'skip'})">Lewati giliran</button><p>${G.free ? 'Ketuk pion mana pun (milikmu atau lawan), lalu ketuk petak kosong tujuan. Tanpa batas langkah dan tidak memakai giliran.' : 'Aktifkan Pindah bebas untuk memindahkan pion sesuka hati.'}</p></div>`;
+    h += '</div>';
+  }
+  bd.innerHTML = h;
+  if (st.win) gameStatus(st.win.p === -1 ? 'Seri' : (st.win.p === me ? 'Kamu menang' : (G.mode === 'bot' ? 'Bot menang' : G.names[1 - me] + ' menang')));
+  else if (st.note) gameStatus(st.note);
+  else if (G.free && isDev()) gameStatus(st.csel == null ? 'Mode bebas: pilih pion' : 'Mode bebas: pilih petak tujuan');
+  else if (st.turn !== me) gameStatus('Giliran ' + G.names[st.turn]);
+  else if (st.phase === 'P') gameStatus('Taruh pion (' + st.placed[me] + '/3)');
+  else gameStatus(st.sel == null ? 'Pilih pionmu' : 'Pilih petak tujuan');
+}
+
+// ---------- suara (mic) saat main online ----------
+const GVoice = {
+  pc: null, tx: null, track: null, mic: false, spk: true, pend: [], remote: false,
+  send(o) { if (G.ch) try { G.ch.send({ type: 'broadcast', event: 'v', payload: o }); } catch (e) {} },
+  start() {
+    this.stop();
+    if (!window.RTCPeerConnection) { this.ui('Suara tidak didukung'); return; }
+    const pc = this.pc = new RTCPeerConnection({ iceServers: RTC_ICE });
+    this.tx = pc.addTransceiver('audio', { direction: 'sendrecv' });
+    pc.onicecandidate = e => { if (e.candidate) this.send({ t: 'ice', c: e.candidate.toJSON ? e.candidate.toJSON() : e.candidate }); };
+    pc.ontrack = e => { const a = gx('game-voice'); a.srcObject = (e.streams && e.streams[0]) || new MediaStream([e.track]); a.muted = !this.spk; a.play().catch(() => {}); };
+    pc.onconnectionstatechange = () => this.ui();
+    this.ui();
+    if (G.host) setTimeout(async () => { if (this.pc !== pc) return; try { const o = await pc.createOffer(); await pc.setLocalDescription(o); this.send({ t: 'offer', sdp: { type: o.type, sdp: o.sdp } }); } catch (e) { this.ui('Suara gagal'); } }, 900);
+  },
+  async recv(m) {
+    if (!m || !this.pc) return;
+    const pc = this.pc;
+    try {
+      if (m.t === 'offer' && !G.host) { await pc.setRemoteDescription(m.sdp); this.remote = true; for (const c of this.pend.splice(0)) await pc.addIceCandidate(c).catch(() => {}); const a = await pc.createAnswer(); await pc.setLocalDescription(a); this.send({ t: 'answer', sdp: { type: a.type, sdp: a.sdp } }); }
+      else if (m.t === 'answer' && G.host) { await pc.setRemoteDescription(m.sdp); this.remote = true; for (const c of this.pend.splice(0)) await pc.addIceCandidate(c).catch(() => {}); }
+      else if (m.t === 'ice' && m.c) { if (this.remote) await pc.addIceCandidate(m.c).catch(() => {}); else this.pend.push(m.c); }
+    } catch (e) { this.ui('Suara gagal'); }
+  },
+  async toggleMic() {
+    if (!this.pc) return showToast('Suara hanya untuk mode online');
+    if (this.mic) { try { await this.tx.sender.replaceTrack(null); } catch (e) {} if (this.track) this.track.stop(); this.track = null; this.mic = false; this.ui(); return; }
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return showToast('Mic butuh HTTPS dan browser yang mendukung');
+    try {
+      const st = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
+      this.track = st.getAudioTracks()[0]; await this.tx.sender.replaceTrack(this.track); this.mic = true; this.ui();
+    } catch (e) { showToast('Izin mikrofon ditolak'); }
+  },
+  toggleSpk() { this.spk = !this.spk; const a = gx('game-voice'); if (a) a.muted = !this.spk; this.ui(); },
+  ui(msg) {
+    const mb = gx('gv-mic'), sb = gx('gv-spk'), st = gx('gv-st'); if (!mb) return;
+    mb.textContent = 'Mic: ' + (this.mic ? 'nyala' : 'mati'); mb.classList.toggle('on', this.mic);
+    sb.textContent = 'Suara lawan: ' + (this.spk ? 'nyala' : 'mati');
+    const cs = this.pc ? this.pc.connectionState : 'new';
+    st.textContent = msg || (cs === 'connected' ? 'Suara tersambung' : cs === 'failed' ? 'Suara gagal tersambung' : 'Suara: menyambung');
+  },
+  stop() {
+    try { if (this.track) this.track.stop(); } catch (e) {}
+    try { if (this.pc) { this.pc.onconnectionstatechange = null; this.pc.close(); } } catch (e) {}
+    this.pc = null; this.tx = null; this.track = null; this.mic = false; this.pend = []; this.remote = false;
+    const a = gx('game-voice'); if (a) a.srcObject = null;
+  }
+};
 let toastT;
 function showToast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
 </script>
