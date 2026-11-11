@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
-<meta name="theme-color" content="#0c1016">
+<meta name="theme-color" content="#000000">
 <title>Syranx AI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -12,24 +12,15 @@
 <style>
   * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; margin: 0; padding: 0; }
   :root {
-    --bg:#0c1016; --accent:#4a8ff0; --accent-d:#2f73d4; --accent-2:#9cc2ff; --on-accent:#ffffff; --accent-glow:rgba(0,0,0,.3);
-    --blob-1:#2b5f94; --blob-2:#2f7d70; --blob-3:#5d4b39; --blob-op:1;
-    --blur:28px; --glass-a:.12; --gb:.08; --fs:15px;
-    --tint:255,255,255; --strong:#ffffff; --text:#eef2f7; --text-2:#b4bcc7; --text-3:#818a96;
-    --border:rgba(255,255,255,.20); --rim:.5; --shadow-c:rgba(0,0,0,.28);
-    --overlay-bg:rgba(10,13,18,.45); --input-bg:rgba(0,0,0,.24); --bg-input:rgba(255,255,255,.07); --bg-card:rgba(255,255,255,.08);
+    --bg:#000; --accent:#f2a33a; --accent-d:#c9831f; --accent-2:#ffc680; --on-accent:#1b1204; --accent-glow:rgba(0,0,0,.3);
+    --blob-1:#000; --blob-2:#000; --blob-3:#000; --blob-op:0;
+    --blur:22px; --glass-a:.10; --gb:0; --fs:15px;
+    --tint:255,255,255; --strong:#ffffff; --text:#f1eee9; --text-2:#bcb6ad; --text-3:#857f76;
+    --border:rgba(255,255,255,.16); --rim:.22; --shadow-c:rgba(0,0,0,.30);
+    --overlay-bg:rgba(0,0,0,.7); --input-bg:rgba(0,0,0,.30); --bg-input:rgba(255,255,255,.07); --bg-card:rgba(255,255,255,.08);
     --verified-blue:#1d9bf0;
     --badge-dev:#ef4444; --badge-owner:#f59e0b; --badge-cs:#10b981; --badge-admin:#8b5cf6; --badge-ceo:#ec4899; --badge-member:#9ca3af;
   }
-  html[data-theme="embun"] { --bg:#d8e1ea; --accent:#2467d8; --accent-d:#1b52b0; --accent-2:#1d5bc4; --on-accent:#ffffff; --blob-1:#8dbbe6; --blob-2:#f0d4a6; --blob-3:#a6d3be; --blob-op:.95;
-    --gb:.30; --tint:22,34,50; --strong:#0e1620; --text:#17212c; --text-2:#475463; --text-3:#6d7a88; --border:rgba(255,255,255,.75); --rim:.9; --shadow-c:rgba(40,60,90,.18);
-    --overlay-bg:rgba(216,225,234,.45); --input-bg:rgba(255,255,255,.55); }
-  html[data-theme="pasir"] { --bg:#e7dfd1; --accent:#a8501a; --accent-d:#873f13; --accent-2:#92440f; --on-accent:#ffffff; --blob-1:#e3b98b; --blob-2:#c6d3bc; --blob-3:#dba698; --blob-op:.95;
-    --gb:.30; --tint:42,28,14; --strong:#1c130a; --text:#2a1f13; --text-2:#5b4a38; --text-3:#85725d; --border:rgba(255,255,255,.75); --rim:.9; --shadow-c:rgba(80,55,30,.18);
-    --overlay-bg:rgba(231,223,209,.45); --input-bg:rgba(255,255,255,.55); }
-  html[data-theme="hutan"] { --bg:#0a110d; --accent:#a5d46f; --accent-d:#82b14d; --accent-2:#c6e6a0; --on-accent:#0f1a08; --blob-1:#2a7a50; --blob-2:#557a37; --blob-3:#1d6666; --blob-op:1; --overlay-bg:rgba(10,17,13,.45); }
-  html[data-theme="senja"] { --bg:#140d0c; --accent:#f0a277; --accent-d:#d4805a; --accent-2:#f7c4a4; --on-accent:#2a1206; --blob-1:#a3382f; --blob-2:#cf7a45; --blob-3:#5a3a42; --blob-op:1; --overlay-bg:rgba(20,13,12,.45); }
-  html[data-theme="grafit"] { --bg:#09090a; --accent:#e9eaee; --accent-d:#c8c9ce; --accent-2:#ffffff; --on-accent:#111214; --blob-1:#4d5158; --blob-2:#3a3d43; --blob-3:#5e5e64; --blob-op:.9; --overlay-bg:rgba(9,9,10,.5); }
 
   html, body { font-family:'Manrope',system-ui,-apple-system,'Segoe UI',sans-serif; background:var(--bg); color:var(--text); height:100vh; height:100dvh; overflow:hidden; -webkit-font-smoothing:antialiased; }
   ::-webkit-scrollbar { width:5px; } ::-webkit-scrollbar-thumb { background:rgba(var(--tint),.18); border-radius:4px; }
@@ -43,18 +34,9 @@
   @keyframes eq { 0%,100%{height:22%} 50%{height:100%} }
   html[data-anim="off"] *, html[data-anim="off"] *::before, html[data-anim="off"] *::after { animation:none !important; }
 
-  /* LATAR AURORA */
-  .bg-blobs { position:fixed; inset:0; z-index:0; overflow:hidden; pointer-events:none; }
-  .bg-blobs i { position:absolute; border-radius:50%; opacity:var(--blob-op); will-change:transform; }
-  .bg-blobs i:nth-child(1) { width:90vmax; height:90vmax; left:-35vmax; top:-30vmax; background:radial-gradient(circle,var(--blob-1) 0,color-mix(in srgb,var(--blob-1) 55%,transparent) 22%,color-mix(in srgb,var(--blob-1) 22%,transparent) 42%,color-mix(in srgb,var(--blob-1) 6%,transparent) 58%,transparent 70%); animation:floatA 48s ease-in-out infinite alternate; }
-  .bg-blobs i:nth-child(2) { width:85vmax; height:85vmax; right:-38vmax; bottom:-34vmax; background:radial-gradient(circle,var(--blob-2) 0,color-mix(in srgb,var(--blob-2) 55%,transparent) 22%,color-mix(in srgb,var(--blob-2) 22%,transparent) 42%,color-mix(in srgb,var(--blob-2) 6%,transparent) 58%,transparent 70%); animation:floatB 56s ease-in-out infinite alternate; }
-  .bg-blobs i:nth-child(3) { width:60vmax; height:60vmax; left:30%; top:38%; background:radial-gradient(circle,var(--blob-3) 0,color-mix(in srgb,var(--blob-3) 55%,transparent) 22%,color-mix(in srgb,var(--blob-3) 22%,transparent) 42%,color-mix(in srgb,var(--blob-3) 6%,transparent) 58%,transparent 70%); opacity:calc(var(--blob-op) * .6); animation:floatB 64s ease-in-out infinite alternate-reverse; }
-
-  .bg-blobs::after { display:none; content:''; position:absolute; inset:0; opacity:.09; background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='160' height='160'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 .6 0'/></filter><rect width='100%' height='100%' filter='url(%23n)'/></svg>"); }
-
   /* KACA (GLASSMORPHISM) */
   #header, #nav, .sidebar, .auth-box, .ai .bubble, .other .bubble, .input-row, .role-card, .tool-card, .calc-display, .conv-out,
-  .set-card, .mini-player, .locked-card, .np-card, .track, .overlay-header, .theme-card, .calc-grid button, .glass-input {
+  .set-card, #mini-player, .locked-card, .np-card, .track, .overlay-header, .calc-grid button, .glass-input {
     background:rgba(var(--tint),var(--glass-a));
     -webkit-backdrop-filter:blur(var(--blur)) saturate(170%); backdrop-filter:blur(var(--blur)) saturate(170%);
     border:1px solid var(--border);
@@ -62,7 +44,7 @@
   }
 
   /* AUTH */
-  #auth-screen { position:fixed; inset:0; z-index:2000; background:transparent; display:none; align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
+  #auth-screen { position:fixed; inset:0; z-index:2000; background:rgba(0,0,0,.55); -webkit-backdrop-filter:blur(40px); backdrop-filter:blur(40px); display:none; align-items:center; justify-content:center; padding:20px; overflow-y:auto; }
   #auth-screen.show { display:flex; }
   .auth-box { width:100%; max-width:380px; border-radius:28px; padding:38px 30px; animation:fadeUp .5s ease; }
   .auth-logo-wrap { display:flex; justify-content:center; margin-bottom:16px; }
@@ -257,13 +239,6 @@
   .switch input:checked + span::after { transform:translateX(20px); }
 
   /* TEMA */
-  .theme-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; width:100%; max-width:480px; }
-  .theme-card { border-radius:22px; padding:10px; cursor:pointer; text-align:center; font-size:13px; font-weight:700; position:relative; }
-  .theme-card.active { border-color:var(--accent-2); box-shadow:0 0 0 2px var(--accent-2), 0 8px 30px rgba(0,0,0,.3); }
-  .theme-prev { height:84px; border-radius:15px; margin-bottom:9px; border:1px solid rgba(var(--tint),.18); position:relative; overflow:hidden; }
-  .theme-prev::after { content:''; position:absolute; left:10px; right:10px; bottom:10px; height:22px; border-radius:11px; background:rgba(var(--tint),.22); border:1px solid rgba(var(--tint),.35); }
-  .theme-card .tick { position:absolute; top:16px; right:16px; width:22px; height:22px; border-radius:50%; background:var(--accent-2); color:#000; font-size:13px; display:none; align-items:center; justify-content:center; z-index:2; }
-  .theme-card.active .tick { display:flex; }
 
   /* MUSIK */
   .music-wrap { width:100%; max-width:480px; }
@@ -502,77 +477,98 @@
   .g-timer span { position:relative; z-index:1; display:block; text-align:center; font-size:12px; font-weight:800; line-height:20px; color:#fff; mix-blend-mode:normal; text-shadow:0 1px 3px rgba(0,0,0,.6); }
   .g-timer.warn i { background:#e5483d; }
 
-  /* =====================  LIQUID GLASS  ===================== */
-  html, body { background:var(--bg); }
+  /* =====================  LIQUID GLASS (tenang)  ===================== */
+  .bg-video { position:fixed; inset:0; z-index:0; background:#000; overflow:hidden; pointer-events:none; }
+  .bg-video video { width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.4s ease; }
+  .bg-video video.on { opacity:1; }
+  .bg-video::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.30), rgba(0,0,0,.10) 40%, rgba(0,0,0,.45)); }
+  html, body { background:#000; }
+
   #header, #nav, .sidebar, .auth-box, .ai .bubble, .other .bubble, .input-row, .role-card, .tool-card, .calc-display, .conv-out,
-  .set-card, .mini-player, #mini-player, .locked-card, .np-card, .track, .overlay-header, .theme-card, .calc-grid button, .glass-input,
-  .g-pl, .g-chat, .zour, .ttt-c, .suit-box, .suit-b, .status-box, .model-btn, .set-btn, .lbtn, .mini-ctl, .mini-btn {
-    background:linear-gradient(160deg, rgba(255,255,255,calc(var(--glass-a) + var(--gb) + .06)) 0%, rgba(255,255,255,calc(var(--glass-a) + var(--gb))) 50%, rgba(255,255,255,calc((var(--glass-a) + var(--gb)) * .75)) 100%);
-    -webkit-backdrop-filter:blur(var(--blur)) saturate(190%) brightness(1.05); backdrop-filter:blur(var(--blur)) saturate(190%) brightness(1.05);
+  .set-card, #mini-player, .locked-card, .np-card, .track, .overlay-header, .calc-grid button, .glass-input,
+  .g-pl, .g-chat, .zour, .ttt-c, .suit-box, .suit-b, .status-box, .model-btn, .set-btn, .lbtn, .mini-ctl, .mini-btn, .prof-card, .perm-card {
+    background:rgba(255,255,255,var(--glass-a));
+    -webkit-backdrop-filter:blur(var(--blur)) saturate(140%); backdrop-filter:blur(var(--blur)) saturate(140%);
     border:1px solid var(--border);
-    box-shadow:0 10px 30px var(--shadow-c), inset 0 1.5px 1px rgba(255,255,255,var(--rim)), inset 0 -1px 1px rgba(255,255,255,.10), inset 0 0 24px rgba(255,255,255,.04);
+    box-shadow:0 8px 24px var(--shadow-c), inset 0 1px 0 rgba(255,255,255,var(--rim));
   }
-  .mini-btn, .set-btn, .lbtn, .mini-ctl, .model-btn, .ttt-c, .suit-b { box-shadow:0 4px 14px var(--shadow-c), inset 0 1px 1px rgba(255,255,255,var(--rim)); }
-  .mini-btn { color:var(--accent-2); border-color:var(--border); }
-  .mini-btn.danger { color:#ff6b6b; border-color:rgba(255,107,107,.5); }
-  .sidebar { background:linear-gradient(160deg, rgba(255,255,255,calc(var(--glass-a) + var(--gb) + .10)), rgba(255,255,255,calc(var(--glass-a) + var(--gb) + .04))); border-radius:30px; }
-  #header { border-radius:28px; padding:8px 10px; }
-  #nav { border-radius:34px; padding:6px; gap:4px; }
-  .input-row { border-radius:32px; }
+  .mini-btn, .set-btn, .lbtn, .mini-ctl, .model-btn, .ttt-c, .suit-b { box-shadow:inset 0 1px 0 rgba(255,255,255,var(--rim)); }
+  .mini-btn { color:var(--accent-2); }
+  .mini-btn.danger { color:#ff6b6b; border-color:rgba(255,107,107,.45); }
+  .sidebar { background:rgba(12,12,14,.62); border-radius:28px; }
+  #header { border-radius:26px; padding:8px 10px; }
+  #nav { border-radius:32px; padding:6px; gap:2px; }
+  .input-row { border-radius:30px; }
   .bubble { border-radius:22px; }
-  .user .bubble { border-bottom-right-radius:8px; }
-  .ai .bubble, .other .bubble { border-bottom-left-radius:8px; }
-  .tool-card, .set-card, .locked-card, .np-card, .theme-card, .role-card { border-radius:26px; }
-  .auth-box { border-radius:34px; }
+  .tool-card, .set-card, .locked-card, .np-card, .role-card { border-radius:24px; }
+  .auth-box { border-radius:32px; }
   .header-title, .auth-box h2 { letter-spacing:3px; }
   .welcome h2 { letter-spacing:4px; }
-  .full-screen-overlay { -webkit-backdrop-filter:blur(calc(var(--blur) + 10px)) saturate(160%); backdrop-filter:blur(calc(var(--blur) + 10px)) saturate(160%); }
+  .full-screen-overlay { background:var(--overlay-bg); -webkit-backdrop-filter:blur(34px); backdrop-filter:blur(34px); }
 
-  /* tombol aktif: lensa kaca, bukan blok warna */
-  .nav-btn { transition:background .35s cubic-bezier(.2,.8,.2,1), color .3s, transform .2s; }
-  .nav-btn.active { background:linear-gradient(160deg, rgba(255,255,255,calc(.20 + var(--gb))), rgba(255,255,255,calc(.08 + var(--gb)))); color:var(--accent-2); border:1px solid var(--border); box-shadow:0 4px 16px var(--shadow-c), inset 0 1.5px 1px rgba(255,255,255,var(--rim)), inset 0 -1px 1px rgba(255,255,255,.08); }
-  .nav-btn:active { transform:scale(.95); }
+  .nav-btn { transition:background .3s ease, color .3s ease, transform .2s ease; font-size:10.5px; }
+  .nav-btn.active { background:rgba(255,255,255,.14); color:var(--accent-2); border:1px solid var(--border); box-shadow:inset 0 1px 0 rgba(255,255,255,.2); }
+  .nav-btn:active { transform:scale(.96); }
 
-  /* tombol utama: warna solid + kilau halus di tepi atas */
-  .btn-primary, .send-btn, .lbtn.big, .calc-grid button.eq, .model-btn.active {
-    background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 84%, #fff), var(--accent));
-    box-shadow:inset 0 1.5px 1px rgba(255,255,255,.5), 0 8px 18px var(--shadow-c); border-color:transparent; color:var(--on-accent);
-    -webkit-backdrop-filter:none; backdrop-filter:none;
-  }
-  .user .bubble { background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 86%, #fff), var(--accent)); box-shadow:inset 0 1.5px 1px rgba(255,255,255,.42), 0 8px 20px var(--shadow-c); border-color:transparent; -webkit-backdrop-filter:none; backdrop-filter:none; color:var(--on-accent); }
-  .btn-primary:active, .send-btn:active { transform:scale(.96); }
-  .btn-primary, .send-btn, .set-btn, .mini-btn, .track, .tool-card, .role-card, .menu-item { transition:transform .25s cubic-bezier(.2,.8,.2,1), background .3s, border-color .3s, box-shadow .3s; }
-  .tool-card:active, .role-card:active, .track:active { transform:scale(.97); }
+  .btn-primary, .send-btn, .lbtn.big, .calc-grid button.eq, .model-btn.active, .user .bubble { background:var(--accent); color:var(--on-accent); border-color:transparent; box-shadow:0 6px 16px var(--shadow-c); -webkit-backdrop-filter:none; backdrop-filter:none; }
+  .btn-primary:active, .send-btn:active { transform:scale(.97); }
+  .btn-primary, .send-btn, .set-btn, .mini-btn, .track, .tool-card, .role-card, .menu-item { transition:transform .25s ease, background .3s ease, border-color .3s ease; }
+  .tool-card:active, .role-card:active, .track:active { transform:scale(.98); }
 
   .input-group input, .conv select, .conv input { background:var(--input-bg); }
-  .input-group input:focus { background:var(--input-bg); border-color:var(--accent-2); box-shadow:0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent); }
-  .input-row:focus-within, .glass-input:focus { border-color:var(--accent-2); box-shadow:0 10px 30px var(--shadow-c), inset 0 1.5px 1px rgba(255,255,255,var(--rim)), 0 0 0 3px color-mix(in srgb, var(--accent) 22%, transparent); }
-  .auth-logo, .np-art { box-shadow:inset 0 1.5px 1px rgba(255,255,255,.5), 0 12px 28px var(--shadow-c); background:linear-gradient(180deg, color-mix(in srgb, var(--accent) 84%, #fff), var(--accent)); }
-
-  ::-webkit-scrollbar-thumb { background:rgba(var(--tint),.25); }
-  #toast { background:rgba(22,24,28,.72); -webkit-backdrop-filter:blur(24px) saturate(180%); backdrop-filter:blur(24px) saturate(180%); border-color:rgba(255,255,255,.22); box-shadow:inset 0 1px 1px rgba(255,255,255,.3), 0 12px 30px rgba(0,0,0,.35); }
+  .input-group input:focus { border-color:var(--accent-2); box-shadow:0 0 0 3px rgba(242,163,58,.18); }
+  .input-row:focus-within, .glass-input:focus { border-color:var(--accent-2); }
+  .auth-logo, .np-art { background:var(--accent); box-shadow:0 8px 20px var(--shadow-c); }
+  ::-webkit-scrollbar-thumb { background:rgba(255,255,255,.22); }
+  #toast { background:rgba(18,18,20,.78); -webkit-backdrop-filter:blur(20px); backdrop-filter:blur(20px); border-color:rgba(255,255,255,.2); box-shadow:0 10px 26px rgba(0,0,0,.4); }
   .cbtn.end, .cbtn.accept { color:#fff; }
-  .switch span { background:rgba(var(--tint),.22); }
+  .switch span { background:rgba(255,255,255,.22); }
   .switch input:checked + span { background:var(--accent); }
-  input[type=range] { background:rgba(var(--tint),.22); }
-  input[type=range]::-webkit-slider-thumb { background:#fff; border:1px solid rgba(0,0,0,.08); box-shadow:0 2px 8px rgba(0,0,0,.3); }
-  .theme-prev { border-color:rgba(255,255,255,.35); }
-  .typing span { background:var(--accent-2); }
-  .bubble pre { background:rgba(0,0,0,.42); } .bubble pre code { color:#e6edf3; }
+  input[type=range] { background:rgba(255,255,255,.22); }
+  input[type=range]::-webkit-slider-thumb { background:#fff; border:none; box-shadow:0 2px 6px rgba(0,0,0,.35); }
+  .bubble pre { background:rgba(0,0,0,.45); } .bubble pre code { color:#e6edf3; }
   .welcome .sub-title, .auth-box p.tag { letter-spacing:2px; }
-  .sec-title, .set-card h3 { letter-spacing:1.2px; }
 
-  /* overlay: latar sendiri (opak) supaya halaman di belakang tidak tembus */
-  .full-screen-overlay { background:
-      radial-gradient(circle at 12% 8%, color-mix(in srgb, var(--blob-1) 70%, transparent) 0, transparent 55%),
-      radial-gradient(circle at 92% 92%, color-mix(in srgb, var(--blob-2) 70%, transparent) 0, transparent 58%),
-      radial-gradient(circle at 70% 42%, color-mix(in srgb, var(--blob-3) 45%, transparent) 0, transparent 50%),
-      var(--bg);
-    -webkit-backdrop-filter:none; backdrop-filter:none; }
+  /* pemberitahuan di layar login */
+  .auth-note { margin-top:14px; padding:12px 14px; border-radius:16px; background:rgba(255,255,255,.07); border:1px solid var(--border); font-size:12px; line-height:1.55; color:var(--text-2); text-align:left; }
+  .auth-note b { color:var(--text); font-weight:700; }
+  .auth-note ol { margin:6px 0 0 18px; padding:0; }
+  .auth-note li { margin:2px 0; }
+
+  /* profil */
+  .prof-scroll { overflow-y:auto; }
+  .prof-wrap { width:100%; max-width:520px; margin:0 auto; padding:10px 12px 28px; }
+  #prof-other.prof-wrap { padding:0 12px 28px; }
+  .prof-banner { position:relative; height:164px; border-radius:26px; overflow:hidden; background:#0a0a0a; border:1px solid var(--border); }
+  .prof-media { width:100%; height:100%; object-fit:cover; display:block; }
+  .prof-banner-btns { position:absolute; right:10px; bottom:10px; display:flex; gap:6px; }
+  .prof-banner-btns .mini-btn { background:rgba(0,0,0,.45); }
+  .prof-head { display:flex; align-items:flex-end; gap:14px; padding:0 18px; margin-top:-44px; position:relative; }
+  .prof-head .av { border:3px solid #000; }
+  .prof-id { min-width:0; padding-bottom:4px; display:flex; flex-direction:column; align-items:flex-start; gap:6px; }
+  .prof-id h2 { display:flex; align-items:center; gap:5px; font-size:20px; font-weight:800; color:var(--strong); max-width:100%; }
+  .prof-id h2 .nm { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+  .prof-id .vchk { flex-shrink:0; width:18px; height:18px; }
+  .prof-body { margin-top:16px; padding:16px 16px 14px; border-radius:24px; background:rgba(255,255,255,var(--glass-a)); -webkit-backdrop-filter:blur(var(--blur)); backdrop-filter:blur(var(--blur)); border:1px solid var(--border); box-shadow:inset 0 1px 0 rgba(255,255,255,var(--rim)); }
+  .prof-sec { font-size:11px; font-weight:700; letter-spacing:1.2px; text-transform:uppercase; color:var(--text-3); margin:4px 0 8px; }
+  .prof-bio { font-size:14px; line-height:1.6; color:var(--text); margin-bottom:12px; word-break:break-word; white-space:pre-wrap; }
+  .prof-bio textarea { width:100%; resize:none; font-family:inherit; }
+  .prof-acts { display:flex; gap:8px; flex-wrap:wrap; margin-bottom:16px; }
+  .prof-row { display:flex; justify-content:space-between; align-items:center; padding:11px 0; border-top:1px solid rgba(255,255,255,.1); font-size:14px; }
+  .prof-row span { color:var(--text-2); } .prof-row b { display:flex; align-items:center; gap:5px; font-weight:700; }
+  .prof-row .vchk { width:15px; height:15px; }
+
+  /* panduan izin */
+  .perm-modal { position:fixed; inset:0; z-index:9000; display:none; align-items:center; justify-content:center; padding:22px; background:rgba(0,0,0,.6); -webkit-backdrop-filter:blur(8px); backdrop-filter:blur(8px); }
+  .perm-modal.show { display:flex; }
+  .perm-card { width:100%; max-width:340px; border-radius:28px; padding:24px 22px 20px; background:rgba(22,22,24,.85); }
+  .perm-card h3 { font-size:17px; margin-bottom:10px; color:var(--strong); }
+  .perm-card p { font-size:13px; line-height:1.65; color:var(--text-2); margin-bottom:14px; }
+  .perm-card .btn-primary { margin-top:0; }
 </style>
 </head>
 <body>
-<div class="bg-blobs"><i></i><i></i><i></i></div>
+<div class="bg-video"><video id="bg-video" data-src="https://videotourl.com/videos/1794393022976-a57caac4-6f76-4d99-99d2-6d094167128d.mp4" muted loop playsinline preload="auto" disablepictureinpicture></video></div>
 
 <!-- AUTH -->
 <div id="auth-screen">
@@ -581,8 +577,9 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
     </div></div>
     <h2>SYRANX</h2>
-    <p class="tag">AURORA PREMIUM AI</p>
-    <div id="login-form">
+    <p class="tag">ASISTEN AI PRIBADI</p>
+    <div class="auth-note"><b>Cara membuat akun</b><ol><li>Tekan <b>Daftar</b> di bawah.</li><li>Pilih username dan password.</li><li>Tekan <b>Buat Akun</b>, lalu masuk.</li></ol>Tidak perlu Gmail atau email apa pun. Cukup username dan password. Catat password kamu, karena belum ada fitur lupa password.</div>
+    <div id="login-form" style="margin-top:14px">
       <div class="input-group"><input id="login-user" placeholder="Username" autocomplete="username"></div>
       <div class="input-group">
         <input id="login-pass" type="password" placeholder="Password" autocomplete="current-password">
@@ -626,8 +623,6 @@
     <div class="menu-divider"></div>
     <button class="menu-item" onclick="closeSidebar(); openOverlay('music-screen')">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg>Musik</button>
-    <button class="menu-item" onclick="closeSidebar(); openOverlay('theme-screen')">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2.69l5.66 5.66a8 8 0 1 1-11.31 0z"/></svg>Tema</button>
     <button class="menu-item" onclick="closeSidebar(); openSettings()">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 1 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 1 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 1 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06A1.65 1.65 0 0 0 19.4 9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 1 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z"/></svg>Pengaturan</button>
     <div class="menu-divider"></div>
@@ -717,10 +712,9 @@
       <div class="set-row"><label>Ketebalan kaca<small>Makin besar makin buram</small></label><input type="range" id="set-blur" min="0" max="40" step="1" oninput="setPref('blur',+this.value);$('v-blur').textContent=this.value"><span class="val" id="v-blur">18</span></div>
       <div class="set-row"><label>Transparansi kaca<small>Makin besar makin pekat</small></label><input type="range" id="set-glass" min="3" max="30" step="1" oninput="setPref('glass',+this.value);$('v-glass').textContent=this.value+'%'"><span class="val" id="v-glass">8%</span></div>
       <div class="set-row"><label>Ukuran teks chat</label><input type="range" id="set-fs" min="13" max="20" step="1" oninput="setPref('fs',+this.value);$('v-fs').textContent=this.value"><span class="val" id="v-fs">15</span></div>
-      <div class="set-row"><label>Animasi latar<small>Matikan agar hemat baterai</small></label><label class="switch"><input type="checkbox" id="set-anim" onchange="setPref('anim',this.checked)"><span></span></label></div>
+      <div class="set-row"><label>Video latar<small>Matikan untuk hemat kuota dan baterai</small></label><label class="switch"><input type="checkbox" id="set-anim" onchange="setPref('anim',this.checked)"><span></span></label></div>
       <div class="set-row"><label>Suara notifikasi<small>Bunyi saat pesan masuk</small></label><label class="switch"><input type="checkbox" id="set-sound" onchange="setPref('sound',this.checked)"><span></span></label></div>
       <div class="set-row"><label>Notifikasi pesan dan telepon<small id="notif-state">-</small></label><label class="switch"><input type="checkbox" id="set-notif" onchange="toggleNotif(this.checked)"><span></span></label></div>
-      <div style="padding:10px 0 4px"><button class="set-btn" onclick="openOverlay('theme-screen')"><span>Pilih tema warna</span><span>›</span></button></div>
     </div>
     <div class="set-card">
       <h3>Izin perangkat</h3>
@@ -738,17 +732,8 @@
         <button class="set-btn danger" onclick="hapusRiwayatFromMenu()"><span>Hapus riwayat chat AI</span><span></span></button>
       </div>
     </div>
-    <p style="text-align:center;color:var(--text-3);font-size:11px;margin-top:4px">Syranx AI v10</p>
+    <p style="text-align:center;color:var(--text-3);font-size:11px;margin-top:4px">Syranx AI v12</p>
   </div></div>
-</div>
-
-<!-- TEMA -->
-<div id="theme-screen" class="full-screen-overlay">
-  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('theme-screen')">←</button><h2>Tema</h2></div>
-  <div class="overlay-content">
-    <p class="muted" style="text-align:center;margin-bottom:16px">Pilih palet warna. Tema tersimpan otomatis di perangkat ini.</p>
-    <div class="theme-grid" id="theme-grid"></div>
-  </div>
 </div>
 
 <!-- MUSIK -->
@@ -797,6 +782,22 @@
   <video id="call-local" autoplay playsinline muted></video>
 </div>
 <div id="lightbox" onclick="closeLightbox()"><img id="lightbox-img" alt=""><button aria-label="Tutup">&times;</button></div>
+
+<!-- PROFIL ORANG LAIN -->
+<div id="profile-screen" class="full-screen-overlay" style="z-index:1800">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('profile-screen')">&larr;</button><h2>Profil</h2></div>
+  <div class="overlay-content" style="padding:0 0 28px;align-items:stretch"><div id="prof-other" class="prof-wrap"></div></div>
+</div>
+<input type="file" id="banner-file" accept="image/*,video/mp4,video/webm,video/quicktime" style="display:none" onchange="uploadBanner(this)">
+
+<!-- PANDUAN IZIN -->
+<div id="perm-modal" class="perm-modal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="perm-card">
+    <h3 id="perm-title">Izin diperlukan</h3>
+    <p id="perm-body"></p>
+    <button class="btn-primary" onclick="$('perm-modal').classList.remove('show')">Mengerti</button>
+  </div>
+</div>
 <!-- GAME -->
 <div id="game-screen" class="full-screen-overlay" style="z-index:1700">
   <div class="overlay-header"><button class="icon-btn" onclick="closeGame()">←</button><h2 id="game-title">Game</h2></div>
@@ -880,6 +881,10 @@
       </div></div>
     </section>
 
+    <section id="view-profile" class="view">
+      <div class="view-body prof-scroll"><div id="prof-main" class="prof-wrap"></div></div>
+    </section>
+
     <section id="view-global" class="view">
       <div class="locked-wrap"><div class="locked-card">
         <div class="lock-ico"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></div><h3>Global Chat terkunci</h3>
@@ -905,6 +910,8 @@
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M22 2L11 13"/><path d="M22 2l-7 20-4-9-9-4 20-7z"/></svg>Pribadi</button>
     <button class="nav-btn" id="nav-global" onclick="switchTab('global')"><span class="lock"><svg viewBox="0 0 24 24" width="10" height="10" fill="none" stroke="currentColor" stroke-width="3"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span>
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="2" y1="12" x2="22" y2="12"/><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"/></svg>Global</button>
+    <button class="nav-btn" id="nav-profile" onclick="switchTab('profile')">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="8" r="4"/><path d="M4 21v-1a6 6 0 0 1 6-6h4a6 6 0 0 1 6 6v1"/></svg>Profil</button>
   </nav>
 </div>
 
@@ -1515,16 +1522,8 @@ async function hapusRiwayatFromMenu() {
   currentChatHistory = []; renderChat(); closeSidebar(); showToast('Riwayat dihapus');
 }
 // ================= TEMA & PENGATURAN =================
-const THEMES = [
-  { id: 'malam',  name: 'Malam',  bg: '#0c1016', c: ['#2b5f94', '#2f7d70', '#5d4b39'], ac: '#4a8ff0' },
-  { id: 'embun',  name: 'Embun',  bg: '#d8e1ea', c: ['#8dbbe6', '#f0d4a6', '#a6d3be'], ac: '#2467d8' },
-  { id: 'hutan',  name: 'Hutan',  bg: '#0a110d', c: ['#2a7a50', '#557a37', '#1d6666'], ac: '#a5d46f' },
-  { id: 'senja',  name: 'Senja',  bg: '#140d0c', c: ['#a3382f', '#cf7a45', '#5a3a42'], ac: '#f0a277' },
-  { id: 'pasir',  name: 'Pasir',  bg: '#e7dfd1', c: ['#e3b98b', '#c6d3bc', '#dba698'], ac: '#a8501a' },
-  { id: 'grafit', name: 'Grafit', bg: '#09090a', c: ['#4d5158', '#3a3d43', '#5e5e64'], ac: '#e9eaee' }
-];
-const PREF_KEY = 'syranx_prefs_v11';
-const DEFAULT_PREFS = { theme: 'malam', blur: 28, glass: 12, fs: 15, anim: true, sound: true, notif: true };
+const PREF_KEY = 'syranx_prefs_v12';
+const DEFAULT_PREFS = { blur: 22, glass: 10, fs: 15, anim: true, sound: true, notif: true };
 let prefs = { ...DEFAULT_PREFS };
 function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
 function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
@@ -1533,7 +1532,6 @@ function loadPrefs() {
   let p = {};
   try { p = JSON.parse(lsGet(PREF_KEY) || '{}') || {}; } catch (e) {}
   prefs = {
-    theme: THEMES.some(t => t.id === p.theme) ? p.theme : DEFAULT_PREFS.theme,
     blur: clampNum(p.blur, 0, 40, DEFAULT_PREFS.blur),
     glass: clampNum(p.glass, 3, 30, DEFAULT_PREFS.glass),
     fs: clampNum(p.fs, 13, 20, DEFAULT_PREFS.fs),
@@ -1544,19 +1542,16 @@ function loadPrefs() {
 }
 function applyPrefs() {
   const r = document.documentElement;
-  r.setAttribute('data-theme', prefs.theme);
   r.setAttribute('data-anim', prefs.anim ? 'on' : 'off');
   r.style.setProperty('--blur', prefs.blur + 'px');
   r.style.setProperty('--glass-a', (prefs.glass / 100).toFixed(2));
   r.style.setProperty('--fs', prefs.fs + 'px');
-  const th = THEMES.find(t => t.id === prefs.theme);
-  const m = document.querySelector('meta[name=theme-color]');
-  if (m && th) m.setAttribute('content', th.bg);
+  bgApply();
 }
 function setPref(k, v) { prefs[k] = v; applyPrefs(); lsSet(PREF_KEY, JSON.stringify(prefs)); }
 function resetPrefs() {
   prefs = { ...DEFAULT_PREFS }; applyPrefs(); lsSet(PREF_KEY, JSON.stringify(prefs));
-  syncSettingsUI(); renderThemes(); showToast('Tampilan dikembalikan ke bawaan');
+  syncSettingsUI(); showToast('Tampilan dikembalikan ke bawaan');
 }
 function syncSettingsUI() {
   $('set-blur').value = prefs.blur; $('v-blur').textContent = prefs.blur;
@@ -1566,16 +1561,6 @@ function syncSettingsUI() {
   $('set-sound').checked = prefs.sound;
   $('set-notif').checked = prefs.notif && Notif.perm() === 'granted';
   const ns = $('notif-state'); if (ns) ns.textContent = Notif.perm() === 'unsupported' ? 'Browser ini tidak mendukung notifikasi' : (Notif.perm() === 'granted' ? 'Aktif' : (Notif.perm() === 'denied' ? 'Diblokir di pengaturan browser' : 'Belum diizinkan'));
-}
-function renderThemes() {
-  const g = $('theme-grid'); g.innerHTML = '';
-  THEMES.forEach(t => {
-    const d = document.createElement('div');
-    d.className = 'theme-card' + (t.id === prefs.theme ? ' active' : '');
-    d.innerHTML = `<div class="tick">✓</div><div class="theme-prev" style="background:radial-gradient(circle at 20% 25%,${t.c[0]} 0,transparent 55%),radial-gradient(circle at 85% 80%,${t.c[1]} 0,transparent 55%),radial-gradient(circle at 70% 15%,${t.c[2]} 0,transparent 50%),${t.bg}"><span style="position:absolute;left:10px;top:10px;width:16px;height:16px;border-radius:50%;background:${t.ac}"></span></div>${esc(t.name)}`;
-    d.onclick = () => { setPref('theme', t.id); renderThemes(); showToast('Tema ' + t.name); };
-    g.appendChild(d);
-  });
 }
 function refreshSettingsAccount() {
   if (!currentUsername) return;
@@ -1587,11 +1572,11 @@ loadPrefs(); applyPrefs();
 
 // ================= TAB & NAVIGASI BAWAH =================
 let currentTab = 'ai';
-const TAB_TITLES = { ai: 'SYRANX AI', dm: 'PESAN PRIBADI', global: 'GLOBAL CHAT' };
+const TAB_TITLES = { ai: 'SYRANX AI', dm: 'PESAN PRIBADI', global: 'GLOBAL CHAT', profile: 'PROFIL' };
 function switchTab(t) {
   if (!TAB_TITLES[t]) return;
   currentTab = t;
-  ['ai', 'dm', 'global'].forEach(x => {
+  ['ai', 'dm', 'global', 'profile'].forEach(x => {
     $('view-' + x).classList.toggle('active', x === t);
     $('nav-' + x).classList.toggle('active', x === t);
   });
@@ -1605,6 +1590,7 @@ function switchTab(t) {
   }
   if (t === 'dm' && !isMember) refreshContacts();
   if (t === 'ai') { const c = $('chat'); c.scrollTop = c.scrollHeight; }
+  if (t === 'profile') loadMyProfile();
   updateHeaderButtons();
 }
 function updateHeaderButtons() {
@@ -1623,7 +1609,7 @@ function applyRoleLocks() {
 function closeSidebar() { $('sidebar').classList.remove('show'); $('sidebar-overlay').classList.remove('show'); }
 
 function initUI() {
-  syncSettingsUI(); renderThemes();
+  syncSettingsUI();
   const v = parseFloat(lsGet('syranx_vol'));
   const vol = isFinite(v) ? Math.min(1, Math.max(0, v)) : 0.7;
   $('np-vol').value = Math.round(vol * 100); Music.setVol(vol);
@@ -2093,6 +2079,8 @@ function dmRow(m) {
 function startDM(id, name, avatar, role) {
   dmPeer = { id, name, avatar, role: role || (peerCache.get(id) || {}).role };
   dmSeen = new Set();
+  $('dm-chat-title').onclick = () => openProfile(id);
+  $('dm-chat-title').style.cursor = 'pointer';
   $('dm-chat-title').innerHTML = `<span style="display:flex;align-items:center;gap:10px">${avatarHTML(avatar, name, 34)}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(name)}</span></span>`;
   $('dm-chat-area').innerHTML = '<p style="text-align:center;color:var(--text-2);margin:auto">Memuat...</p>';
   openOverlay('dm-chat-screen');
@@ -2183,13 +2171,13 @@ const Call = (() => {
     $('call-decline-wrap').style.display = mode === 'incoming' ? 'flex' : 'none';
   }
   async function getMic() {
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) throw new Error('Panggilan butuh HTTPS dan browser yang mendukung mikrofon');
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) { showPermHelp('mic'); throw new Error('Mikrofon tidak tersedia di browser ini'); }
     const audio = { echoCancellation: true, noiseSuppression: true, autoGainControl: true };
     try {
       const st = await navigator.mediaDevices.getUserMedia({ audio, video: isVideo ? { facingMode: facing, width: { ideal: 640 }, height: { ideal: 480 }, frameRate: { ideal: 24 } } : false });
       if (isVideo) { const lv = $('call-local'); lv.srcObject = st; lv.play().catch(() => {}); $('call-screen').classList.add('hasloc'); }
       return st;
-    } catch (e) { throw new Error(isVideo ? 'Izin kamera atau mikrofon ditolak' : 'Izin mikrofon ditolak atau mikrofon tidak tersedia'); }
+    } catch (e) { showPermHelp(isVideo ? 'cam' : 'mic', e && e.name); throw new Error(isVideo ? 'Kamera atau mikrofon tidak bisa dipakai' : 'Mikrofon tidak bisa dipakai'); }
   }
   function makePC() {
     pc = new RTCPeerConnection({ iceServers: ICE });
@@ -2358,11 +2346,7 @@ const Perms = {
       b.textContent = s === 'denied' ? 'Cara membuka' : 'Minta izin';
     }
   },
-  help(id) {
-    const h = $('perm-help'); if (!h) return;
-    h.style.display = 'block';
-    h.textContent = this.items[id].nm + ' diblokir oleh browser, jadi tidak bisa diminta ulang dari sini. Ketuk ikon gembok atau pengaturan di sebelah alamat situs, pilih Izin situs, ubah ' + this.items[id].nm + ' menjadi Izinkan, lalu muat ulang halaman.';
-  },
+  help(id) { showPermHelp(id); },
   async request(id) {
     const s = await this.state(id);
     if (s === 'denied') { this.help(id); return false; }
@@ -2538,7 +2522,7 @@ function gameDrawHead() {
 function gameShowProf(i) {
   const p = G.prof[i] || { username: G.names[i] || '-' }; const rl = p.role ? String(p.role).toUpperCase() : 'PEMAIN';
   const el = gx('game-prof');
-  el.innerHTML = `<div class="g-prof-card">${avatarHTML(p.avatar_url, p.username, 96)}<h3>${esc(p.username)}${isVerified(p) ? VCHK : ''}</h3><span class="role-badge role-${safeRole(p.role)}">${esc(rl)}</span><p>${isVerified(p) ? 'Akun terverifikasi Syranx' : (p.role === 'bot' ? 'Lawan komputer' : 'Pengguna Syranx')}</p><small>Tutup dengan mengetuk di mana saja</small></div>`;
+  el.innerHTML = `<div class="g-prof-card">${avatarHTML(p.avatar_url, p.username, 96)}<h3>${esc(p.username)}${isVerified(p) ? VCHK : ''}</h3><span class="role-badge role-${safeRole(p.role)}">${esc(rl)}</span><p>${isVerified(p) ? 'Akun terverifikasi Syranx' : (p.role === 'bot' ? 'Lawan komputer' : 'Pengguna Syranx')}</p>${p.id && p.id !== 'bot' ? '<button class="mini-btn" onclick="event.stopPropagation();openProfile(\''+p.id+'\')">Lihat profil lengkap</button>' : ''}<small>Ketuk di luar kartu untuk menutup</small></div>`;
   el.classList.add('show');
 }
 function gameStatus(t) { const s = gx('game-status'); if (s) s.textContent = t; }
@@ -2839,11 +2823,11 @@ const GVoice = {
   async toggleMic() {
     if (!this.pc) return showToast('Suara hanya untuk mode online');
     if (this.mic) { try { await this.tx.sender.replaceTrack(null); } catch (e) {} if (this.track) this.track.stop(); this.track = null; this.mic = false; this.ui(); return; }
-    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return showToast('Mic butuh HTTPS dan browser yang mendukung');
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return showPermHelp('mic');
     try {
       const st = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } });
       this.track = st.getAudioTracks()[0]; await this.tx.sender.replaceTrack(this.track); this.mic = true; this.ui();
-    } catch (e) { showToast('Izin mikrofon ditolak'); }
+    } catch (e) { showPermHelp('mic', e && e.name); }
   },
   toggleSpk() { this.spk = !this.spk; const a = gx('game-voice'); if (a) a.muted = !this.spk; this.ui(); },
   ui(msg) {
@@ -2954,6 +2938,122 @@ function gameTimeout() {
   else if (G.game === 'c4') { const c = [0, 1, 2, 3, 4, 5, 6].filter(x => st.b[x] === null); if (c.length) gameAct({ c: rnd(c) }); }
   else if (G.game === 'zour') { const m = zMoves(st); if (m.length) { const x = rnd(m); gameAct({ k: x.f === undefined ? 'place' : 'move', f: x.f, n: x.n }); } }
   showToast('Waktu habis, langkah diacak');
+}
+// ================= LATAR VIDEO (black hole) =================
+function bgApply() {
+  const v = document.getElementById('bg-video'); if (!v) return;
+  if (!v.__ev) { v.__ev = 1; v.addEventListener('playing', () => v.classList.add('on')); v.addEventListener('error', () => v.classList.remove('on')); }
+  if (!prefs.anim) { v.classList.remove('on'); if (v.getAttribute('src')) { v.pause(); v.removeAttribute('src'); v.load(); } return; }
+  if (!v.getAttribute('src')) { v.src = v.dataset.src; v.muted = true; }
+  const p = v.play(); if (p && p.catch) p.catch(() => {});
+}
+document.addEventListener('visibilitychange', () => {
+  const v = document.getElementById('bg-video'); if (!v || !v.getAttribute('src')) return;
+  if (document.hidden) v.pause(); else { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+});
+
+// ================= IZIN: PANDUAN =================
+function inAppBrowser() { return /TikTok|musical_ly|Instagram|FBAN|FBAV|FB_IAB|Line\/|; wv\)|WhatsApp|Snapchat|Twitter|MicroMessenger|Telegram/i.test(navigator.userAgent || ''); }
+function showPermHelp(kind, errName) {
+  const nm = { mic: 'mikrofon', cam: 'kamera', notif: 'notifikasi' }[kind] || kind;
+  const ios = /iPhone|iPad|iPod/i.test(navigator.userAgent || '');
+  let t = 'Izin ' + nm + ' belum aktif', b;
+  if (inAppBrowser()) b = 'Kamu membuka Syranx dari dalam aplikasi lain (misalnya TikTok, Instagram, atau WhatsApp). Browser di dalam aplikasi seperti itu biasanya memblokir ' + nm + ' tanpa menampilkan permintaan izin. Buka tautan Syranx lewat Chrome atau Safari: ketuk menu titik tiga atau ikon bagikan, lalu pilih Buka di browser.';
+  else if (!window.isSecureContext) b = 'Halaman ini tidak dibuka lewat HTTPS, jadi browser menolak memakai ' + nm + '. Buka alamat syranx-ai.vercel.app dengan https.';
+  else if (errName === 'NotFoundError') { t = nm[0].toUpperCase() + nm.slice(1) + ' tidak ditemukan'; b = 'Perangkat tidak mendeteksi ' + nm + '. Pastikan ' + nm + ' berfungsi dan tidak dilepas.'; }
+  else if (errName === 'NotReadableError') { t = nm[0].toUpperCase() + nm.slice(1) + ' sedang dipakai'; b = 'Aplikasi lain sedang memakai ' + nm + '. Tutup aplikasi itu (panggilan, rekaman, atau tab lain), lalu coba lagi.'; }
+  else if (ios) b = 'Izin ' + nm + ' sebelumnya ditolak, jadi iPhone tidak menampilkan permintaan lagi. Buka Pengaturan, Safari, lalu ' + (kind === 'cam' ? 'Kamera' : 'Mikrofon') + ' dan pilih Tanya atau Izinkan. Lalu muat ulang halaman Syranx.';
+  else b = 'Izin ' + nm + ' sebelumnya ditolak, jadi browser tidak menampilkan permintaan lagi. Di Chrome Android: ketuk ikon di sebelah alamat situs (gembok atau pengaturan), pilih Izin, ubah ' + nm + ' menjadi Izinkan, lalu muat ulang halaman. Cara lain: Pengaturan HP, Aplikasi, Chrome, Izin, ' + nm + '.';
+  $('perm-title').textContent = t; $('perm-body').textContent = b; $('perm-modal').classList.add('show');
+}
+
+// ================= PROFIL =================
+const DEFAULT_BANNER = 'https://videotourl.com/videos/1794393627486-2db84a36-645b-4027-9ac5-0c3af7cbef89.mp4';
+let myProf = null;
+async function fetchProfileFull(id) {
+  let r = await supabaseClient.from('profiles').select('id,username,role,avatar_url,bio,banner_url,banner_type').eq('id', id).maybeSingle();
+  if (r.error) { r = await supabaseClient.from('profiles').select('id,username,role,avatar_url').eq('id', id).maybeSingle(); if (r.data) r.data.__nocols = true; }
+  return r.data || null;
+}
+function bannerHTML(p) {
+  const custom = p && /^https:\/\//.test(p.banner_url || '');
+  const url = custom ? p.banner_url : DEFAULT_BANNER, type = custom ? (p.banner_type || 'image') : 'video';
+  return type === 'video' ? `<video class="prof-media" src="${esc(url)}" autoplay muted loop playsinline preload="metadata"></video>` : `<img class="prof-media" src="${esc(url)}" alt="">`;
+}
+function profileHTML(p, editable) {
+  const rl = safeRole(p.role), custom = /^https:\/\//.test(p.banner_url || '');
+  const verified = isVerified(p);
+  const bio = p.bio ? esc(p.bio) : '<span class="muted">' + (editable ? 'Belum ada bio. Ketuk Edit bio untuk menulis.' : 'Belum ada bio.') + '</span>';
+  const btns = editable ? `<div class="prof-banner-btns"><button class="mini-btn" onclick="$('banner-file').click()">Ganti banner</button>${custom ? '<button class="mini-btn" onclick="resetBanner()">Banner bawaan</button>' : ''}</div>` : '';
+  return `<div class="prof-banner">${bannerHTML(p)}${btns}</div>
+    <div class="prof-head">${avatarHTML(p.avatar_url, p.username, 92)}<div class="prof-id"><h2><span class="nm">${esc(p.username)}</span>${verified ? VCHK : ''}</h2><span class="role-badge role-${rl}">${rl.toUpperCase()}</span></div></div>
+    <div class="prof-body">
+      <div class="prof-sec">Bio</div>
+      <div id="prof-bio" class="prof-bio">${bio}</div>
+      ${editable ? '<div class="prof-acts"><button class="mini-btn" onclick="editBio()">Edit bio</button><button class="mini-btn" onclick="$(\'avatar-file\').click()">Ganti foto profil</button></div>' : ''}
+      <div class="prof-sec">Informasi</div>
+      <div class="prof-row"><span>Role</span><b>${rl.toUpperCase()}</b></div>
+      <div class="prof-row"><span>Status akun</span><b>${verified ? 'Terverifikasi' + VCHK : 'Standar'}</b></div>
+      ${editable && currentUserRole !== 'member' ? `<div class="prof-row"><span>Kontak tersimpan</span><b>${myContacts.size}</b></div>` : ''}
+      ${p.__nocols ? '<p class="muted" style="font-size:11px;margin-top:10px">Bio dan banner belum aktif: jalankan SQL profil di Supabase.</p>' : ''}
+    </div>`;
+}
+function myProfBase() { return { id: currentUserId, username: currentUsername, role: currentUserRole, avatar_url: currentAvatar, bio: myProf && myProf.bio, banner_url: myProf && myProf.banner_url, banner_type: myProf && myProf.banner_type, __nocols: myProf && myProf.__nocols }; }
+async function loadMyProfile() {
+  const el = $('prof-main'); if (!el || !currentUserId) return;
+  el.innerHTML = profileHTML(myProfBase(), true);
+  const p = await fetchProfileFull(currentUserId);
+  if (p) { myProf = p; if (currentTab === 'profile') el.innerHTML = profileHTML(myProfBase(), true); }
+}
+async function openProfile(id) {
+  if (!id || id === 'bot') return;
+  if (id === currentUserId) { closeOverlay('game-screen'); closeOverlay('dm-chat-screen'); switchTab('profile'); return; }
+  const el = $('prof-other'); el.innerHTML = '<p class="muted" style="text-align:center;padding:40px 0">Memuat profil...</p>';
+  openOverlay('profile-screen');
+  const p = await fetchProfileFull(id);
+  el.innerHTML = p ? profileHTML(p, false) : '<p class="muted" style="text-align:center;padding:40px 0">Profil tidak ditemukan</p>';
+}
+function editBio() {
+  const box = $('prof-bio'); const cur = (myProf && myProf.bio) || '';
+  box.innerHTML = `<textarea id="bio-input" class="glass-input" maxlength="150" rows="3" placeholder="Tulis sesuatu tentang kamu (maks 150 huruf)"></textarea><div class="prof-acts" style="margin-top:8px"><button class="btn-primary" style="margin:0;padding:11px" onclick="saveBio()">Simpan</button><button class="mini-btn" onclick="loadMyProfile()">Batal</button></div>`;
+  $('bio-input').value = cur; $('bio-input').focus();
+}
+async function saveBio() {
+  const bio = ($('bio-input').value || '').trim().slice(0, 150);
+  const { error } = await supabaseClient.from('profiles').update({ bio: bio || null }).eq('id', currentUserId);
+  if (error) return showToast('Gagal menyimpan bio. Jalankan SQL profil dulu.');
+  myProf = { ...(myProf || {}), bio: bio || null }; $('prof-main').innerHTML = profileHTML(myProfBase(), true); showToast('Bio disimpan');
+}
+function bannerPath(url) { const m = /\/banners\/(.+?)(\?|$)/.exec(url || ''); return m ? decodeURIComponent(m[1]) : null; }
+async function uploadBanner(input) {
+  const f = input.files && input.files[0]; input.value = ''; if (!f) return;
+  const isVid = /^video\/(mp4|webm|quicktime)$/.test(f.type), isImg = /^image\/(jpeg|png|webp|gif)$/.test(f.type);
+  if (!isVid && !isImg) return showToast('Pilih foto (jpg, png, webp, gif) atau video (mp4, webm)');
+  if (isImg && f.size > 6 * 1048576) return showToast('Foto maksimal 6 MB');
+  if (isVid && f.size > 20 * 1048576) return showToast('Video maksimal 20 MB');
+  showLoading('MENGUNGGAH BANNER...');
+  try {
+    const ext = f.type === 'video/quicktime' ? 'mov' : (f.type.split('/')[1] || 'bin');
+    const path = currentUserId + '/' + Date.now() + '.' + ext;
+    const up = await supabaseClient.storage.from('banners').upload(path, f, { contentType: f.type, upsert: false });
+    if (up.error) throw up.error;
+    const url = supabaseClient.storage.from('banners').getPublicUrl(path).data.publicUrl;
+    const old = bannerPath(myProf && myProf.banner_url);
+    const r = await supabaseClient.from('profiles').update({ banner_url: url, banner_type: isVid ? 'video' : 'image' }).eq('id', currentUserId);
+    if (r.error) throw r.error;
+    if (old) supabaseClient.storage.from('banners').remove([old]).catch(() => {});
+    myProf = { ...(myProf || {}), banner_url: url, banner_type: isVid ? 'video' : 'image' }; delete myProf.__nocols;
+    $('prof-main').innerHTML = profileHTML(myProfBase(), true); showToast('Banner diperbarui');
+  } catch (e) { showToast('Gagal: ' + (e.message || e) + '. Jalankan SQL profil dulu.'); }
+  hideLoading();
+}
+async function resetBanner() {
+  const old = bannerPath(myProf && myProf.banner_url);
+  const r = await supabaseClient.from('profiles').update({ banner_url: null, banner_type: null }).eq('id', currentUserId);
+  if (r.error) return showToast('Gagal: ' + r.error.message);
+  if (old) supabaseClient.storage.from('banners').remove([old]).catch(() => {});
+  myProf = { ...(myProf || {}), banner_url: null, banner_type: null };
+  $('prof-main').innerHTML = profileHTML(myProfBase(), true); showToast('Banner dikembalikan ke bawaan');
 }
 let toastT;
 function showToast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
