@@ -481,6 +481,8 @@
   .bg-video { position:fixed; inset:0; z-index:0; background:#000; overflow:hidden; pointer-events:none; }
   .bg-video video { width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1.4s ease; }
   .bg-video video.on { opacity:1; }
+  .bg-video img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1s ease; }
+  .bg-video img.on { opacity:1; }
   .bg-video::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.30), rgba(0,0,0,.10) 40%, rgba(0,0,0,.45)); }
   html, body { background:#000; }
 
@@ -565,10 +567,18 @@
   .perm-card h3 { font-size:17px; margin-bottom:10px; color:var(--strong); }
   .perm-card p { font-size:13px; line-height:1.65; color:var(--text-2); margin-bottom:14px; }
   .perm-card .btn-primary { margin-top:0; }
+
+  .prof-banner .snd-btn { position:absolute; left:10px; bottom:10px; width:34px; height:34px; border-radius:50%; border:1px solid var(--border); background:rgba(0,0,0,.5); color:#fff; display:flex; align-items:center; justify-content:center; cursor:pointer; }
+  .preset-item { display:flex; align-items:center; gap:12px; width:100%; padding:8px; margin-bottom:8px; border-radius:16px; background:rgba(255,255,255,.07); border:1px solid var(--border); color:var(--text); font-size:14px; font-weight:600; text-align:left; cursor:pointer; }
+  .preset-item video { width:84px; height:48px; object-fit:cover; border-radius:10px; background:#000; flex-shrink:0; }
+  .prof-head { pointer-events:none; }
+  .prof-head > * { pointer-events:auto; }
+  .prof-banner-btns { top:10px; bottom:auto; z-index:3; flex-wrap:wrap; justify-content:flex-end; max-width:75%; }
+  .prof-banner .snd-btn { top:10px; bottom:auto; z-index:3; }
 </style>
 </head>
 <body>
-<div class="bg-video"><video id="bg-video" data-src="https://videotourl.com/videos/1794393022976-a57caac4-6f76-4d99-99d2-6d094167128d.mp4" muted loop playsinline preload="auto" disablepictureinpicture></video></div>
+<div class="bg-video"><video id="bg-video" data-src="https://videotourl.com/videos/1794393022976-a57caac4-6f76-4d99-99d2-6d094167128d.mp4" muted loop playsinline preload="auto" disablepictureinpicture></video><img id="bg-img" alt=""></div>
 
 <!-- AUTH -->
 <div id="auth-screen">
@@ -713,6 +723,7 @@
       <div class="set-row"><label>Transparansi kaca<small>Makin besar makin pekat</small></label><input type="range" id="set-glass" min="3" max="30" step="1" oninput="setPref('glass',+this.value);$('v-glass').textContent=this.value+'%'"><span class="val" id="v-glass">8%</span></div>
       <div class="set-row"><label>Ukuran teks chat</label><input type="range" id="set-fs" min="13" max="20" step="1" oninput="setPref('fs',+this.value);$('v-fs').textContent=this.value"><span class="val" id="v-fs">15</span></div>
       <div class="set-row"><label>Video latar<small>Matikan untuk hemat kuota dan baterai</small></label><label class="switch"><input type="checkbox" id="set-anim" onchange="setPref('anim',this.checked)"><span></span></label></div>
+      <div class="set-row"><label>Latar aplikasi<small>Ganti dengan foto atau video dari HP kamu</small></label><div style="display:flex;gap:6px"><button class="mini-btn" onclick="document.getElementById('bg-file').click()">Ganti</button><button class="mini-btn" onclick="resetBg()">Bawaan</button></div></div>
       <div class="set-row"><label>Suara notifikasi<small>Bunyi saat pesan masuk</small></label><label class="switch"><input type="checkbox" id="set-sound" onchange="setPref('sound',this.checked)"><span></span></label></div>
       <div class="set-row"><label>Notifikasi pesan dan telepon<small id="notif-state">-</small></label><label class="switch"><input type="checkbox" id="set-notif" onchange="toggleNotif(this.checked)"><span></span></label></div>
     </div>
@@ -788,8 +799,13 @@
   <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('profile-screen')">&larr;</button><h2>Profil</h2></div>
   <div class="overlay-content" style="padding:0 0 28px;align-items:stretch"><div id="prof-other" class="prof-wrap"></div></div>
 </div>
-<input type="file" id="banner-file" accept="image/*,video/mp4,video/webm,video/quicktime" style="display:none" onchange="uploadBanner(this)">
+<input type="file" id="bg-file" accept="image/*,video/mp4,video/webm,video/quicktime" style="display:none" onchange="pickBg(this)">
+<input type="file" id="banner-file" accept="image/*,video/*" style="display:none" onchange="uploadBanner(this)">
 
+<!-- PILIH BANNER BAWAAN -->
+<div id="preset-modal" class="perm-modal" onclick="if(event.target===this)this.classList.remove('show')">
+  <div class="perm-card"><h3>Banner bawaan</h3><div id="preset-list"></div><button class="btn-primary" style="margin-top:12px" onclick="$('preset-modal').classList.remove('show')">Tutup</button></div>
+</div>
 <!-- PANDUAN IZIN -->
 <div id="perm-modal" class="perm-modal" onclick="if(event.target===this)this.classList.remove('show')">
   <div class="perm-card">
@@ -2939,14 +2955,31 @@ function gameTimeout() {
   else if (G.game === 'zour') { const m = zMoves(st); if (m.length) { const x = rnd(m); gameAct({ k: x.f === undefined ? 'place' : 'move', f: x.f, n: x.n }); } }
   showToast('Waktu habis, langkah diacak');
 }
-// ================= LATAR VIDEO (black hole) =================
+// ================= LATAR (video bawaan / pilihan sendiri) =================
+var customBg = null; // { blob, type }
+function bgDB(cb) { try { const r = indexedDB.open('syranx_bg', 1); r.onupgradeneeded = () => r.result.createObjectStore('f'); r.onsuccess = () => cb(r.result); r.onerror = () => cb(null); } catch (e) { cb(null); } }
+function bgSave(blob) { bgDB(db => { if (!db) return; const t = db.transaction('f', 'readwrite'); blob ? t.objectStore('f').put(blob, 'bg') : t.objectStore('f').delete('bg'); }); }
+function bgLoad() { bgDB(db => { if (!db) return; const q = db.transaction('f').objectStore('f').get('bg'); q.onsuccess = () => { if (q.result) { customBg = q.result; bgApply(); } }; }); }
 function bgApply() {
-  const v = document.getElementById('bg-video'); if (!v) return;
+  const v = document.getElementById('bg-video'), im = document.getElementById('bg-img'); if (!v) return;
   if (!v.__ev) { v.__ev = 1; v.addEventListener('playing', () => v.classList.add('on')); v.addEventListener('error', () => v.classList.remove('on')); }
-  if (!prefs.anim) { v.classList.remove('on'); if (v.getAttribute('src')) { v.pause(); v.removeAttribute('src'); v.load(); } return; }
-  if (!v.getAttribute('src')) { v.src = v.dataset.src; v.muted = true; }
+  const isImg = customBg && /^image\//.test(customBg.type);
+  if (im) { if (isImg) { if (!im.src || im.__b !== customBg) { im.src = URL.createObjectURL(customBg); im.__b = customBg; } im.classList.add('on'); } else { im.classList.remove('on'); } }
+  if (isImg || !prefs.anim) { v.classList.remove('on'); if (v.getAttribute('src')) { v.pause(); v.removeAttribute('src'); v.load(); } return; }
+  const want = customBg ? (v.__b === customBg ? v.getAttribute('src') : (v.__b = customBg, URL.createObjectURL(customBg))) : v.dataset.src;
+  if (v.getAttribute('src') !== want) { v.classList.remove('on'); v.src = want; v.muted = true; }
+  if (bgHold) return;
   const p = v.play(); if (p && p.catch) p.catch(() => {});
 }
+function pickBg(inp) {
+  const f = inp.files && inp.files[0]; inp.value = ''; if (!f) return;
+  const img = /^image\//.test(f.type), vid = /^video\//.test(f.type);
+  if (!img && !vid) return showToast('File harus foto atau video');
+  if (f.size > (img ? 8 : 40) * 1024 * 1024) return showToast('File terlalu besar (maks ' + (img ? '8' : '40') + ' MB)');
+  customBg = f; bgSave(f); if (vid && !prefs.anim) setPref('anim', true); bgApply(); showToast('Latar diganti');
+}
+function resetBg() { customBg = null; bgSave(null); const im = document.getElementById('bg-img'); if (im) { im.classList.remove('on'); im.removeAttribute('src'); im.__b = null; } const v = document.getElementById('bg-video'); if (v) { v.__b = null; v.removeAttribute('src'); } bgApply(); showToast('Latar dikembalikan ke bawaan'); }
+bgLoad();
 document.addEventListener('visibilitychange', () => {
   const v = document.getElementById('bg-video'); if (!v || !v.getAttribute('src')) return;
   if (document.hidden) v.pause(); else { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
@@ -2969,28 +3002,46 @@ function showPermHelp(kind, errName) {
 
 // ================= PROFIL =================
 const DEFAULT_BANNER = 'https://videotourl.com/videos/1794393627486-2db84a36-645b-4027-9ac5-0c3af7cbef89.mp4';
+const BANNER_PRESETS = [
+  { name: 'Black hole', url: DEFAULT_BANNER, sound: false },
+  { name: 'meme anime \u{1F5FF}', url: 'https://videotourl.com/videos/1794400532294-e563cc88-6d49-4acc-bef2-65007da56441.mp4', sound: true }
+];
 let myProf = null;
 async function fetchProfileFull(id) {
   let r = await supabaseClient.from('profiles').select('id,username,role,avatar_url,bio,banner_url,banner_type').eq('id', id).maybeSingle();
   if (r.error) { r = await supabaseClient.from('profiles').select('id,username,role,avatar_url').eq('id', id).maybeSingle(); if (r.data) r.data.__nocols = true; }
   return r.data || null;
 }
+function hasSound(p) { const u = p && p.banner_url; return !!u && BANNER_PRESETS.some(x => x.sound && x.url === u); }
+function bannerTap(box) {
+  const v = box.querySelector('video'); if (!v) return;
+  v.muted = !v.muted; if (!v.muted) { v.volume = 1; const q = v.play(); if (q && q.catch) q.catch(() => {}); }
+}
+// hemat tenaga saat banner video tampil: latar dijeda supaya tidak patah-patah
+var bgHold = false;
+function bgHoldSet(h) {
+  bgHold = h; const v = document.getElementById('bg-video'); if (!v || !v.getAttribute('src')) return;
+  if (h) v.pause(); else { const q = v.play(); if (q && q.catch) q.catch(() => {}); }
+}
+function profHold() { bgHoldSet(currentTab === 'profile' && (!myProf || !myProf.banner_url || myProf.banner_type === 'video')); }
 function bannerHTML(p) {
   const custom = p && /^https:\/\//.test(p.banner_url || '');
   const url = custom ? p.banner_url : DEFAULT_BANNER, type = custom ? (p.banner_type || 'image') : 'video';
-  return type === 'video' ? `<video class="prof-media" src="${esc(url)}" autoplay muted loop playsinline preload="metadata"></video>` : `<img class="prof-media" src="${esc(url)}" alt="">`;
+  if (type !== 'video') return `<img class="prof-media" src="${esc(url)}" alt="">`;
+  return `<video class="prof-media" src="${esc(url)}" autoplay muted loop playsinline preload="auto" disablepictureinpicture></video>`;
 }
 function profileHTML(p, editable) {
   const rl = safeRole(p.role), custom = /^https:\/\//.test(p.banner_url || '');
   const verified = isVerified(p);
   const bio = p.bio ? esc(p.bio) : '<span class="muted">' + (editable ? 'Belum ada bio. Ketuk Edit bio untuk menulis.' : 'Belum ada bio.') + '</span>';
-  const btns = editable ? `<div class="prof-banner-btns"><button class="mini-btn" onclick="$('banner-file').click()">Ganti banner</button>${custom ? '<button class="mini-btn" onclick="resetBanner()">Banner bawaan</button>' : ''}</div>` : '';
-  return `<div class="prof-banner">${bannerHTML(p)}${btns}</div>
+  const btns = '';
+  return `<div class="prof-banner"${hasSound(p) ? ' onclick="bannerTap(this)" style="cursor:pointer"' : ''}>${bannerHTML(p)}${btns}</div>
     <div class="prof-head">${avatarHTML(p.avatar_url, p.username, 92)}<div class="prof-id"><h2><span class="nm">${esc(p.username)}</span>${verified ? VCHK : ''}</h2><span class="role-badge role-${rl}">${rl.toUpperCase()}</span></div></div>
     <div class="prof-body">
       <div class="prof-sec">Bio</div>
       <div id="prof-bio" class="prof-bio">${bio}</div>
-      ${editable ? '<div class="prof-acts"><button class="mini-btn" onclick="editBio()">Edit bio</button><button class="mini-btn" onclick="$(\'avatar-file\').click()">Ganti foto profil</button></div>' : ''}
+      ${editable ? '<div class="prof-acts"><button class="mini-btn" onclick="editBio()">Edit bio</button><button class="mini-btn" onclick="$(\'avatar-file\').click()">Ganti foto profil</button><button class="mini-btn" onclick="$(\'banner-file\').click()">Banner sendiri</button><button class="mini-btn" onclick="openPresets()">Banner bawaan</button></div>' : ''}
+      ${hasSound(p) ? '<p class="muted" style="font-size:12px;margin:-6px 0 12px">Ketuk banner untuk menyalakan atau mematikan suara.</p>' : ''}
       <div class="prof-sec">Informasi</div>
       <div class="prof-row"><span>Role</span><b>${rl.toUpperCase()}</b></div>
       <div class="prof-row"><span>Status akun</span><b>${verified ? 'Terverifikasi' + VCHK : 'Standar'}</b></div>
@@ -3004,6 +3055,7 @@ async function loadMyProfile() {
   el.innerHTML = profileHTML(myProfBase(), true);
   const p = await fetchProfileFull(currentUserId);
   if (p) { myProf = p; if (currentTab === 'profile') el.innerHTML = profileHTML(myProfBase(), true); }
+  profHold();
 }
 async function openProfile(id) {
   if (!id || id === 'bot') return;
@@ -3022,29 +3074,64 @@ async function saveBio() {
   const bio = ($('bio-input').value || '').trim().slice(0, 150);
   const { error } = await supabaseClient.from('profiles').update({ bio: bio || null }).eq('id', currentUserId);
   if (error) return showToast('Gagal menyimpan bio. Jalankan SQL profil dulu.');
-  myProf = { ...(myProf || {}), bio: bio || null }; $('prof-main').innerHTML = profileHTML(myProfBase(), true); showToast('Bio disimpan');
+  myProf = { ...(myProf || {}), bio: bio || null }; $('prof-main').innerHTML = profileHTML(myProfBase(), true); profHold(); showToast('Bio disimpan');
+}
+function openPresets() {
+  $('preset-list').innerHTML = BANNER_PRESETS.map((x, i) => `<button class="preset-item" onclick="pickPreset(${i})"><video src="${x.url}" muted playsinline preload="metadata"></video><span>${x.name}${x.sound ? ' (ada suara)' : ''}</span></button>`).join('');
+  $('preset-modal').classList.add('show');
+}
+async function pickPreset(i) {
+  const x = BANNER_PRESETS[i]; $('preset-modal').classList.remove('show');
+  if (i === 0) return resetBanner();
+  const old = bannerPath(myProf && myProf.banner_url);
+  const r = await supabaseClient.from('profiles').update({ banner_url: x.url, banner_type: 'video' }).eq('id', currentUserId);
+  if (r.error) return showToast('Gagal: ' + r.error.message + '. Jalankan SQL profil dulu.');
+  if (old) supabaseClient.storage.from('banners').remove([old]).catch(() => {});
+  myProf = { ...(myProf || {}), banner_url: x.url, banner_type: 'video' }; delete myProf.__nocols;
+  $('prof-main').innerHTML = profileHTML(myProfBase(), true); profHold(); showToast('Banner: ' + x.name);
+}
+function fileKind(f) {
+  const n = (f.name || '').toLowerCase(), t = f.type || '';
+  if (/^video\//.test(t) || /\.(mp4|webm|mov|m4v)$/.test(n)) return 'video';
+  if (/^image\//.test(t) || /\.(jpe?g|png|webp|gif|heic|heif|avif|bmp)$/.test(n)) return 'image';
+  return null;
+}
+async function shrinkImage(f) {
+  if (/gif/.test(f.type)) return f;
+  try {
+    const bmp = await createImageBitmap(f); const s = Math.min(1, 1400 / bmp.width);
+    const c = document.createElement('canvas'); c.width = Math.round(bmp.width * s); c.height = Math.round(bmp.height * s);
+    c.getContext('2d').drawImage(bmp, 0, 0, c.width, c.height);
+    const b = await new Promise(res => c.toBlob(res, 'image/jpeg', 0.85)); return b || f;
+  } catch (e) { return f; }
 }
 function bannerPath(url) { const m = /\/banners\/(.+?)(\?|$)/.exec(url || ''); return m ? decodeURIComponent(m[1]) : null; }
 async function uploadBanner(input) {
-  const f = input.files && input.files[0]; input.value = ''; if (!f) return;
-  const isVid = /^video\/(mp4|webm|quicktime)$/.test(f.type), isImg = /^image\/(jpeg|png|webp|gif)$/.test(f.type);
-  if (!isVid && !isImg) return showToast('Pilih foto (jpg, png, webp, gif) atau video (mp4, webm)');
-  if (isImg && f.size > 6 * 1048576) return showToast('Foto maksimal 6 MB');
-  if (isVid && f.size > 20 * 1048576) return showToast('Video maksimal 20 MB');
+  let f = input.files && input.files[0]; input.value = ''; if (!f) return;
+  const kind = fileKind(f);
+  if (!kind) return showToast('File harus foto atau video');
+  if (kind === 'video' && f.size > 40 * 1048576) return showToast('Video maksimal 40 MB. Pilih video yang lebih pendek.');
+  if (kind === 'image' && f.size > 25 * 1048576) return showToast('Foto terlalu besar');
   showLoading('MENGUNGGAH BANNER...');
   try {
-    const ext = f.type === 'video/quicktime' ? 'mov' : (f.type.split('/')[1] || 'bin');
+    let ctype, ext;
+    if (kind === 'image') { f = await shrinkImage(f); ctype = f.type && /^image\//.test(f.type) ? f.type : 'image/jpeg'; ext = ctype === 'image/gif' ? 'gif' : ctype === 'image/png' ? 'png' : ctype === 'image/webp' ? 'webp' : 'jpg'; }
+    else { ctype = /^video\//.test(f.type) ? f.type : 'video/mp4'; ext = ctype === 'video/webm' ? 'webm' : ctype === 'video/quicktime' ? 'mov' : 'mp4'; }
     const path = currentUserId + '/' + Date.now() + '.' + ext;
-    const up = await supabaseClient.storage.from('banners').upload(path, f, { contentType: f.type, upsert: false });
+    const up = await supabaseClient.storage.from('banners').upload(path, f, { contentType: ctype, upsert: false });
     if (up.error) throw up.error;
     const url = supabaseClient.storage.from('banners').getPublicUrl(path).data.publicUrl;
     const old = bannerPath(myProf && myProf.banner_url);
-    const r = await supabaseClient.from('profiles').update({ banner_url: url, banner_type: isVid ? 'video' : 'image' }).eq('id', currentUserId);
+    const r = await supabaseClient.from('profiles').update({ banner_url: url, banner_type: kind }).eq('id', currentUserId);
     if (r.error) throw r.error;
     if (old) supabaseClient.storage.from('banners').remove([old]).catch(() => {});
-    myProf = { ...(myProf || {}), banner_url: url, banner_type: isVid ? 'video' : 'image' }; delete myProf.__nocols;
-    $('prof-main').innerHTML = profileHTML(myProfBase(), true); showToast('Banner diperbarui');
-  } catch (e) { showToast('Gagal: ' + (e.message || e) + '. Jalankan SQL profil dulu.'); }
+    myProf = { ...(myProf || {}), banner_url: url, banner_type: kind }; delete myProf.__nocols;
+    $('prof-main').innerHTML = profileHTML(myProfBase(), true); profHold(); showToast('Banner diperbarui');
+  } catch (e) {
+    const m = String((e && (e.message || e.error)) || e);
+    console.error('banner', e);
+    showToast(/row-level|policy|not found|Bucket|column|schema/i.test(m) ? 'Gagal: database belum disiapkan. Jalankan SQL profil (supabase_v12.sql) di Supabase.' : /size|exceed|large|413/i.test(m) ? 'Gagal: file terlalu besar untuk server' : 'Gagal: ' + m);
+  }
   hideLoading();
 }
 async function resetBanner() {
@@ -3053,8 +3140,10 @@ async function resetBanner() {
   if (r.error) return showToast('Gagal: ' + r.error.message);
   if (old) supabaseClient.storage.from('banners').remove([old]).catch(() => {});
   myProf = { ...(myProf || {}), banner_url: null, banner_type: null };
-  $('prof-main').innerHTML = profileHTML(myProfBase(), true); showToast('Banner dikembalikan ke bawaan');
+  $('prof-main').innerHTML = profileHTML(myProfBase(), true); profHold(); showToast('Banner dikembalikan ke bawaan');
 }
+
+const _switchTab0 = switchTab; switchTab = function (t) { const r = _switchTab0.apply(this, arguments); try { profHold(); } catch (e) {} return r; };
 let toastT;
 function showToast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
 </script>
