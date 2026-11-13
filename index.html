@@ -669,6 +669,13 @@
   .yt-row.on { background:rgba(255,255,255,.14); border-color:var(--accent-2); }
   .yt-t { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13.5px; color:var(--text); cursor:pointer; }
   .yt-row .mini-btn { padding:4px 10px; }
+
+#yt-res{margin-top:8px;display:flex;flex-direction:column;gap:6px}
+.yt-res-row{display:flex;align-items:center;gap:10px;padding:6px;border-radius:12px;background:rgba(255,255,255,.05)}
+.yt-res-row img{width:96px;height:54px;object-fit:cover;border-radius:8px;flex:none;background:#111}
+.yt-res-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
+.yt-res-t b{font-size:13px;color:var(--strong);font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.yt-res-t span{font-size:11px;color:var(--muted,#9aa)}
 </style>
 </head>
 <body>
@@ -677,7 +684,7 @@
 <!-- AUTH -->
 <div id="auth-screen">
   <div class="auth-box">
-    <div class="auth-logo-wrap"><img class="auth-logo-top" src="https://cdn.imagetourls.com/uploads/tyImg/9nkS3Drm.png" alt="" onerror="this.style.display='none'"></div>
+    
     <img class="auth-wordmark" src="https://cdn.imagetourls.com/uploads/tyImg/3KS1I1JB.png" alt="SYRANX" onerror="this.style.display='none';document.getElementById('auth-txt').style.display='block'">
     <div id="auth-txt" style="display:none"><h2>SYRANX</h2>
     <p class="tag">ASISTEN AI PRIBADI</p></div>
@@ -721,7 +728,9 @@
     <button class="menu-item" onclick="closeSidebar(); openShop()" id="menu-upgrade" style="display:none; color:#fbbf24">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Upgrade Role</button>
     <button class="menu-item" onclick="closeSidebar(); openOverlay('tools-menu')" id="menu-tools" style="display:none">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Tools dan Game</button>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14.7 6.3a1 1 0 0 0 0 1.4l1.6 1.6a1 1 0 0 0 1.4 0l3.77-3.77a6 6 0 0 1-7.94 7.94l-6.91 6.91a2.12 2.12 0 0 1-3-3l6.91-6.91a6 6 0 0 1 7.94-7.94l-3.76 3.76z"/></svg>Tools</button>
+    <button class="menu-item" onclick="closeSidebar(); openOverlay('games-menu')" id="menu-games" style="display:none">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="7" width="20" height="12" rx="5"/><path d="M7 11v4M5 13h4"/><circle cx="16" cy="12" r="1"/><circle cx="18.5" cy="14.5" r="1"/></svg>Game Mini</button>
     <button class="menu-item" onclick="closeSidebar(); openOrders()" id="menu-orders" style="display:none; color:#fbbf24">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M6 2L3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4z"/><line x1="3" y1="6" x2="21" y2="6"/><path d="M16 10a4 4 0 0 1-8 0"/></svg>Pesanan Masuk (CS)</button>
     <div class="menu-divider"></div>
@@ -739,8 +748,8 @@
 
 <!-- TOOLS -->
 <div id="tools-menu" class="full-screen-overlay">
-  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('tools-menu')">←</button><h2>Tools dan Game</h2></div>
-  <div class="overlay-content"><div class="tools-grid"><div class="tool-card" onclick="openOverlay('calc-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="16" y1="11" x2="16" y2="11.01"/><line x1="8" y1="15" x2="8" y2="15.01"/><line x1="12" y1="15" x2="12" y2="15.01"/><line x1="16" y1="15" x2="16" y2="15.01"/></svg></div>Kalkulator</div><div class="tool-card" onclick="openOverlay('conv-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>Konverter</div><div class="tool-card" onclick="openGame('ttt')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></svg></div>Tic Tac Toe</div><div class="tool-card" onclick="openGame('zour')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 12h18M3 3l18 18M21 3L3 21"/></svg></div>Zour RF</div><div class="tool-card" onclick="openBoard('ludo')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.6"/><circle cx="16" cy="16" r="1.6"/><circle cx="16" cy="8" r="1.6"/><circle cx="8" cy="16" r="1.6"/></svg></div>Ludo</div><div class="tool-card" onclick="openBoard('snake')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20c0-6 6-4 6-9s-5-4-3-8"/><path d="M15 21V9M20 21V9M15 12h5M15 16h5"/></svg></div>Ular Tangga</div><div class="tool-card" onclick="QRT.open()"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20h1"/></svg></div>QR Code</div><div class="tool-card" onclick="YTP.open()"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="4"/><polygon points="10 9 15.5 12 10 15" fill="currentColor"/></svg></div>Pemutar YouTube</div></div></div>
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('tools-menu')">←</button><h2>Tools</h2></div>
+  <div class="overlay-content"><div class="tools-grid"><div class="tool-card" onclick="openOverlay('calc-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="16" y1="11" x2="16" y2="11.01"/><line x1="8" y1="15" x2="8" y2="15.01"/><line x1="12" y1="15" x2="12" y2="15.01"/><line x1="16" y1="15" x2="16" y2="15.01"/></svg></div>Kalkulator</div><div class="tool-card" onclick="openOverlay('conv-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>Konverter</div><div class="tool-card" onclick="QRT.open()"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20h1"/></svg></div>QR Code</div><div class="tool-card" onclick="YTP.open()"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="4"/><polygon points="10 9 15.5 12 10 15" fill="currentColor"/></svg></div>Pemutar YouTube</div></div></div>
 </div>
 
 <div id="calc-screen" class="full-screen-overlay">
@@ -938,7 +947,7 @@
 <div id="qr-screen" class="full-screen-overlay" style="z-index:1700">
   <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('qr-screen')">←</button><h2>QR Code</h2></div>
   <div class="overlay-content"><div class="g-wrap">
-    <div id="qr-seg" class="g-seg"><button data-t="text" class="on" onclick="QRT.show('text')">Buat QR</button><button data-t="drop" onclick="QRT.show('drop')">Kotak Upload</button></div>
+    <div id="qr-seg" class="g-seg"><button data-t="text" class="on" onclick="QRT.show('text')">Teks/Link</button><button data-t="media" onclick="QRT.show('media')">Video/Foto</button><button data-t="drop" onclick="QRT.show('drop')">Kotak Upload</button></div>
     <div id="qr-body"></div>
   </div></div>
 </div>
@@ -952,6 +961,10 @@
   <div class="overlay-content"><div class="g-wrap"><div id="yt-body"></div></div></div>
 </div>
 
+<div id="games-menu" class="full-screen-overlay">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('games-menu')">←</button><h2>Game Mini</h2></div>
+  <div class="overlay-content"><div class="tools-grid"><div class="tool-card" onclick="openGame('ttt')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></svg></div>Tic Tac Toe</div><div class="tool-card" onclick="openGame('zour')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 12h18M3 3l18 18M21 3L3 21"/></svg></div>Zour RF</div><div class="tool-card" onclick="openBoard('ludo')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.6"/><circle cx="16" cy="16" r="1.6"/><circle cx="16" cy="8" r="1.6"/><circle cx="8" cy="16" r="1.6"/></svg></div>Ludo</div><div class="tool-card" onclick="openBoard('snake')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20c0-6 6-4 6-9s-5-4-3-8"/><path d="M15 21V9M20 21V9M15 12h5M15 16h5"/></svg></div>Ular Tangga</div></div></div>
+</div>
 <!-- DM ROOM -->
 <div id="dm-chat-screen" class="full-screen-overlay" style="z-index:1600">
   <div class="overlay-header"><button class="icon-btn" onclick="closeDMRoom()">←</button><h2 id="dm-chat-title" style="flex:1;min-width:0">DM</h2>
@@ -1236,6 +1249,7 @@ function updateUIForRole() {
   const isStaff = STAFF.includes(currentUserRole);
   const canTools = ['ceo', 'owner', 'developer', 'cs'].includes(currentUserRole);
   $('menu-tools').style.display = canTools ? 'flex' : 'none';
+  $('menu-games').style.display = canTools ? 'flex' : 'none';
   $('menu-upgrade').style.display = isMember ? 'flex' : 'none';
   applyRoleLocks();
   $('menu-orders').style.display = isStaff ? 'flex' : 'none';
@@ -3908,7 +3922,7 @@ const QRT = {
       $('qr-body').innerHTML = `<div class="qr-box"><textarea id="qr-text" class="glass-input" rows="3" maxlength="300" placeholder="Tulis teks atau tempel link"></textarea>
         <button class="btn-primary" onclick="QRT.make()">Buat QR</button>
         <div id="qr-out" style="display:none"><canvas id="qr-cv" class="qr-cv"></canvas><div class="qr-acts"><button class="mini-btn" onclick="qrDownload($('qr-cv'),'qr-syranx.png')">Unduh PNG</button><button class="mini-btn" onclick="copyText($('qr-text').value)">Salin teks</button></div></div></div>`;
-    } else DRP.render();
+    } else if (t === 'media') MQR.render(); else DRP.render();
   },
   make() {
     const t = $('qr-text').value.trim(); if (!t) return showToast('Isi teks atau link dulu');
@@ -4029,12 +4043,32 @@ const YTP = {
   },
   render() {
     const b = $('yt-body'); if (!b) return;
-    if (!b.querySelector('#yt-in')) b.innerHTML = `<div class="qr-box"><div class="search-row"><input id="yt-in" class="glass-input" placeholder="Tempel link YouTube" autocomplete="off" onkeydown="if(event.key==='Enter')YTP.add(true)"><button class="btn-primary search-btn" onclick="YTP.add(true)">Putar</button></div>
-      <div class="yt-frame"><div id="yt-box"></div><p id="yt-ph" class="muted">Tempel link video lalu tekan Putar.</p></div>
+    if (!b.querySelector('#yt-in')) b.innerHTML = `<div class="qr-box"><div class="search-row"><input id="yt-in" class="glass-input" placeholder="Cari lagu atau video, atau tempel link" autocomplete="off" onkeydown="if(event.key==='Enter')YTP.go()"><button class="btn-primary search-btn" onclick="YTP.go()">Cari</button></div><div id="yt-res"></div>
+      <div class="yt-frame"><div id="yt-box"></div><p id="yt-ph" class="muted">Cari video lalu pilih untuk diputar.</p></div>
       <div class="yt-ctl"><button class="mini-btn" onclick="YTP.step(-1)">Sebelumnya</button><button class="mini-btn" onclick="YTP.step(1)">Berikutnya</button><button id="yt-loop" class="mini-btn" onclick="YTP.toggleLoop()">Ulangi: mati</button><button class="mini-btn" onclick="YTP.stop()">Stop</button></div>
       <div class="g-or">Antrean</div><div id="yt-q"></div><button class="mini-btn" style="margin-top:6px" onclick="YTP.add(false)">+ Tambah ke antrean saja</button></div>`;
     const q = $('yt-q'); q.innerHTML = this.q.length ? '' : '<p class="muted">Antrean kosong.</p>';
     this.q.forEach((x, i) => { const r = document.createElement('div'); r.className = 'yt-row' + (i === this.idx ? ' on' : ''); r.innerHTML = `<span class="yt-t">${esc(x.title || x.id)}</span><button class="mini-btn danger" aria-label="Hapus">x</button>`; r.querySelector('.yt-t').onclick = () => this.play(i); r.querySelector('button').onclick = e => { e.stopPropagation(); this.remove(i); }; q.appendChild(r); });
+  },
+  async go() {
+    const v = ($('yt-in').value || '').trim(); if (!v) return;
+    if (this.parse(v)) return this.add(true);
+    const box = $('yt-res'); box.innerHTML = '<p class="muted">Mencari...</p>';
+    try {
+      const { data } = await supabaseClient.auth.getSession(), tok = data && data.session ? data.session.access_token : '';
+      const r = await fetch('/api/ytsearch?q=' + encodeURIComponent(v), { headers: { Authorization: 'Bearer ' + tok } });
+      if (r.status === 503 || r.status === 404) { box.innerHTML = '<p class="muted">Pencarian belum diaktifkan. Admin perlu memasang YT_API_KEY di Vercel. Sementara itu kamu masih bisa menempel link.</p>'; return; }
+      const j = await r.json(); if (!r.ok) { box.innerHTML = '<p class="muted">Pencarian gagal' + (j.error ? ': ' + esc(String(j.error)).slice(0, 80) : '') + '</p>'; return; }
+      if (!j.items.length) { box.innerHTML = '<p class="muted">Tidak ada hasil.</p>'; return; }
+      box.innerHTML = ''; this.res = j.items;
+      j.items.forEach((x, k) => { const d = document.createElement('div'); d.className = 'yt-res-row'; d.innerHTML = `<img src="${esc(x.thumb)}" alt="" loading="lazy"><div class="yt-res-t"><b>${esc(x.title)}</b><span>${esc(x.channel)}</span></div><button class="mini-btn" aria-label="Tambah ke antrean">+</button>`;
+        d.querySelector('.yt-res-t').onclick = d.querySelector('img').onclick = () => this.pick(k, true); d.querySelector('button').onclick = e => { e.stopPropagation(); this.pick(k, false); }; box.appendChild(d); });
+    } catch (e) { box.innerHTML = '<p class="muted">Tidak bisa terhubung ke pencarian. Coba lagi.</p>'; }
+  },
+  pick(k, playNow) {
+    const x = this.res[k]; if (!x) return; let i = this.q.findIndex(y => y.id === x.id);
+    if (i < 0) { this.q.push({ id: x.id, title: x.title }); i = this.q.length - 1; this.save(); }
+    this.render(); if (playNow) this.play(i); else showToast('Ditambahkan ke antrean');
   },
   async add(playNow) {
     const inp = $('yt-in'), id = this.parse(inp.value); if (!id) return showToast('Link YouTube tidak dikenali');
@@ -4059,6 +4093,40 @@ const YTP = {
   toggleLoop() { this.loop = !this.loop; const b = $('yt-loop'); if (b) { b.textContent = 'Ulangi: ' + (this.loop ? 'nyala' : 'mati'); b.classList.toggle('on', this.loop); } },
   stop() { try { if (this.player && this.player.stopVideo) this.player.stopVideo(); } catch (e) {} },
   remove(i) { this.q.splice(i, 1); if (i < this.idx) this.idx--; else if (i === this.idx) { this.idx = -1; this.stop(); } this.save(); this.render(); }
+};
+
+// ---------- video/foto -> QR ----------
+const MQR = {
+  items: [], busy: false,
+  async render() {
+    $('qr-body').innerHTML = `<div class="qr-box"><p class="muted" style="font-size:13px;line-height:1.55">Pilih video atau foto, unggah, lalu dapatkan QR. Saat QR dipindai, video atau foto langsung terbuka. Maksimal 50 MB. Siapa pun yang punya QR bisa melihatnya, jadi jangan unggah yang pribadi.</p>
+      <input id="mq-file" type="file" accept="image/*,video/*" style="display:none" onchange="MQR.send(this.files[0]);this.value=''"><button class="btn-primary" onclick="$('mq-file').click()">Pilih video atau foto</button>
+      <div id="mq-st" class="muted" style="font-size:13px"></div><div id="mq-out" style="display:none"><canvas id="mq-cv" class="qr-cv"></canvas><div class="qr-acts"><button class="mini-btn" onclick="qrDownload($('mq-cv'),'qr-media.png')">Unduh PNG</button><button class="mini-btn" onclick="copyText(MQR.last)">Salin link</button></div></div>
+      <div class="g-or">QR saya</div><div id="mq-list"><p class="muted">Memuat...</p></div></div>`;
+    this.list();
+  },
+  async list() {
+    const el = $('mq-list'); if (!el) return;
+    const { data, error } = await supabaseClient.storage.from('qrmedia').list(currentUserId, { limit: 50, sortBy: { column: 'created_at', order: 'desc' } });
+    if (error) { el.innerHTML = '<p class="muted">Belum siap. Jalankan SQL v15 dulu.</p>'; return; }
+    this.items = (data || []).filter(x => x.name && x.id);
+    el.innerHTML = this.items.length ? '' : '<p class="muted">Belum ada.</p>';
+    this.items.forEach(x => { const r = document.createElement('div'); r.className = 'yt-row'; r.innerHTML = `<span class="yt-t">${esc(x.name.replace(/^\d+__/, ''))}</span><button class="mini-btn">QR</button><button class="mini-btn danger" aria-label="Hapus">x</button>`;
+      const [b1, b2] = r.querySelectorAll('button'); b1.onclick = () => this.show(x.name); b2.onclick = () => this.del(x.name); el.appendChild(r); });
+  },
+  url(name) { return supabaseClient.storage.from('qrmedia').getPublicUrl(currentUserId + '/' + name).data.publicUrl; },
+  show(name) { this.last = this.url(name); if (!QRE.draw($('mq-cv'), this.last, 560)) return showToast('Link terlalu panjang'); $('mq-out').style.display = 'block'; $('mq-out').scrollIntoView({ block: 'nearest' }); },
+  async del(name) { if (!confirm('Hapus file ini? QR-nya tidak akan berfungsi lagi.')) return; await supabaseClient.storage.from('qrmedia').remove([currentUserId + '/' + name]); $('mq-out').style.display = 'none'; this.list(); },
+  async send(f) {
+    if (!f || this.busy) return; const st = $('mq-st');
+    const isV = /^video\//.test(f.type) || /\.(mp4|mov|webm|m4v)$/i.test(f.name), isI = /^image\//.test(f.type) || /\.(jpe?g|png|webp|gif)$/i.test(f.name);
+    if (!isV && !isI) { st.textContent = 'Hanya video atau foto'; return; } if (f.size > 50 * 1048576) { st.textContent = 'Terlalu besar (maks 50 MB)'; return; }
+    this.busy = true; st.textContent = 'Mengunggah...';
+    const ext = ((/\.(\w{2,5})$/.exec(f.name) || [])[1] || (isV ? 'mp4' : 'jpg')).toLowerCase(), name = Date.now() + '__' + Math.random().toString(36).slice(2, 8) + '.' + ext;
+    const up = await supabaseClient.storage.from('qrmedia').upload(currentUserId + '/' + name, f, { contentType: f.type || (isV ? 'video/mp4' : 'image/jpeg'), upsert: false });
+    this.busy = false; if (up.error) { console.error('qrmedia', up.error); st.textContent = 'Gagal mengunggah. Pastikan SQL v15 sudah dijalankan.'; return; }
+    st.textContent = 'Selesai'; this.show(name); this.list();
+  }
 };
 let toastT;
 function showToast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
