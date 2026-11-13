@@ -4,6 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">
 <meta name="theme-color" content="#000000">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" href="icons/favicon-64.png">
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Syranx">
 <title>Syranx AI</title>
 <link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -483,7 +489,7 @@
   .bg-video video.on { opacity:1; }
   .bg-video img { position:absolute; inset:0; width:100%; height:100%; object-fit:cover; opacity:0; transition:opacity 1s ease; }
   .bg-video img.on { opacity:1; }
-  .bg-video::after { content:''; position:absolute; inset:0; background:linear-gradient(180deg, rgba(0,0,0,.30), rgba(0,0,0,.10) 40%, rgba(0,0,0,.45)); }
+  .bg-video::after { content:''; position:absolute; inset:0; background:rgba(0,0,0,.5); }
   html, body { background:#000; }
 
   #header, #nav, .sidebar, .auth-box, .ai .bubble, .other .bubble, .input-row, .role-card, .tool-card, .calc-display, .conv-out,
@@ -575,6 +581,94 @@
   .prof-head > * { pointer-events:auto; }
   .prof-banner-btns { top:10px; bottom:auto; z-index:3; flex-wrap:wrap; justify-content:flex-end; max-width:75%; }
   .prof-banner .snd-btn { top:10px; bottom:auto; z-index:3; }
+
+  .fab { position:absolute; right:18px; bottom:18px; width:56px; height:56px; border-radius:50%; border:none; background:var(--accent); color:var(--on-accent); display:flex; align-items:center; justify-content:center; cursor:pointer; box-shadow:0 8px 22px rgba(0,0,0,.45); z-index:5; transition:transform .2s ease; }
+  .fab:active { transform:scale(.93); }
+  .find-card { max-width:380px; max-height:82vh; display:flex; flex-direction:column; }
+  .find-card .search-row { margin-bottom:12px; }
+  .find-res { overflow-y:auto; min-height:60px; flex:1; }
+  .find-res .role-card { margin-bottom:8px; }
+  .pst.on, .dm-st.on, .prof-st.on { color:#3ddc84; }
+  .dm-st { font-size:11px; color:var(--text-3); font-weight:500; }
+  .prof-st { color:var(--text-3); }
+
+  .auth-hint { text-align:center; font-size:11.5px; color:var(--text-3); margin-top:8px; }
+  .auth-note { margin:0 0 14px; }
+
+  /* ludo dan ular tangga */
+  .bd-wrap { display:flex; flex-direction:column; gap:10px; width:100%; max-width:440px; margin:0 auto; }
+  .bd-top { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
+  .bd-chip { display:flex; align-items:center; gap:8px; padding:6px 10px; border-radius:16px; border:1px solid var(--border); background:rgba(255,255,255,.05); min-width:0; border-left:4px solid var(--c); transition:background .25s, border-color .25s; }
+  .bd-chip.turn { background:rgba(255,255,255,.13); border-color:var(--c); }
+  .bd-chip small { margin-left:auto; color:var(--text-2); font-weight:700; font-size:12px; }
+  .bd-nm { display:flex; align-items:center; gap:4px; min-width:0; font-size:13px; font-weight:700; color:var(--strong); }
+  .bd-nm .nm { overflow:hidden; text-overflow:ellipsis; white-space:nowrap; min-width:0; }
+  .bd-nm .vchk { flex-shrink:0; width:14px; height:14px; }
+  .bd-svg { width:100%; height:auto; border-radius:18px; box-shadow:0 10px 30px rgba(0,0,0,.45); background:#f4efe4; display:block; }
+  .tk { transition:transform .16s ease; transform:translate(-9px,-9px); }
+  .tk .ring { opacity:0; }
+  .tk.mv { cursor:pointer; }
+  .tk.mv .ring { opacity:1; animation:tkp 1s ease-in-out infinite; }
+  @keyframes tkp { 50% { stroke-opacity:.35; } }
+  .bd-ctl { display:flex; align-items:center; gap:14px; padding:6px 4px; }
+  .bd-info { display:flex; flex-direction:column; gap:3px; min-width:0; }
+  .bd-info b { font-size:15px; color:var(--strong); }
+  .bd-info small { color:var(--text-2); font-size:12.5px; min-height:16px; }
+  .bd-dice { width:64px; height:64px; flex-shrink:0; border-radius:16px; border:2px solid var(--c, #888); background:#fbf8f0; display:grid; grid-template-columns:repeat(3,1fr); grid-template-rows:repeat(3,1fr); padding:9px; gap:3px; cursor:default; transition:transform .2s ease, box-shadow .2s ease; }
+  .bd-dice span { border-radius:50%; } .bd-dice span.on { background:#222; }
+  .bd-dice.ready { cursor:pointer; box-shadow:0 0 0 4px rgba(255,255,255,.18); }
+  .bd-dice.roll { animation:dshake .45s ease; }
+  @keyframes dshake { 25% { transform:rotate(-12deg) scale(1.06); } 75% { transform:rotate(12deg) scale(1.06); } }
+  .bd-over { display:flex; align-items:center; gap:10px; flex-wrap:wrap; padding:12px 14px; border-radius:18px; border:1px solid var(--border); background:rgba(255,255,255,.08); }
+  .bd-over b { flex:1; color:var(--strong); }
+  .bd-over .btn-primary { margin:0; padding:10px 16px; width:auto; }
+  .bd-code { text-align:center; font-size:38px; font-weight:800; letter-spacing:.3em; color:var(--strong); padding-left:.3em; }
+  .bd-lob { display:flex; flex-direction:column; gap:8px; }
+  .bd-lrow { display:flex; align-items:center; gap:10px; padding:11px 14px; border-radius:14px; border:1px solid var(--border); background:rgba(255,255,255,.05); font-weight:600; color:var(--strong); }
+  .bd-lrow i { width:14px; height:14px; border-radius:50%; flex-shrink:0; }
+  .bd-lrow span { display:flex; align-items:center; gap:5px; min-width:0; } .bd-lrow em { color:var(--text-3); font-style:normal; font-weight:500; }
+  .bd-lrow .vchk { width:15px; height:15px; }
+
+  .auth-logo-top { display:block; width:64px; height:64px; object-fit:contain; border-radius:16px; }
+  .auth-wordmark { display:block; width:86%; max-width:300px; height:auto; margin:0 auto 14px; mix-blend-mode:screen; }
+
+  .bd-voice { display:flex; align-items:center; gap:10px; }
+  .bd-voice .mini-btn.on { color:#3ddc84; border-color:rgba(61,220,132,.5); }
+  .auth-wordmark { -webkit-mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent),linear-gradient(to bottom,transparent,#000 18%,#000 82%,transparent); -webkit-mask-composite:source-in; mask-image:linear-gradient(to right,transparent,#000 14%,#000 86%,transparent),linear-gradient(to bottom,transparent,#000 18%,#000 82%,transparent); mask-composite:intersect; }
+  #auth-screen .auth-box { background:rgba(12,12,14,.92); }
+
+  .vn { display:flex; align-items:center; gap:10px; min-width:210px; padding:2px 0; }
+  .vn-btn { width:38px; height:38px; border-radius:50%; border:none; background:rgba(255,255,255,.2); color:inherit; display:flex; align-items:center; justify-content:center; flex-shrink:0; cursor:pointer; }
+  .vn-bar { flex:1; height:6px; border-radius:3px; background:rgba(255,255,255,.25); overflow:hidden; cursor:pointer; }
+  .vn-bar i { display:block; height:100%; width:0; background:currentColor; opacity:.9; transition:width .2s linear; }
+  .vn-t { font-size:12px; font-variant-numeric:tabular-nums; opacity:.85; min-width:32px; text-align:right; }
+  .vn-rec { display:none; align-items:center; gap:12px; margin:0 12px 12px; padding:8px 10px; border-radius:30px; background:rgba(255,255,255,.08); border:1px solid var(--border); }
+  .vn-rec b { font-variant-numeric:tabular-nums; color:var(--strong); }
+  .rec-dot { width:10px; height:10px; border-radius:50%; background:#ff4d4d; animation:recp 1s ease-in-out infinite; }
+  @keyframes recp { 50% { opacity:.3; } }
+
+  /* QR, kotak upload, youtube */
+  .qr-box { display:flex; flex-direction:column; gap:12px; }
+  .qr-box textarea { resize:none; width:100%; font-family:inherit; padding:12px 14px; border-radius:18px; }
+  .qr-cv { width:100%; max-width:280px; height:auto; border-radius:16px; align-self:center; margin:0 auto; display:block; background:#fff; }
+  .qr-acts { display:flex; gap:8px; justify-content:center; margin-top:10px; flex-wrap:wrap; }
+  .qr-box .btn-primary, .perm-card .btn-primary { margin-top:0; }
+  .dr-card { display:flex; align-items:center; gap:10px; padding:12px 14px; margin-bottom:8px; border-radius:18px; border:1px solid var(--border); background:rgba(255,255,255,.06); }
+  .dr-t { flex:1; min-width:0; display:flex; flex-direction:column; gap:2px; } .dr-t b { color:var(--strong); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; }
+  .dr-a { display:flex; gap:6px; flex-shrink:0; }
+  .dr-grid { display:grid; grid-template-columns:1fr 1fr; gap:10px; }
+  .dr-file { border-radius:16px; overflow:hidden; border:1px solid var(--border); background:rgba(0,0,0,.35); display:flex; flex-direction:column; }
+  .dr-file img, .dr-file video { width:100%; aspect-ratio:1; object-fit:cover; display:block; background:#000; }
+  .dr-fi { display:flex; flex-direction:column; gap:6px; padding:8px; } .dr-fi small { color:var(--text-2); overflow:hidden; text-overflow:ellipsis; white-space:nowrap; } .dr-fi span { display:flex; gap:6px; }
+  .dr-fi .mini-btn { padding:6px 10px; font-size:12px; text-decoration:none; }
+  .yt-frame { position:relative; width:100%; aspect-ratio:16/9; border-radius:18px; overflow:hidden; background:#000; border:1px solid var(--border); }
+  .yt-frame #yt-box, .yt-frame iframe { position:absolute; inset:0; width:100%; height:100%; border:0; }
+  .yt-frame p { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; padding:20px; text-align:center; font-size:13px; }
+  .yt-ctl { display:flex; gap:6px; flex-wrap:wrap; } .yt-ctl .mini-btn { padding:9px 12px; font-size:12.5px; } .yt-ctl .mini-btn.on { color:#3ddc84; border-color:rgba(61,220,132,.5); }
+  .yt-row { display:flex; align-items:center; gap:8px; padding:10px 12px; margin-bottom:6px; border-radius:14px; border:1px solid var(--border); background:rgba(255,255,255,.05); }
+  .yt-row.on { background:rgba(255,255,255,.14); border-color:var(--accent-2); }
+  .yt-t { flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap; font-size:13.5px; color:var(--text); cursor:pointer; }
+  .yt-row .mini-btn { padding:4px 10px; }
 </style>
 </head>
 <body>
@@ -583,13 +677,11 @@
 <!-- AUTH -->
 <div id="auth-screen">
   <div class="auth-box">
-    <div class="auth-logo-wrap"><div class="auth-logo">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2L2 7l10 5 10-5-10-5zM2 17l10 5 10-5M2 12l10 5 10-5"/></svg>
-    </div></div>
-    <h2>SYRANX</h2>
-    <p class="tag">ASISTEN AI PRIBADI</p>
-    <div class="auth-note"><b>Cara membuat akun</b><ol><li>Tekan <b>Daftar</b> di bawah.</li><li>Pilih username dan password.</li><li>Tekan <b>Buat Akun</b>, lalu masuk.</li></ol>Tidak perlu Gmail atau email apa pun. Cukup username dan password. Catat password kamu, karena belum ada fitur lupa password.</div>
-    <div id="login-form" style="margin-top:14px">
+    <div class="auth-logo-wrap"><img class="auth-logo-top" src="https://cdn.imagetourls.com/uploads/tyImg/9nkS3Drm.png" alt="" onerror="this.style.display='none'"></div>
+    <img class="auth-wordmark" src="https://cdn.imagetourls.com/uploads/tyImg/3KS1I1JB.png" alt="SYRANX" onerror="this.style.display='none';document.getElementById('auth-txt').style.display='block'">
+    <div id="auth-txt" style="display:none"><h2>SYRANX</h2>
+    <p class="tag">ASISTEN AI PRIBADI</p></div>
+    <div id="login-form">
       <div class="input-group"><input id="login-user" placeholder="Username" autocomplete="username"></div>
       <div class="input-group">
         <input id="login-pass" type="password" placeholder="Password" autocomplete="current-password">
@@ -597,8 +689,10 @@
       </div>
       <button class="btn-primary" onclick="login()">MASUK</button>
       <p class="auth-switch">Belum punya akun? <a onclick="showRegister()">Daftar</a></p>
+      <p class="auth-hint">Daftar cukup dengan username dan password, tanpa Gmail.</p>
     </div>
     <div id="register-form" style="display:none">
+      <div class="auth-note"><b>Cara membuat akun</b><br>Isi username dan password, lalu tekan BUAT AKUN. Tidak perlu Gmail atau email apa pun. Catat passwordmu, karena belum ada fitur lupa password.</div>
       <div class="input-group"><input id="reg-user" placeholder="Username baru (huruf/angka, tanpa spasi)" autocomplete="off"></div>
       <div class="input-group"><input id="reg-pass" type="password" placeholder="Password (min 6 karakter)" autocomplete="new-password"></div>
       <div class="input-group"><input id="reg-pass2" type="password" placeholder="Ulangi password" autocomplete="new-password"></div>
@@ -646,7 +740,7 @@
 <!-- TOOLS -->
 <div id="tools-menu" class="full-screen-overlay">
   <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('tools-menu')">←</button><h2>Tools dan Game</h2></div>
-  <div class="overlay-content"><div class="tools-grid"><div class="tool-card" onclick="openOverlay('calc-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="16" y1="11" x2="16" y2="11.01"/><line x1="8" y1="15" x2="8" y2="15.01"/><line x1="12" y1="15" x2="12" y2="15.01"/><line x1="16" y1="15" x2="16" y2="15.01"/></svg></div>Kalkulator</div><div class="tool-card" onclick="openOverlay('conv-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>Konverter</div><div class="tool-card" onclick="openGame('ttt')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></svg></div>Tic Tac Toe</div><div class="tool-card" onclick="openGame('c4')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="16" rx="2"/><circle cx="8" cy="9" r="1.5"/><circle cx="12" cy="9" r="1.5"/><circle cx="16" cy="9" r="1.5"/><circle cx="8" cy="15" r="1.5"/><circle cx="12" cy="15" r="1.5"/><circle cx="16" cy="15" r="1.5"/></svg></div>4 Sebaris Online</div><div class="tool-card" onclick="openGame('suit')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M18 11V6a2 2 0 0 0-4 0v5M14 10V4a2 2 0 0 0-4 0v6M10 10.5V6a2 2 0 0 0-4 0v8"/><path d="M18 8a2 2 0 0 1 4 0v6a8 8 0 0 1-8 8h-2c-2.8 0-4.5-.9-5.9-2.4L3.4 16a2 2 0 0 1 3.2-2.4L8 15"/></svg></div>Suit Online</div><div class="tool-card" onclick="openGame('zour')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 12h18M3 3l18 18M21 3L3 21"/></svg></div>Zour RF</div></div></div>
+  <div class="overlay-content"><div class="tools-grid"><div class="tool-card" onclick="openOverlay('calc-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="16" y1="11" x2="16" y2="11.01"/><line x1="8" y1="15" x2="8" y2="15.01"/><line x1="12" y1="15" x2="12" y2="15.01"/><line x1="16" y1="15" x2="16" y2="15.01"/></svg></div>Kalkulator</div><div class="tool-card" onclick="openOverlay('conv-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>Konverter</div><div class="tool-card" onclick="openGame('ttt')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M8 3v18M16 3v18M3 8h18M3 16h18"/></svg></div>Tic Tac Toe</div><div class="tool-card" onclick="openGame('zour')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M12 3v18M3 12h18M3 3l18 18M21 3L3 21"/></svg></div>Zour RF</div><div class="tool-card" onclick="openBoard('ludo')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="3"/><circle cx="8" cy="8" r="1.6"/><circle cx="16" cy="16" r="1.6"/><circle cx="16" cy="8" r="1.6"/><circle cx="8" cy="16" r="1.6"/></svg></div>Ludo</div><div class="tool-card" onclick="openBoard('snake')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 20c0-6 6-4 6-9s-5-4-3-8"/><path d="M15 21V9M20 21V9M15 12h5M15 16h5"/></svg></div>Ular Tangga</div><div class="tool-card" onclick="QRT.open()"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20h1"/></svg></div>QR Code</div><div class="tool-card" onclick="YTP.open()"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="4"/><polygon points="10 9 15.5 12 10 15" fill="currentColor"/></svg></div>Pemutar YouTube</div></div></div>
 </div>
 
 <div id="calc-screen" class="full-screen-overlay">
@@ -724,6 +818,7 @@
       <div class="set-row"><label>Ukuran teks chat</label><input type="range" id="set-fs" min="13" max="20" step="1" oninput="setPref('fs',+this.value);$('v-fs').textContent=this.value"><span class="val" id="v-fs">15</span></div>
       <div class="set-row"><label>Video latar<small>Matikan untuk hemat kuota dan baterai</small></label><label class="switch"><input type="checkbox" id="set-anim" onchange="setPref('anim',this.checked)"><span></span></label></div>
       <div class="set-row"><label>Latar aplikasi<small>Ganti dengan foto atau video dari HP kamu</small></label><div style="display:flex;gap:6px"><button class="mini-btn" onclick="document.getElementById('bg-file').click()">Ganti</button><button class="mini-btn" onclick="resetBg()">Bawaan</button></div></div>
+      <div class="set-row"><label>Tampilkan status online<small>Matikan agar orang lain tidak melihat kamu online</small></label><label class="switch"><input type="checkbox" id="set-online" onchange="setPref('online',this.checked)"><span></span></label></div>
       <div class="set-row"><label>Suara notifikasi<small>Bunyi saat pesan masuk</small></label><label class="switch"><input type="checkbox" id="set-sound" onchange="setPref('sound',this.checked)"><span></span></label></div>
       <div class="set-row"><label>Notifikasi pesan dan telepon<small id="notif-state">-</small></label><label class="switch"><input type="checkbox" id="set-notif" onchange="toggleNotif(this.checked)"><span></span></label></div>
     </div>
@@ -802,6 +897,20 @@
 <input type="file" id="bg-file" accept="image/*,video/mp4,video/webm,video/quicktime" style="display:none" onchange="pickBg(this)">
 <input type="file" id="banner-file" accept="image/*,video/*" style="display:none" onchange="uploadBanner(this)">
 
+<!-- IZIN AWAL -->
+<div id="perm-gate" class="perm-modal" style="z-index:8500">
+  <div class="perm-card"><h3>Aktifkan izin</h3><p>Supaya notifikasi, panggilan suara, dan video berjalan, izinkan akses di bawah. Browser akan menanyakan satu per satu.</p><div id="pg-list" class="bd-lob" style="margin-bottom:14px"></div>
+    <button id="pg-go" class="btn-primary" onclick="PermGate.all()">Izinkan semua</button><button class="mini-btn" style="width:100%;margin-top:8px;padding:11px" onclick="PermGate.done()">Nanti saja</button></div>
+</div>
+<!-- CARI PENGGUNA -->
+<div id="find-modal" class="perm-modal find-modal" onclick="if(event.target===this)closeFind()">
+  <div class="perm-card find-card">
+    <h3>Cari pengguna</h3>
+    <div class="search-row"><input type="text" id="dm-search" class="glass-input" placeholder="Username atau ID" autocomplete="off"><button class="btn-primary search-btn" onclick="searchUser()">Cari</button></div>
+    <div id="dm-result-area" class="find-res"></div>
+    <button class="mini-btn" style="width:100%;margin-top:10px;padding:11px" onclick="closeFind()">Tutup</button>
+  </div>
+</div>
 <!-- PILIH BANNER BAWAAN -->
 <div id="preset-modal" class="perm-modal" onclick="if(event.target===this)this.classList.remove('show')">
   <div class="perm-card"><h3>Banner bawaan</h3><div id="preset-list"></div><button class="btn-primary" style="margin-top:12px" onclick="$('preset-modal').classList.remove('show')">Tutup</button></div>
@@ -821,6 +930,27 @@
   <audio id="game-voice" autoplay playsinline></audio>
   <div id="game-prof" class="g-prof" onclick="this.classList.remove('show')"></div>
 </div>
+<div id="board-screen" class="full-screen-overlay" style="z-index:1700">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeBoard()">←</button><h2 id="board-title">Game</h2></div>
+  <div class="overlay-content"><div id="board-body" class="g-wrap"></div></div>
+</div>
+<!-- QR, KOTAK UPLOAD, YOUTUBE -->
+<div id="qr-screen" class="full-screen-overlay" style="z-index:1700">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('qr-screen')">←</button><h2>QR Code</h2></div>
+  <div class="overlay-content"><div class="g-wrap">
+    <div id="qr-seg" class="g-seg"><button data-t="text" class="on" onclick="QRT.show('text')">Buat QR</button><button data-t="drop" onclick="QRT.show('drop')">Kotak Upload</button></div>
+    <div id="qr-body"></div>
+  </div></div>
+</div>
+<div id="qr-modal" class="perm-modal" onclick="if(event.target===this)this.classList.remove('show')"><div class="perm-card" id="qr-modal-body" style="text-align:center"></div></div>
+<div id="drop-screen" class="full-screen-overlay" style="z-index:1750">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('drop-screen')">←</button><h2>Kotak Upload</h2></div>
+  <div class="overlay-content"><div class="g-wrap"><div id="drop-body"></div></div></div>
+</div>
+<div id="yt-screen" class="full-screen-overlay" style="z-index:1700">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('yt-screen')">←</button><h2>Pemutar YouTube</h2></div>
+  <div class="overlay-content"><div class="g-wrap"><div id="yt-body"></div></div></div>
+</div>
 
 <!-- DM ROOM -->
 <div id="dm-chat-screen" class="full-screen-overlay" style="z-index:1600">
@@ -833,8 +963,10 @@
     <button class="icon-btn attach-btn" onclick="$('dm-file').click()" aria-label="Kirim file"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21.44 11.05l-9.19 9.19a6 6 0 0 1-8.49-8.49l9.19-9.19a4 4 0 0 1 5.66 5.66l-9.2 9.19a2 2 0 0 1-2.83-2.83l8.49-8.48"/></svg></button>
     <input type="file" id="dm-file" style="display:none" onchange="kirimFileDM(this)">
     <input type="text" id="dm-prompt" placeholder="Ketik pesan..." maxlength="500">
+    <button class="icon-btn attach-btn" id="dm-mic" onclick="VN.start()" aria-label="Pesan suara"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="2" width="6" height="12" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v4"/></svg></button>
     <button class="send-btn" onclick="kirimDM()" aria-label="Kirim"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button>
-  </div></div>
+  </div>
+  <div id="vn-bar" class="vn-rec" style="display:none"><button class="icon-btn" onclick="VN.cancel()" aria-label="Batal"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 0 1-2 2H8a2 2 0 0 1-2-2L5 6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg></button><i class="rec-dot"></i><b id="vn-time">0:00</b><span class="muted" style="flex:1">Merekam...</span><button class="send-btn" onclick="VN.send()" aria-label="Kirim"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div></div>
 </div>
 
 <!-- MODEL -->
@@ -888,12 +1020,8 @@
         <div id="notif-banner" class="notif-banner"><span>Aktifkan notifikasi agar tahu ada pesan dan panggilan masuk.</span><button class="mini-btn" onclick="toggleNotif(true)">Aktifkan</button></div>
         <div class="sec-title">Kontak Saya</div>
         <div id="dm-contacts-area" style="margin-bottom:18px"></div>
-        <div class="sec-title">Cari Pengguna</div>
-        <div class="search-row">
-          <input type="text" id="dm-search" class="glass-input" placeholder="Cari username...">
-          <button class="btn-primary search-btn" onclick="searchUser()">Cari</button>
-        </div>
-        <div id="dm-result-area"></div>
+        <div style="height:84px"></div>
+        <button class="fab" onclick="openFind()" aria-label="Cari pengguna"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg></button>
       </div></div>
     </section>
 
@@ -1329,7 +1457,7 @@ async function removeContact(id, name) {
   showToast('Kontak dihapus');
 }
 
-async function searchUser() {
+async function searchUserOld() {
   const q = $('dm-search').value.trim().toLowerCase().replace(/[%,()]/g, '');
   if (!q) return;
   const area = $('dm-result-area');
@@ -1539,7 +1667,7 @@ async function hapusRiwayatFromMenu() {
 }
 // ================= TEMA & PENGATURAN =================
 const PREF_KEY = 'syranx_prefs_v12';
-const DEFAULT_PREFS = { blur: 22, glass: 10, fs: 15, anim: true, sound: true, notif: true };
+const DEFAULT_PREFS = { blur: 22, glass: 10, fs: 15, anim: true, online: true, sound: true, notif: true };
 let prefs = { ...DEFAULT_PREFS };
 function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
 function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
@@ -1574,7 +1702,7 @@ function syncSettingsUI() {
   $('set-glass').value = prefs.glass; $('v-glass').textContent = prefs.glass + '%';
   $('set-fs').value = prefs.fs; $('v-fs').textContent = prefs.fs;
   $('set-anim').checked = prefs.anim;
-  $('set-sound').checked = prefs.sound;
+  $('set-sound').checked = prefs.sound; if ($('set-online')) $('set-online').checked = prefs.online !== false;
   $('set-notif').checked = prefs.notif && Notif.perm() === 'granted';
   const ns = $('notif-state'); if (ns) ns.textContent = Notif.perm() === 'unsupported' ? 'Browser ini tidak mendukung notifikasi' : (Notif.perm() === 'granted' ? 'Aktif' : (Notif.perm() === 'denied' ? 'Diblokir di pengaturan browser' : 'Belum diizinkan'));
 }
@@ -1882,7 +2010,15 @@ const SFX = (() => {
   }
   function stopRing() { if (ringTimer) { clearInterval(ringTimer); ringTimer = null; } }
   function end() { beep(480, 0, 0.16, 0.1); beep(340, 0.18, 0.26, 0.1); }
-  return { message, ring, stopRing, end, unlock: c };
+  const on = () => prefs.sound !== false;
+  function dice() { if (!on()) return; [0, .06, .13, .2, .29, .38].forEach((t, k) => beep(260 + Math.random() * 380, t, .05, .09, 'square')); beep(150, .46, .12, .16, 'triangle'); }
+  function step() { if (!on()) return; beep(430, 0, .07, .13, 'triangle'); }
+  function capture() { if (!on()) return; beep(640, 0, .09, .13, 'sawtooth'); beep(420, .08, .1, .13, 'sawtooth'); beep(210, .17, .18, .14, 'sawtooth'); }
+  function home() { if (!on()) return; beep(660, 0, .12, .12); beep(880, .1, .12, .12); beep(1100, .2, .22, .12); }
+  function ladder() { if (!on()) return; [440, 523, 659, 784, 988].forEach((f, k) => beep(f, k * .07, .12, .11, 'triangle')); }
+  function snake() { if (!on()) return; [700, 600, 500, 400, 310, 230].forEach((f, k) => beep(f, k * .07, .12, .12, 'sawtooth')); }
+  function win() { if (!on()) return; [523, 659, 784, 1047, 784, 1047].forEach((f, k) => beep(f, k * .13, .22, .12, 'triangle')); }
+  return { message, ring, stopRing, end, unlock: c, dice, step, capture, home, ladder, snake, win };
 })();
 
 // ---------- notifikasi sistem ----------
@@ -2000,7 +2136,7 @@ async function onIncomingDM(m) {
 function contactRow(u, inContacts) {
   const c = document.createElement('div'); c.className = 'role-card';
   const rl = safeRole(u.role), n = Unread.map[u.id] || 0;
-  c.innerHTML = `<div class="user-row">${avatarHTML(u.avatar_url, u.username, 48)}<div class="role-card-info"><h4>${esc(u.username)} <span class="role-badge role-${rl}" style="font-size:9px">${rl.toUpperCase()}</span></h4><p>${n ? n + ' pesan baru' : 'Ketuk untuk chat'}</p></div></div><div class="card-actions">${n ? `<span class="unread-dot">${n > 99 ? '99+' : n}</span>` : ''}${inContacts ? '<button class="mini-btn danger">Hapus</button>' : '<button class="mini-btn">+ Kontak</button>'}</div>`;
+  c.innerHTML = `<div class="user-row">${avatarHTML(u.avatar_url, u.username, 48)}<div class="role-card-info"><h4>${esc(u.username)} <span class="role-badge role-${rl}" style="font-size:9px">${rl.toUpperCase()}</span></h4><p><span class="pst" data-uid="${esc(u.id)}"></span>${n ? n + ' pesan baru' : 'Ketuk untuk chat'}</p></div></div><div class="card-actions">${n ? `<span class="unread-dot">${n > 99 ? '99+' : n}</span>` : ''}${inContacts ? '<button class="mini-btn danger">Hapus</button>' : '<button class="mini-btn">+ Kontak</button>'}</div>`;
   c.onclick = () => startDM(u.id, u.username, u.avatar_url, u.role);
   const btn = c.querySelector('button');
   btn.onclick = async e => {
@@ -2013,7 +2149,7 @@ function contactRow(u, inContacts) {
 function renderContacts() {
   const area = $('dm-contacts-area'); if (!area) return;
   const strangers = Object.keys(Unread.map).filter(id => Unread.map[id] > 0 && !myContacts.has(id)).map(id => peerCache.get(id)).filter(Boolean);
-  if (!myContacts.size && !strangers.length) { area.innerHTML = '<p class="muted">Belum ada kontak. Cari pengguna di bawah lalu tekan "+ Kontak".</p>'; return; }
+  if (!myContacts.size && !strangers.length) { area.innerHTML = '<p class="muted">Belum ada kontak. Tekan tombol + di kanan bawah untuk mencari pengguna.</p>'; return; }
   area.innerHTML = '';
   const list = [...myContacts.values()].sort((x, y) => (Unread.map[y.id] || 0) - (Unread.map[x.id] || 0) || x.username.localeCompare(y.username));
   list.forEach(u => area.appendChild(contactRow(u, true)));
@@ -2065,6 +2201,8 @@ function fileNode(m) {
     wrap.appendChild(img);
     getSignedUrl(m.file_path).then(u => { img.src = u; img.onclick = () => openLightbox(u); }).catch(asCard);
     img.onerror = asCard;
+  } else if (type.startsWith('audio/') && /^vn-\d+s-/.test(name)) {
+    VN.node(m, wrap);
   } else if (type.startsWith('audio/')) {
     const a = document.createElement('audio'); a.className = 'msg-media'; a.controls = true; a.preload = 'none'; wrap.appendChild(a);
     getSignedUrl(m.file_path).then(u => { a.src = u; }).catch(asCard);
@@ -2097,14 +2235,15 @@ function startDM(id, name, avatar, role) {
   dmSeen = new Set();
   $('dm-chat-title').onclick = () => openProfile(id);
   $('dm-chat-title').style.cursor = 'pointer';
-  $('dm-chat-title').innerHTML = `<span style="display:flex;align-items:center;gap:10px">${avatarHTML(avatar, name, 34)}<span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(name)}</span></span>`;
+  $('dm-chat-title').innerHTML = `<span style="display:flex;align-items:center;gap:10px">${avatarHTML(avatar, name, 34)}<span style="min-width:0;display:flex;flex-direction:column;line-height:1.25"><span style="overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(name)}</span><small class="dm-st" data-uid="${esc(id)}"></small></span></span>`;
+  if (typeof Presence !== 'undefined') Presence.paint();
   $('dm-chat-area').innerHTML = '<p style="text-align:center;color:var(--text-2);margin:auto">Memuat...</p>';
   openOverlay('dm-chat-screen');
   Unread.markRead(id);
   loadDM(true);
   clearInterval(dmTimer); dmTimer = setInterval(() => { if (!document.hidden) loadDM(false); }, 4000);
 }
-function closeDMRoom() { clearInterval(dmTimer); dmPeer = null; closeOverlay('dm-chat-screen'); }
+function closeDMRoom() { try { VN.cancel(); } catch (e) {} clearInterval(dmTimer); dmPeer = null; closeOverlay('dm-chat-screen'); }
 
 async function loadDM(scroll) {
   if (!dmPeer) return;
@@ -2392,8 +2531,6 @@ function openSettings() { syncSettingsUI(); Perms.render(); openOverlay('setting
 // ================= GAME: Tic Tac Toe, 4 Sebaris, Suit (bot / online) =================
 const GAMES = {
   ttt: { name: 'Tic Tac Toe', bot: true },
-  c4: { name: '4 Sebaris', bot: true },
-  suit: { name: 'Batu Gunting Kertas', bot: true },
   zour: { name: 'Zour RF', bot: true }
 };
 const VERIFIED_ROLES = ['developer', 'owner', 'cs', 'ceo'];
@@ -2586,6 +2723,7 @@ function gameBotMove() {
 function gameEnd(winner) {
   G.over = true;
   if (winner === 0 || winner === 1) G.score[winner]++;
+  if (G.game === 'zour') setTimeout(() => { if (winner === G.me) SFX.win(); else if (winner === 0 || winner === 1) SFX.capture(); }, 350);
 }
 
 // ---------- tic tac toe ----------
@@ -2712,7 +2850,7 @@ function zApply(a, who) {
   let m;
   if (st.phase === 'P') { if (a.k !== 'place' || st.b[a.n] !== undefined || st.placed[who] >= 3) return false; m = { n: a.n }; }
   else { if (a.k !== 'move' || st.b[a.f] !== who || st.b[a.n] !== undefined || !ZADJ[a.f].includes(a.n)) return false; m = { f: a.f, n: a.n }; }
-  const ns = zStep(st, m); st.b = ns.b; st.phase = ns.phase; st.placed = ns.placed; st.turn = ns.turn; st.sel = null; st.note = '';
+  SFX.step(); const ns = zStep(st, m); st.b = ns.b; st.phase = ns.phase; st.placed = ns.placed; st.turn = ns.turn; st.sel = null; st.note = '';
   const l = zLine(st.b, who);
   if (l) { st.win = { p: who, l }; st.turn = who; gameEnd(who); return true; }
   zPassCheck();
@@ -3008,7 +3146,8 @@ const BANNER_PRESETS = [
 ];
 let myProf = null;
 async function fetchProfileFull(id) {
-  let r = await supabaseClient.from('profiles').select('id,username,role,avatar_url,bio,banner_url,banner_type').eq('id', id).maybeSingle();
+  let r = await supabaseClient.from('profiles').select('id,username,role,avatar_url,bio,banner_url,banner_type,public_id').eq('id', id).maybeSingle();
+  if (r.error) r = await supabaseClient.from('profiles').select('id,username,role,avatar_url,bio,banner_url,banner_type').eq('id', id).maybeSingle();
   if (r.error) { r = await supabaseClient.from('profiles').select('id,username,role,avatar_url').eq('id', id).maybeSingle(); if (r.data) r.data.__nocols = true; }
   return r.data || null;
 }
@@ -3043,19 +3182,21 @@ function profileHTML(p, editable) {
       ${editable ? '<div class="prof-acts"><button class="mini-btn" onclick="editBio()">Edit bio</button><button class="mini-btn" onclick="$(\'avatar-file\').click()">Ganti foto profil</button><button class="mini-btn" onclick="$(\'banner-file\').click()">Banner sendiri</button><button class="mini-btn" onclick="openPresets()">Banner bawaan</button></div>' : ''}
       ${hasSound(p) ? '<p class="muted" style="font-size:12px;margin:-6px 0 12px">Ketuk banner untuk menyalakan atau mematikan suara.</p>' : ''}
       <div class="prof-sec">Informasi</div>
+      ${p.public_id ? `<div class="prof-row"><span>ID</span><b style="cursor:pointer" onclick="navigator.clipboard&&navigator.clipboard.writeText('${esc(p.public_id)}');showToast('ID disalin')">${esc(p.public_id)}</b></div>` : ''}
+      <div class="prof-row"><span>Status</span><b class="prof-st" data-uid="${esc(p.id)}"></b></div>
       <div class="prof-row"><span>Role</span><b>${rl.toUpperCase()}</b></div>
       <div class="prof-row"><span>Status akun</span><b>${verified ? 'Terverifikasi' + VCHK : 'Standar'}</b></div>
       ${editable && currentUserRole !== 'member' ? `<div class="prof-row"><span>Kontak tersimpan</span><b>${myContacts.size}</b></div>` : ''}
       ${p.__nocols ? '<p class="muted" style="font-size:11px;margin-top:10px">Bio dan banner belum aktif: jalankan SQL profil di Supabase.</p>' : ''}
     </div>`;
 }
-function myProfBase() { return { id: currentUserId, username: currentUsername, role: currentUserRole, avatar_url: currentAvatar, bio: myProf && myProf.bio, banner_url: myProf && myProf.banner_url, banner_type: myProf && myProf.banner_type, __nocols: myProf && myProf.__nocols }; }
+function myProfBase() { return { id: currentUserId, username: currentUsername, role: currentUserRole, avatar_url: currentAvatar, bio: myProf && myProf.bio, public_id: myProf && myProf.public_id, banner_url: myProf && myProf.banner_url, banner_type: myProf && myProf.banner_type, __nocols: myProf && myProf.__nocols }; }
 async function loadMyProfile() {
   const el = $('prof-main'); if (!el || !currentUserId) return;
   el.innerHTML = profileHTML(myProfBase(), true);
   const p = await fetchProfileFull(currentUserId);
   if (p) { myProf = p; if (currentTab === 'profile') el.innerHTML = profileHTML(myProfBase(), true); }
-  profHold();
+  profHold(); if (typeof Presence !== 'undefined') Presence.paint();
 }
 async function openProfile(id) {
   if (!id || id === 'bot') return;
@@ -3064,6 +3205,7 @@ async function openProfile(id) {
   openOverlay('profile-screen');
   const p = await fetchProfileFull(id);
   el.innerHTML = p ? profileHTML(p, false) : '<p class="muted" style="text-align:center;padding:40px 0">Profil tidak ditemukan</p>';
+  if (typeof Presence !== 'undefined') Presence.paint();
 }
 function editBio() {
   const box = $('prof-bio'); const cur = (myProf && myProf.bio) || '';
@@ -3144,6 +3286,780 @@ async function resetBanner() {
 }
 
 const _switchTab0 = switchTab; switchTab = function (t) { const r = _switchTab0.apply(this, arguments); try { profHold(); } catch (e) {} return r; };
+// ================= LUDO & ULAR TANGGA (2-4 pemain, bot / online) =================
+const BDG = { ludo: { name: 'Ludo' }, snake: { name: 'Ular Tangga' } };
+const BD = { game: null, mode: null, ch: null, code: '', host: false, seat: -1, players: [], st: null, n: 2, fill: false, started: false, sch: null, tm: null, rid: -1, t0: 0, walk: {}, prev: null, over: false };
+const SEAT_COL = ['#ef5350', '#43a047', '#f2b705', '#1e88e5'];
+const SEAT_NAME = ['Merah', 'Hijau', 'Kuning', 'Biru'];
+const BD_TURN_MS = 20000;
+const bdSeats = (g, n) => g === 'ludo' ? (n === 2 ? [0, 2] : n === 3 ? [0, 1, 2] : [0, 1, 2, 3]) : [0, 1, 2, 3].slice(0, n);
+
+// ---------- data papan Ludo ----------
+const LT = (() => { const t = []; const a = (r, c) => t.push([r, c]);
+  for (let c = 1; c <= 5; c++) a(6, c); for (let r = 5; r >= 0; r--) a(r, 6); a(0, 7); a(0, 8);
+  for (let r = 1; r <= 5; r++) a(r, 8); for (let c = 9; c <= 14; c++) a(6, c); a(7, 14); a(8, 14);
+  for (let c = 13; c >= 9; c--) a(8, c); for (let r = 9; r <= 14; r++) a(r, 8); a(14, 7); a(14, 6);
+  for (let r = 13; r >= 9; r--) a(r, 6); for (let c = 5; c >= 0; c--) a(8, c); a(7, 0); a(6, 0); return t; })();
+const LCOL = [[[7, 1], [7, 2], [7, 3], [7, 4], [7, 5]], [[1, 7], [2, 7], [3, 7], [4, 7], [5, 7]], [[7, 13], [7, 12], [7, 11], [7, 10], [7, 9]], [[13, 7], [12, 7], [11, 7], [10, 7], [9, 7]]];
+const LSAFE = new Set([0, 13, 26, 39, 8, 21, 34, 47]);
+const LBASE0 = [[0, 0], [0, 9], [9, 9], [9, 0]];
+const LDIR = [[-1, 0], [0, -1], [1, 0], [0, 1]];
+function ludoPos(st, s, i) {
+  const p = st.pcs[s][i];
+  if (p === -1) { const [r0, c0] = LBASE0[s]; return [c0 + (i % 2 ? 4 : 2), r0 + (i < 2 ? 2 : 4)]; }
+  if (p <= 50) { const [r, c] = LT[(s * 13 + p) % 52]; return [c + .5, r + .5]; }
+  if (p <= 55) { const [r, c] = LCOL[s][p - 51]; return [c + .5, r + .5]; }
+  let k = 0; for (let j = 0; j < i; j++) if (st.pcs[s][j] === 56) k++;
+  const [dx, dy] = LDIR[s]; return [7.5 + dx * .95 + (-dy) * (k - 1.5) * .34, 7.5 + dy * .95 + dx * (k - 1.5) * .34];
+}
+
+// ---------- data papan Ular Tangga ----------
+const SN_LAD = { 4: 14, 9: 31, 20: 38, 28: 84, 40: 59, 51: 67, 63: 81, 71: 91 };
+const SN_SNK = { 17: 7, 54: 34, 62: 19, 64: 60, 87: 24, 93: 73, 95: 75, 99: 78 };
+function snXY(n) { if (n <= 0) return null; const r = Math.floor((n - 1) / 10), c = r % 2 ? 9 - (n - 1) % 10 : (n - 1) % 10; return [c + .5, 9 - r + .5]; }
+function snPos(st, s) { const n = st.pos[s]; if (n <= 0) return [.7 + s * .55, 10.45]; return snXY(n); }
+
+// ---------- logika ----------
+function bdNext(st) { const k = st.seats.indexOf(st.turn); return st.seats[(k + 1) % st.seats.length]; }
+function bdInit(g, seats) {
+  const st = { g, seats, turn: seats[0], dice: 0, phase: 'roll', six: 0, win: -1, rid: 0, msg: '', last: null };
+  if (g === 'ludo') { st.pcs = {}; seats.forEach(s => st.pcs[s] = [-1, -1, -1, -1]); } else { st.pos = {}; seats.forEach(s => st.pos[s] = 0); }
+  return st;
+}
+function ludoMoves(st) { const s = st.turn, d = st.dice, out = []; st.pcs[s].forEach((p, i) => { if (p === -1 ? d === 6 : p + d <= 56) out.push(i); }); return out; }
+function bdRoll(st) {
+  const d = 1 + Math.floor(Math.random() * 6); st.rid++; st.dice = d; st.last = null; st.msg = '';
+  if (d === 6) st.six++; else st.six = 0;
+  if (st.six === 3) { st.msg = '3 kali angka 6 berturut-turut, giliran hangus'; st.six = 0; st.turn = bdNext(st); st.phase = 'roll'; return; }
+  if (st.g === 'ludo') {
+    if (!ludoMoves(st).length) { st.msg = 'Tidak ada langkah'; st.six = 0; st.turn = bdNext(st); st.phase = 'roll'; } else st.phase = 'move';
+    return;
+  }
+  const s = st.turn, from = st.pos[s]; let to = from + d, via = to;
+  if (to > 100) { st.msg = 'Harus pas di 100'; st.turn = bdNext(st); st.six = 0; return; }
+  if (SN_LAD[to]) { to = SN_LAD[to]; st.msg = 'Naik tangga!'; } else if (SN_SNK[to]) { to = SN_SNK[to]; st.msg = 'Digigit ular!'; }
+  st.pos[s] = to; st.last = { s, from, via, to };
+  if (to === 100) { st.win = s; st.phase = 'done'; return; }
+  if (d === 6) st.msg = (st.msg ? st.msg + ' ' : '') + 'Angka 6, lempar lagi'; else { st.turn = bdNext(st); st.six = 0; }
+}
+function ludoMove(st, i) {
+  const s = st.turn, d = st.dice, from = st.pcs[s][i], to = from === -1 ? 0 : from + d; let cap = false;
+  st.pcs[s][i] = to; st.last = { s, i, from, to };
+  if (to <= 50) { const idx = (s * 13 + to) % 52;
+    if (!LSAFE.has(idx)) st.seats.forEach(o => { if (o !== s) st.pcs[o].forEach((q, j) => { if (q >= 0 && q <= 50 && (o * 13 + q) % 52 === idx) { st.pcs[o][j] = -1; cap = true; } }); }); }
+  if (st.pcs[s].every(p => p === 56)) { st.win = s; st.phase = 'done'; st.msg = ''; return; }
+  st.msg = cap ? 'Pion lawan termakan!' : to === 56 ? 'Pion sampai rumah!' : '';
+  if (d === 6 || cap || to === 56) { st.phase = 'roll'; if (d === 6) st.msg = (st.msg ? st.msg + ' ' : '') + 'Lempar lagi'; } else { st.turn = bdNext(st); st.phase = 'roll'; st.six = 0; }
+}
+function ludoBotPick(st) {
+  const s = st.turn, d = st.dice; let best = -1, bs = -1e9;
+  ludoMoves(st).forEach(i => {
+    const p = st.pcs[s][i], np = p === -1 ? 0 : p + d; let sc = Math.random() * 6 + np * .25;
+    if (np === 56) sc += 100;
+    if (np <= 50) { const idx = (s * 13 + np) % 52;
+      if (!LSAFE.has(idx) && st.seats.some(o => o !== s && st.pcs[o].some(q => q >= 0 && q <= 50 && (o * 13 + q) % 52 === idx))) sc += 70;
+      if (LSAFE.has(idx)) sc += 14; }
+    if (p === -1) sc += 45;
+    if (p >= 0 && p <= 50 && !LSAFE.has((s * 13 + p) % 52) && st.seats.some(o => o !== s && st.pcs[o].some(q => q >= 0 && q <= 50 && (((o * 13 + q) % 52) + 52 - ((s * 13 + p) % 52)) % 52 <= 6 && (((o * 13 + q) % 52) + 52 - ((s * 13 + p) % 52)) % 52 > 0))) sc += 22;
+    if (np >= 51) sc += 12;
+    if (sc > bs) { bs = sc; best = i; }
+  });
+  return best;
+}
+
+// ---------- jaringan ----------
+const bdPl = s => BD.players.find(p => p.seat === s);
+function bdSend(o) { if (BD.ch) try { BD.ch.send({ type: 'broadcast', event: 'b', payload: o }); } catch (e) {} }
+function bdChannel(code) { const ch = supabaseClient.channel('board-' + code, { config: { broadcast: { self: false } } }); ch.on('broadcast', { event: 'b' }, ({ payload }) => bdRecv(payload)); return ch; }
+function bdPush() { bdSend({ t: 'st', st: BD.st, players: BD.players }); bdRender(); bdSchedule(); }
+function openBoard(g) {
+  if (!BDG[g]) return; bdCleanup(true); BD.game = g; BD.n = g === 'ludo' ? 4 : 2;
+  gx('board-title').textContent = BDG[g].name; bdMenu(); openOverlay('board-screen');
+}
+function closeBoard() { bdCleanup(false); closeOverlay('board-screen'); }
+function bdCleanup(silent) {
+  try { BVoice.stop(!silent); } catch (e) {}
+  clearTimeout(BD.sch); clearInterval(BD.tm); BD.tm = null;
+  if (BD.ch) { try { if (!silent) BD.ch.send({ type: 'broadcast', event: 'b', payload: { t: 'leave', id: currentUserId } }); } catch (e) {} const c = BD.ch; setTimeout(() => { try { supabaseClient.removeChannel(c); } catch (e) {} }, 150); }
+  BD.ch = null; BD.mode = null; BD.host = false; BD.seat = -1; BD.players = []; BD.st = null; BD.started = false; BD.rid = -1; BD.prev = null; BD.walk = {}; BD.over = false; BD.code = '';
+}
+function bdMenu() {
+  const g = BD.game, opts = g === 'ludo' ? [2, 3, 4] : [2, 3, 4];
+  gx('board-body').innerHTML = `<div class="g-menu">
+    <p class="muted" style="text-align:center;font-size:13px">${g === 'ludo' ? 'Bawa 4 pion ke rumah. Butuh angka 6 untuk keluar kandang. 2 pemain = 1 lawan 1.' : 'Capai kotak 100 lebih dulu. Tangga menaikkan, ular menurunkan. Harus pas di 100.'}</p>
+    <div class="g-or">Jumlah pemain</div>
+    <div class="g-seg">${opts.map(n => `<button id="bn-${n}" class="${BD.n === n ? 'on' : ''}" onclick="bdSetN(${n})">${n}${g === 'ludo' && n === 2 ? ' (1 vs 1)' : ''}</button>`).join('')}</div>
+    <button class="btn-primary g-big" onclick="bdStartBot()">Lawan Bot</button>
+    <div class="g-or">Main online dengan teman</div>
+    <button class="set-btn" onclick="bdHost()"><span>Buat room baru</span><span>›</span></button>
+    <div class="g-join"><input id="bd-code" class="glass-input" placeholder="Kode room" maxlength="4" inputmode="numeric" autocomplete="off"><button class="btn-primary" onclick="bdJoin()">Gabung</button></div>
+    <p class="muted" style="text-align:center;font-size:12px">Buat room lalu kirim kodenya ke teman lewat Chat Pribadi.</p>
+  </div>`;
+}
+function bdSetN(n) { BD.n = n; [2, 3, 4].forEach(x => { const b = gx('bn-' + x); if (b) b.classList.toggle('on', x === n); }); }
+function bdStartBot() {
+  const seats = bdSeats(BD.game, BD.n); BD.mode = 'bot'; BD.host = true; BD.seat = seats[0];
+  BD.players = seats.map((s, k) => k === 0 ? { seat: s, id: currentUserId, name: currentUsername, bot: false, prof: ownProf() } : { seat: s, id: 'bot' + s, name: 'Bot ' + SEAT_NAME[s], bot: true, prof: BOT_PROF });
+  bdBegin();
+}
+function bdBegin() {
+  BD.st = bdInit(BD.game, BD.players.map(p => p.seat)); BD.started = true; BD.over = false; BD.rid = -1; BD.prev = null;
+  bdBuild(); bdSend({ t: 'start', st: BD.st, players: BD.players }); bdRender(); bdSchedule(); bdTick();
+}
+function bdHost() {
+  BD.code = String(1000 + Math.floor(Math.random() * 9000)); BD.mode = 'online'; BD.host = true; BD.fill = false;
+  const seats = bdSeats(BD.game, BD.n); BD.seat = seats[0];
+  BD.players = [{ seat: seats[0], id: currentUserId, name: currentUsername, bot: false, prof: ownProf() }];
+  BD.ch = bdChannel(BD.code); BD.ch.subscribe(); bdLobby();
+}
+function bdJoin() {
+  const code = (gx('bd-code').value || '').trim(); if (code.length !== 4) return showToast('Masukkan 4 digit kode room');
+  BD.code = code; BD.mode = 'online'; BD.host = false; BD.players = [];
+  gx('board-body').innerHTML = '<p class="muted" style="text-align:center;margin-top:40px">Menghubungkan ke room...</p>';
+  BD.ch = bdChannel(code);
+  BD.ch.subscribe(st => { if (st === 'SUBSCRIBED') { bdSend({ t: 'join', id: currentUserId, name: currentUsername, role: currentUserRole, avatar: ownProf().avatar_url }); } });
+  clearTimeout(BD.jt); BD.jt = setTimeout(() => { if (!BD.players.length && !BD.started) { showToast('Room tidak ditemukan'); bdCleanup(true); bdMenu(); } }, 7000);
+}
+function bdRecv(m) {
+  if (!m) return;
+  if (m.t === 'join' && BD.host && !BD.started) {
+    if (BD.players.some(p => p.id === m.id)) { bdSend({ t: 'lobby', players: BD.players, n: BD.n, game: BD.game }); return; }
+    const seats = bdSeats(BD.game, BD.n), free = seats.find(s => !bdPl(s));
+    if (free === undefined) { bdSend({ t: 'full', to: m.id }); return; }
+    BD.players.push({ seat: free, id: m.id, name: m.name, bot: false, prof: { id: m.id, username: m.name, role: m.role, avatar_url: m.avatar } });
+    bdSend({ t: 'lobby', players: BD.players, n: BD.n, game: BD.game }); bdLobby();
+    getProfile(m.id).then(p => { const pl = BD.players.find(x => x.id === m.id); if (p && pl) { pl.prof = p; bdSend({ t: 'lobby', players: BD.players, n: BD.n, game: BD.game }); bdLobby(); } }).catch(() => {});
+  } else if (m.t === 'full' && m.to === currentUserId) { showToast('Room sudah penuh'); clearTimeout(BD.jt); bdCleanup(true); bdMenu(); }
+  else if (m.t === 'lobby' && !BD.host) {
+    clearTimeout(BD.jt); const me = m.players.find(p => p.id === currentUserId); if (!me) return;
+    BD.game = m.game; BD.n = m.n; BD.players = m.players; BD.seat = me.seat; gx('board-title').textContent = BDG[m.game].name; if (!BD.started) bdLobby();
+  } else if (m.t === 'start' && !BD.host) {
+    clearTimeout(BD.jt); BD.game = m.st.g; BD.players = m.players; const me = m.players.find(p => p.id === currentUserId); if (!me) return;
+    BD.seat = me.seat; BD.st = m.st; BD.started = true; BD.over = false; BD.rid = -1; BD.prev = null; gx('board-title').textContent = BDG[BD.game].name; bdBuild(); bdRender(); bdTick();
+  } else if (m.t === 'st' && !BD.host && BD.started) { BD.players = m.players || BD.players; BD.st = m.st; bdRender(); }
+  else if (m.t === 'chat') { if (m.id !== currentUserId) bdChatAdd(false, m.name || 'Pemain', m.text); }
+  else if (m.t === 'v') BVoice.recv(m);
+  else if (m.t === 'act' && BD.host && BD.started) { const p = bdPl(m.seat); if (p && !p.bot && p.id === m.id) bdAct(m.seat, m.a, m.i); }
+  else if (m.t === 'leave') {
+    BVoice.drop(m.id);
+    if (BD.host) { const p = BD.players.find(x => x.id === m.id); if (!p) return;
+      if (!BD.started) { BD.players = BD.players.filter(x => x.id !== m.id); bdSend({ t: 'lobby', players: BD.players, n: BD.n, game: BD.game }); bdLobby(); }
+      else { p.bot = true; p.name = p.name + ' (bot)'; showToast(p.name + ' keluar, diganti bot'); if (!BD.players.some(x => !x.bot)) return; bdPush(); } }
+    else if (BD.players[0] && m.id === BD.players[0].id) { showToast('Host keluar dari room'); bdCleanup(true); bdMenu(); }
+  }
+}
+function bdLobby() {
+  const seats = bdSeats(BD.game, BD.n);
+  gx('board-body').innerHTML = `<div class="g-menu"><div class="g-or">Kode room</div><div class="bd-code">${esc(BD.code)}</div>
+    <div class="bd-lob">${seats.map(s => { const p = bdPl(s); return `<div class="bd-lrow"><i style="background:${SEAT_COL[s]}"></i><span>${p ? esc(p.name) + (isVerified(p.prof) ? VCHK : '') : '<em>Menunggu pemain...</em>'}</span></div>`; }).join('')}</div>
+    ${BD.host ? `<div class="g-seg"><button class="${BD.fill ? '' : 'on'}" onclick="BD.fill=false;bdLobby()">Hanya pemain</button><button class="${BD.fill ? 'on' : ''}" onclick="BD.fill=true;bdLobby()">Isi sisa dengan bot</button></div>
+      <button class="btn-primary g-big" onclick="bdStartOnline()">Mulai</button>` : '<p class="muted" style="text-align:center">Menunggu host memulai permainan...</p>'}
+    <button class="set-btn" onclick="bdBack()"><span>Keluar room</span><span>›</span></button></div>`;
+}
+function bdBack() { bdCleanup(false); bdMenu(); }
+function bdStartOnline() {
+  if (BD.fill) { bdSeats(BD.game, BD.n).forEach(s => { if (!bdPl(s)) BD.players.push({ seat: s, id: 'bot' + s, name: 'Bot ' + SEAT_NAME[s], bot: true, prof: BOT_PROF }); }); }
+  if (BD.players.length < 2) return showToast('Butuh minimal 2 pemain');
+  BD.players.sort((a, b) => a.seat - b.seat); bdBegin();
+}
+
+// ---------- aksi ----------
+function bdAct(seat, a, i) {
+  const st = BD.st; if (!st || st.phase === 'done' || st.turn !== seat) return;
+  if (a === 'roll' && st.phase === 'roll') bdRoll(st);
+  else if (a === 'move' && st.g === 'ludo' && st.phase === 'move' && ludoMoves(st).includes(i)) ludoMove(st, i);
+  else return;
+  bdPush();
+}
+function bdMine() { const st = BD.st; return st && st.turn === BD.seat && st.phase !== 'done'; }
+function bdTapDice() { if (!bdMine() || BD.st.phase !== 'roll') return; if (BD.host) bdAct(BD.seat, 'roll'); else bdSend({ t: 'act', id: currentUserId, seat: BD.seat, a: 'roll' }); }
+function bdTapToken(s, i) { if (!bdMine() || s !== BD.seat || BD.st.phase !== 'move' || !ludoMoves(BD.st).includes(i)) return; if (BD.host) bdAct(BD.seat, 'move', i); else bdSend({ t: 'act', id: currentUserId, seat: BD.seat, a: 'move', i }); }
+function bdSchedule() {
+  clearTimeout(BD.sch); const st = BD.st; if (!BD.host || !st || st.phase === 'done') return;
+  const pl = bdPl(st.turn); if (!pl) return;
+  if (pl.bot) BD.sch = setTimeout(() => bdAuto(true), st.phase === 'roll' ? 1000 : 850);
+  else if (st.g === 'ludo' && st.phase === 'move' && ludoMoves(st).length === 1) BD.sch = setTimeout(() => bdAuto(false), 750);
+  else BD.sch = setTimeout(() => bdAuto(false), BD_TURN_MS);
+}
+function bdAuto(bot) {
+  const st = BD.st; if (!st || st.phase === 'done') return;
+  if (st.phase === 'roll') bdAct(st.turn, 'roll');
+  else { const i = ludoBotPick(st); if (i >= 0) bdAct(st.turn, 'move', i); }
+}
+function bdRematch() { if (!BD.host) return; bdBegin(); }
+
+// ---------- tampilan ----------
+const PIPS = { 1: [4], 2: [0, 8], 3: [0, 4, 8], 4: [0, 2, 6, 8], 5: [0, 2, 4, 6, 8], 6: [0, 2, 3, 5, 6, 8] };
+const bdPips = v => Array.from({ length: 9 }, (_, k) => `<span class="${(PIPS[v] || []).includes(k) ? 'on' : ''}"></span>`).join('');
+function bdBuild() {
+  const g = BD.game, st = BD.st; let svg = '';
+  if (g === 'ludo') {
+    const P = SEAT_COL; svg += '<rect x="0" y="0" width="15" height="15" rx=".5" fill="#f4efe4"/>';
+    LBASE0.forEach(([r, c], s) => { svg += `<rect x="${c}" y="${r}" width="6" height="6" fill="${P[s]}"/><rect x="${c + 1}" y="${r + 1}" width="4" height="4" rx=".6" fill="#f4efe4"/>`; [[2, 2], [4, 2], [2, 4], [4, 4]].forEach(([x, y]) => svg += `<circle cx="${c + x}" cy="${r + y}" r=".62" fill="${P[s]}" opacity=".22"/>`); });
+    LT.forEach(([r, c], k) => { const st0 = [0, 13, 26, 39].indexOf(k); svg += `<rect x="${c + .03}" y="${r + .03}" width=".94" height=".94" fill="${st0 >= 0 ? P[st0] : '#fff'}" stroke="#c9c2b2" stroke-width=".05"/>`; if ([8, 21, 34, 47].includes(k)) svg += `<path d="${star(c + .5, r + .5, .32)}" fill="#8d8570"/>`; });
+    LCOL.forEach((cs, s) => cs.forEach(([r, c]) => svg += `<rect x="${c + .03}" y="${r + .03}" width=".94" height=".94" fill="${P[s]}" stroke="#c9c2b2" stroke-width=".05"/>`));
+    svg += `<polygon points="6,6 6,9 7.5,7.5" fill="${P[0]}"/><polygon points="6,6 9,6 7.5,7.5" fill="${P[1]}"/><polygon points="9,6 9,9 7.5,7.5" fill="${P[2]}"/><polygon points="6,9 9,9 7.5,7.5" fill="${P[3]}"/>`;
+    st.seats.forEach(s => { for (let i = 0; i < 4; i++) svg += tokenSVG(`tk-${s}-${i}`, P[s], `bdTapToken(${s},${i})`); });
+    gx('board-body').innerHTML = `<div class="bd-wrap"><div id="bd-top" class="bd-top"></div><svg id="bd-svg" class="bd-svg" viewBox="0 0 15 15">${svg}</svg><div class="bd-ctl"><button id="bd-dice" class="bd-dice" onclick="bdTapDice()"></button><div class="bd-info"><b id="bd-msg"></b><small id="bd-sub"></small></div></div><div id="bd-end"></div>${bdChatHTML()}</div>`;
+  } else {
+    svg += '<rect x="0" y="0" width="10" height="10.9" rx=".4" fill="#f4efe4"/>';
+    for (let n = 1; n <= 100; n++) { const [x, y] = snXY(n); const alt = (Math.floor((n - 1) / 10) + (n - 1)) % 2; svg += `<rect x="${x - .5 + .02}" y="${y - .5 + .02}" width=".96" height=".96" fill="${n === 100 ? '#f2b705' : alt ? '#e6dfcd' : '#fbf8f0'}"/>`; }
+    Object.entries(SN_LAD).forEach(([a, b]) => svg += ladderSVG(+a, b));
+    Object.entries(SN_SNK).forEach(([a, b], k) => svg += snakeSVG(+a, b, k));
+    for (let n = 1; n <= 100; n++) { const [x, y] = snXY(n); svg += `<text x="${x - .42}" y="${y - .24}" font-size=".28" fill="#6f684f" font-weight="700" stroke="#f4efe4" stroke-width=".05" paint-order="stroke">${n}</text>`; }
+    svg += '<text x="5" y="10.5" font-size=".34" fill="#8d8570" text-anchor="middle" font-weight="700">MULAI</text>';
+    st.seats.forEach(s => svg += tokenSVG(`tk-${s}`, SEAT_COL[s], ''));
+    gx('board-body').innerHTML = `<div class="bd-wrap"><div id="bd-top" class="bd-top"></div><svg id="bd-svg" class="bd-svg" viewBox="0 0 10 10.9">${svg}</svg><div class="bd-ctl"><button id="bd-dice" class="bd-dice" onclick="bdTapDice()"></button><div class="bd-info"><b id="bd-msg"></b><small id="bd-sub"></small></div></div><div id="bd-end"></div>${bdChatHTML()}</div>`;
+  }
+  BD.players.forEach(p => { if (!p.bot && p.id !== currentUserId) getProfile(p.id).then(pr => { if (pr) { p.prof = pr; bdTop(); } }).catch(() => {}); });
+}
+function star(cx, cy, R) { let d = ''; for (let k = 0; k < 10; k++) { const r = k % 2 ? R * .45 : R, a = -Math.PI / 2 + k * Math.PI / 5; d += (k ? 'L' : 'M') + (cx + r * Math.cos(a)).toFixed(2) + ' ' + (cy + r * Math.sin(a)).toFixed(2); } return d + 'Z'; }
+function tokenSVG(id, col, click) { return `<g class="tk" id="${id}" ${click ? `onclick="${click}"` : ''}><circle class="ring" r=".5" fill="none" stroke="#fff" stroke-width=".08"/><circle r=".4" fill="#1b1b1f" opacity=".9"/><circle r=".33" fill="${col}"/><circle cx="-.1" cy="-.12" r=".1" fill="#fff" opacity=".45"/></g>`; }
+function ladderSVG(a, b) {
+  const [x1, y1] = snXY(a), [x2, y2] = snXY(b), dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), nx = -dy / L * .13, ny = dx / L * .13; let s = '';
+  s += `<line x1="${x1 + nx}" y1="${y1 + ny}" x2="${x2 + nx}" y2="${y2 + ny}" stroke="#8a5a2b" stroke-width=".09" stroke-linecap="round"/><line x1="${x1 - nx}" y1="${y1 - ny}" x2="${x2 - nx}" y2="${y2 - ny}" stroke="#8a5a2b" stroke-width=".09" stroke-linecap="round"/>`;
+  for (let t = .5; t < L; t += .55) { const f = t / L; s += `<line x1="${x1 + dx * f + nx}" y1="${y1 + dy * f + ny}" x2="${x1 + dx * f - nx}" y2="${y1 + dy * f - ny}" stroke="#a9733a" stroke-width=".07"/>`; }
+  return s;
+}
+function snakeSVG(a, b, k) {
+  const [x1, y1] = snXY(a), [x2, y2] = snXY(b), dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy), nx = -dy / L, ny = dx / L, w = Math.min(1.2, L * .22), col = ['#2e9e5b', '#d9534f', '#8e5bd6', '#e08a1e'][k % 4];
+  const c1 = [x1 + dx * .3 + nx * w, y1 + dy * .3 + ny * w], c2 = [x1 + dx * .7 - nx * w, y1 + dy * .7 - ny * w];
+  return `<path d="M${x1} ${y1} C${c1[0]} ${c1[1]} ${c2[0]} ${c2[1]} ${x2} ${y2}" fill="none" stroke="${col}" stroke-width=".26" stroke-linecap="round" opacity=".92"/><circle cx="${x1}" cy="${y1}" r=".24" fill="${col}"/><circle cx="${x1 - .08}" cy="${y1 - .05}" r=".05" fill="#fff"/><circle cx="${x1 + .08}" cy="${y1 - .05}" r=".05" fill="#fff"/>`;
+}
+function bdSet(el, x, y, k) { if (el) el.style.transform = `translate(${x}px,${y}px) scale(${k || 1})`; }
+function bdTargets(st) {
+  const out = [];
+  if (st.g === 'ludo') st.seats.forEach(s => st.pcs[s].forEach((p, i) => { const [x, y] = ludoPos(st, s, i); out.push({ id: `tk-${s}-${i}`, x, y, s, i, p }); }));
+  else st.seats.forEach(s => { const [x, y] = snPos(st, s); out.push({ id: `tk-${s}`, x, y, s, p: st.pos[s] }); });
+  const grp = {}; out.forEach(t => { const k = t.x.toFixed(2) + ',' + t.y.toFixed(2); (grp[k] = grp[k] || []).push(t); });
+  Object.values(grp).forEach(a => { if (a.length > 1) { const off = [[-.2, -.2], [.2, -.2], [-.2, .2], [.2, .2]]; a.forEach((t, j) => { t.x += off[j % 4][0]; t.y += off[j % 4][1]; t.k = .72; }); } });
+  return out;
+}
+function bdWalkTo(t, pts, delay) {
+  const el = gx(t.id); if (!el) return; const gen = (BD.walk[t.id] = (BD.walk[t.id] || 0) + 1);
+  let k = 0; const step = () => { if (BD.walk[t.id] !== gen) return; if (k < pts.length) { bdSet(el, pts[k][0], pts[k][1], 1); SFX.step(); k++; setTimeout(step, 170); } else { bdSet(el, t.x, t.y, t.k); if (t.post) SFX[t.post](); } };
+  setTimeout(step, delay || 0);
+}
+function bdLayout(prev, st) {
+  const ts = bdTargets(st); let delay = st.g === 'snake' && prev && st.rid !== prev.rid ? 650 : 0;
+  ts.forEach(t => {
+    const el = gx(t.id); if (!el) return; let pts = null;
+    if (prev) {
+      if (st.g === 'ludo') { const o = prev.pcs[t.s][t.i]; if (o !== t.p && o !== -1 && t.p > o) { pts = []; for (let q = o + 1; q <= t.p; q++) pts.push(ludoPos({ pcs: { [t.s]: st.pcs[t.s].map((v, j) => j === t.i ? q : v) } }, t.s, t.i)); } }
+      else { const o = prev.pos[t.s]; if (o !== t.p && st.last && st.last.s === t.s) { pts = []; for (let q = st.last.from + 1; q <= st.last.via; q++) pts.push(snXY(q)); if (st.last.to !== st.last.via) pts.push(snXY(st.last.to)); } }
+    }
+    if (st.g === 'ludo' && st.last && st.last.s === t.s && st.last.i === t.i && prev) t.post = /termakan/.test(st.msg) ? 'capture' : st.last.to === 56 ? 'home' : '';
+    if (st.g === 'snake' && st.last && st.last.s === t.s && st.last.to !== st.last.via) t.post = st.last.to > st.last.via ? 'ladder' : 'snake';
+    if (!pts && prev && st.g === 'ludo' && st.last && st.last.s === t.s && st.last.i === t.i && st.last.from === -1) { SFX.step(); }
+    if (pts && pts.length) bdWalkTo(t, pts, delay); else { BD.walk[t.id] = (BD.walk[t.id] || 0) + 1; bdSet(el, t.x, t.y, t.k); }
+  });
+}
+function bdTop() {
+  const st = BD.st, el = gx('bd-top'); if (!el || !st) return;
+  el.innerHTML = st.seats.map(s => { const p = bdPl(s); if (!p) return ''; const n = st.g === 'ludo' ? st.pcs[s].filter(x => x === 56).length + '/4' : st.pos[s] || '-';
+    return `<div class="bd-chip ${st.turn === s && st.phase !== 'done' ? 'turn' : ''}" style="--c:${SEAT_COL[s]}">${avatarHTML(p.prof && p.prof.avatar_url, p.name, 26)}<span class="bd-nm"><span class="nm">${esc(p.name)}</span>${isVerified(p.prof) ? VCHK : ''}</span><small>${n}</small></div>`; }).join('');
+}
+function bdRender() {
+  const st = BD.st; if (!st) return; const prev = BD.prev;
+  bdTop();
+  const rolled = st.rid !== BD.rid; BD.t0 = Date.now();
+  const dice = gx('bd-dice');
+  if (dice) {
+    dice.style.setProperty('--c', SEAT_COL[st.turn]); dice.classList.toggle('ready', bdMine() && st.phase === 'roll');
+    if (rolled && st.rid > 0) { SFX.dice(); dice.classList.add('roll'); let n = 0; const iv = setInterval(() => { dice.innerHTML = bdPips(1 + Math.floor(Math.random() * 6)); if (++n > 6) { clearInterval(iv); dice.classList.remove('roll'); dice.innerHTML = bdPips(st.dice); } }, 70); } else dice.innerHTML = bdPips(st.dice || 0);
+  }
+  BD.rid = st.rid; bdLayout(prev, st); BD.prev = JSON.parse(JSON.stringify(st));
+  if (st.g === 'ludo') { const mv = bdMine() && st.phase === 'move' ? ludoMoves(st) : []; st.seats.forEach(s => { for (let i = 0; i < 4; i++) { const el = gx(`tk-${s}-${i}`); if (el) el.classList.toggle('mv', s === BD.seat && mv.includes(i)); } }); }
+  const cur = bdPl(st.turn), msg = gx('bd-msg'), sub = gx('bd-sub');
+  if (msg) {
+    if (st.phase === 'done') msg.textContent = (st.win === BD.seat ? 'Kamu menang!' : (bdPl(st.win) ? bdPl(st.win).name : SEAT_NAME[st.win]) + ' menang');
+    else msg.textContent = st.turn === BD.seat ? (st.phase === 'roll' ? 'Giliranmu: ketuk dadu' : 'Pilih pion yang berkedip') : 'Giliran ' + (cur ? cur.name : SEAT_NAME[st.turn]);
+  }
+  if (sub) sub.textContent = st.msg || '';
+  if (st.phase === 'done' && !BD.over) { BD.over = true; setTimeout(() => SFX.win(), 700); }
+  const end = gx('bd-end');
+  if (end) end.innerHTML = st.phase === 'done' ? `<div class="bd-over"><b>${st.win === BD.seat ? 'Kamu menang' : esc((bdPl(st.win) || {}).name || 'Pemain') + ' menang'}</b>${BD.host ? '<button class="btn-primary" onclick="bdRematch()">Main lagi</button>' : '<small class="muted">Menunggu host</small>'}<button class="mini-btn" onclick="closeBoard()">Keluar</button></div>` : '';
+}
+function bdTick() { clearInterval(BD.tm); BD.tm = setInterval(() => { const st = BD.st, s = gx('bd-sub'); if (!st || st.phase === 'done' || !s || st.msg) return; const pl = bdPl(st.turn); if (pl && !pl.bot) { const left = Math.max(0, Math.ceil((BD_TURN_MS - (Date.now() - BD.t0)) / 1000)); s.textContent = left + ' detik'; } else s.textContent = ''; }, 500); }
+// ================= CARI PENGGUNA (tombol +), ID, STATUS ONLINE =================
+const PROF_COLS = ['id,username,role,avatar_url,public_id', 'id,username,role,avatar_url'];
+function openFind() { $('find-modal').classList.add('show'); $('dm-result-area').innerHTML = '<p class="muted" style="font-size:13px">Ketik username atau ID (contoh 10234).</p>'; setTimeout(() => $('dm-search').focus(), 120); }
+function closeFind() { $('find-modal').classList.remove('show'); }
+async function searchUser() {
+  const raw = $('dm-search').value.trim(); if (!raw) return;
+  const q = raw.toLowerCase().replace(/^#/, '').replace(/[%,()*]/g, '');
+  if (!q) return;
+  const area = $('dm-result-area'); area.innerHTML = '<p class="muted">Mencari...</p>';
+  const idLike = /^\d{3,}(dev)?$/i.test(q) || /^\d+dev$/i.test(q);
+  let r = await supabaseClient.from('profiles').select(PROF_COLS[0]).or(`username.ilike.%${q}%,public_id.eq.${q.toUpperCase()}`).neq('id', currentUserId).limit(10);
+  if (r.error) r = await supabaseClient.from('profiles').select(PROF_COLS[1]).ilike('username', `%${q}%`).neq('id', currentUserId).limit(10);
+  let data = r.data || [];
+  if (idLike) data.sort((a, b) => (String(b.public_id).toLowerCase() === q) - (String(a.public_id).toLowerCase() === q));
+  if (!data.length) { area.innerHTML = '<p class="muted">Pengguna tidak ditemukan.</p>'; return; }
+  area.innerHTML = '';
+  data.forEach(u => {
+    peerCache.set(u.id, u);
+    const c = document.createElement('div'); c.className = 'role-card';
+    const rl = safeRole(u.role), saved = myContacts.has(u.id);
+    c.innerHTML = `<div class="user-row">${avatarHTML(u.avatar_url, u.username, 44)}<div class="role-card-info"><h4>${esc(u.username)} <span class="role-badge role-${rl}" style="font-size:9px">${rl.toUpperCase()}</span></h4><p><span class="pst" data-uid="${esc(u.id)}"></span>${u.public_id ? 'ID ' + esc(u.public_id) : 'Ketuk untuk kirim pesan'}</p></div></div><div class="card-actions"><button class="mini-btn ${saved ? 'saved' : ''}">${saved ? 'Kontak' : '+ Kontak'}</button></div>`;
+    c.onclick = () => { closeFind(); startDM(u.id, u.username, u.avatar_url, u.role); };
+    const btn = c.querySelector('button');
+    btn.onclick = async e => {
+      e.stopPropagation();
+      if (myContacts.has(u.id)) return showToast(u.username + ' sudah ada di kontak');
+      btn.disabled = true;
+      if (await addContact(u)) { btn.textContent = 'Kontak'; btn.classList.add('saved'); }
+      btn.disabled = false;
+    };
+    area.appendChild(c);
+  });
+  Presence.paint();
+}
+
+// ---------- status online (Supabase Presence) ----------
+const Presence = {
+  ch: null, uid: null, ids: new Set(),
+  start() {
+    if (this.ch || !currentUserId || !prefs.online) return;
+    this.uid = currentUserId;
+    try {
+      const ch = supabaseClient.channel('syranx-online', { config: { presence: { key: currentUserId } } });
+      ch.on('presence', { event: 'sync' }, () => { this.ids = new Set(Object.keys(ch.presenceState())); this.paint(); });
+      ch.subscribe(async st => { if (st === 'SUBSCRIBED') { try { await ch.track({ t: Date.now() }); } catch (e) {} } });
+      this.ch = ch;
+    } catch (e) { console.warn('presence', e); }
+  },
+  stop() { try { if (this.ch) supabaseClient.removeChannel(this.ch); } catch (e) {} this.ch = null; this.ids = new Set(); this.paint(); },
+  is(id) { return this.ids.has(id); },
+  paint() {
+    document.querySelectorAll('.pst[data-uid]').forEach(el => { const on = this.ids.has(el.dataset.uid); el.textContent = on ? 'Online · ' : ''; el.classList.toggle('on', on); });
+    document.querySelectorAll('.dm-st[data-uid]').forEach(el => { const on = this.ids.has(el.dataset.uid); el.textContent = Typing.active === el.dataset.uid ? 'sedang mengetik...' : (on ? 'Online' : 'Offline'); el.classList.toggle('on', on || Typing.active === el.dataset.uid); });
+    document.querySelectorAll('.prof-st[data-uid]').forEach(el => { const on = this.ids.has(el.dataset.uid); el.textContent = on ? 'Online' : 'Offline'; el.classList.toggle('on', on); });
+  }
+};
+setInterval(() => {
+  if (Presence.ch && (Presence.uid !== currentUserId || !prefs.online)) Presence.stop();
+  if (!Presence.ch) Presence.start();
+}, 2500);
+// ================= IZIN AWAL, "SEDANG MENGETIK", CHAT & SUARA PAPAN =================
+const PermGate = {
+  key() { return 'syranx_pg1_' + currentUserId; },
+  seen() { try { return !!localStorage.getItem(this.key()); } catch (e) { return false; } },
+  mark() { try { localStorage.setItem(this.key(), '1'); } catch (e) {} },
+  async check() {
+    if (!currentUserId || this.shown || this.seen()) return;
+    this.shown = true; await this.render(); $('perm-gate').classList.add('show');
+  },
+  async render() {
+    const txt = { granted: 'Diizinkan', prompt: 'Belum diminta', denied: 'Diblokir di browser', unsupported: 'Tidak didukung' };
+    let h = '';
+    for (const id of Object.keys(Perms.items)) { const s = await Perms.state(id); h += `<div class="bd-lrow"><span>${Perms.items[id].nm}</span><em style="margin-left:auto">${txt[s] || s}</em></div>`; }
+    $('pg-list').innerHTML = h;
+  },
+  async all() { const b = $('pg-go'); b.disabled = true; try { await Perms.all(); } catch (e) {} b.disabled = false; this.done(); },
+  done() { this.mark(); $('perm-gate').classList.remove('show'); }
+};
+setInterval(() => { try { PermGate.check(); } catch (e) {} }, 3000);
+
+// ---------- sedang mengetik (DM) ----------
+const Typing = {
+  inCh: null, inUid: null, outCh: null, outId: null, last: 0, active: null, tm: null,
+  tick() {
+    if (this.inCh && this.inUid !== currentUserId) { try { supabaseClient.removeChannel(this.inCh); } catch (e) {} this.inCh = null; }
+    if (!this.inCh && currentUserId) {
+      this.inUid = currentUserId;
+      try { this.inCh = supabaseClient.channel('typ-' + currentUserId, { config: { broadcast: { self: false } } }).on('broadcast', { event: 't' }, ({ payload }) => this.got(payload)); this.inCh.subscribe(); } catch (e) {}
+    }
+    const want = (typeof dmPeer !== 'undefined' && dmPeer) ? dmPeer.id : null;
+    if (this.outId !== want) {
+      if (this.outCh) { try { supabaseClient.removeChannel(this.outCh); } catch (e) {} this.outCh = null; }
+      this.outId = want;
+      if (want) { try { this.outCh = supabaseClient.channel('typ-' + want, { config: { broadcast: { self: false } } }); this.outCh.subscribe(); } catch (e) {} }
+    }
+  },
+  got(p) {
+    if (!p || typeof dmPeer === 'undefined' || !dmPeer || p.from !== dmPeer.id) return;
+    this.active = p.from; Presence.paint(); clearTimeout(this.tm);
+    this.tm = setTimeout(() => { this.active = null; Presence.paint(); }, 3000);
+  },
+  send() {
+    const el = $('dm-prompt'); if (!el || !el.value || !this.outCh || Date.now() - this.last < 1500) return;
+    this.last = Date.now(); try { this.outCh.send({ type: 'broadcast', event: 't', payload: { from: currentUserId } }); } catch (e) {}
+  }
+};
+setInterval(() => { try { Typing.tick(); } catch (e) {} }, 2500);
+(() => { const el = document.getElementById('dm-prompt'); if (el) el.addEventListener('input', () => Typing.send()); })();
+
+// ---------- chat papan ----------
+function bdChatHTML() {
+  if (BD.mode !== 'online') return '';
+  return `<div class="g-chat"><div id="bd-chat-log" class="g-chat-log"><p class="muted">Chat dengan pemain lain.</p></div><div class="g-chat-in"><input id="bd-chat-text" placeholder="Ketik pesan..." maxlength="200" autocomplete="off" onkeydown="if(event.key==='Enter')bdChatSend()"><button class="send-btn" onclick="bdChatSend()" aria-label="Kirim"><svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg></button></div></div>
+  <div class="bd-voice"><button id="bv-mic" class="mini-btn" onclick="BVoice.toggle()">Suara: mati</button><small id="bv-st" class="muted"></small></div><div id="bv-audio" style="display:none"></div>`;
+}
+function bdChatAdd(mine, name, text) {
+  const log = gx('bd-chat-log'); if (!log) return; text = String(text || '').slice(0, 200); if (!text) return;
+  const f = log.querySelector('p.muted'); if (f) f.remove();
+  const d = document.createElement('div'); d.className = 'g-msg ' + (mine ? 'me' : 'op');
+  const n = document.createElement('small'); n.textContent = mine ? 'Kamu' : name; const t = document.createElement('span'); t.textContent = text;
+  d.append(n, t); log.appendChild(d); while (log.children.length > 60) log.removeChild(log.firstChild); log.scrollTop = log.scrollHeight;
+}
+function bdChatSend() {
+  const el = gx('bd-chat-text'); if (!el) return; const text = el.value.trim().slice(0, 200); if (!text) return; el.value = '';
+  bdChatAdd(true, '', text); bdSend({ t: 'chat', id: currentUserId, name: currentUsername, text });
+}
+
+// ---------- suara papan (mesh, sampai 4 pemain) ----------
+const BVoice = {
+  on: false, track: null, pcs: {}, pend: {}, rem: {},
+  send(o) { bdSend({ t: 'v', from: currentUserId, ...o }); },
+  async toggle() {
+    if (this.on) return this.stop(true);
+    if (BD.mode !== 'online') return showToast('Suara hanya untuk mode online');
+    if (!window.RTCPeerConnection || !navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) return showPermHelp('mic');
+    try { const st = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true, autoGainControl: true } }); this.track = st.getAudioTracks()[0]; }
+    catch (e) { return showPermHelp('mic', e && e.name); }
+    this.on = true; this.send({ k: 'join' }); this.ui();
+  },
+  peerFor(id) {
+    if (this.pcs[id]) return this.pcs[id];
+    const pc = new RTCPeerConnection({ iceServers: RTC_ICE }); this.pcs[id] = pc; this.pend[id] = []; this.rem[id] = false;
+    if (this.track) pc.addTrack(this.track, new MediaStream([this.track]));
+    pc.onicecandidate = e => { if (e.candidate) this.send({ k: 'ice', to: id, c: e.candidate.toJSON ? e.candidate.toJSON() : e.candidate }); };
+    pc.ontrack = e => { let a = document.getElementById('bva-' + id); if (!a) { a = document.createElement('audio'); a.id = 'bva-' + id; a.autoplay = true; a.setAttribute('playsinline', ''); const box = gx('bv-audio'); if (box) box.appendChild(a); }
+      a.srcObject = (e.streams && e.streams[0]) || new MediaStream([e.track]); a.play().catch(() => {}); };
+    pc.onconnectionstatechange = () => this.ui();
+    return pc;
+  },
+  async flush(id) { const pc = this.pcs[id]; for (const c of (this.pend[id] || []).splice(0)) await pc.addIceCandidate(c).catch(() => {}); },
+  async offer(id) {
+    this.drop(id, true); const pc = this.peerFor(id);
+    const o = await pc.createOffer(); await pc.setLocalDescription(o); this.send({ k: 'offer', to: id, sdp: { type: o.type, sdp: o.sdp } });
+  },
+  async recv(m) {
+    if (!this.on || !m || m.from === currentUserId || (m.to && m.to !== currentUserId)) return; const id = m.from;
+    try {
+      if (m.k === 'join') { this.send({ k: 'hi', to: id }); if (currentUserId < id) await this.offer(id); }
+      else if (m.k === 'hi') { if (currentUserId < id && !this.pcs[id]) await this.offer(id); }
+      else if (m.k === 'offer') { this.drop(id, true); const pc = this.peerFor(id); await pc.setRemoteDescription(m.sdp); this.rem[id] = true; await this.flush(id); const a = await pc.createAnswer(); await pc.setLocalDescription(a); this.send({ k: 'answer', to: id, sdp: { type: a.type, sdp: a.sdp } }); }
+      else if (m.k === 'answer') { const pc = this.pcs[id]; if (pc && !pc.currentRemoteDescription) { await pc.setRemoteDescription(m.sdp); this.rem[id] = true; await this.flush(id); } }
+      else if (m.k === 'ice' && m.c) { const pc = this.peerFor(id); if (this.rem[id]) await pc.addIceCandidate(m.c).catch(() => {}); else this.pend[id].push(m.c); }
+      else if (m.k === 'leave') this.drop(id);
+    } catch (e) { this.ui('Suara gagal'); }
+  },
+  drop(id, keepAudio) {
+    const pc = this.pcs[id]; if (pc) { pc.onconnectionstatechange = null; try { pc.close(); } catch (e) {} }
+    delete this.pcs[id]; delete this.pend[id]; delete this.rem[id];
+    if (!keepAudio) { const a = document.getElementById('bva-' + id); if (a) a.remove(); }
+    this.ui();
+  },
+  stop(notify) {
+    if (notify && this.on) this.send({ k: 'leave' });
+    Object.keys(this.pcs).forEach(id => this.drop(id));
+    try { if (this.track) this.track.stop(); } catch (e) {} this.track = null; this.on = false; this.ui();
+  },
+  ui(msg) {
+    const b = gx('bv-mic'), s = gx('bv-st'); if (!b) return;
+    b.textContent = 'Suara: ' + (this.on ? 'nyala' : 'mati'); b.classList.toggle('on', this.on);
+    const n = Object.values(this.pcs).filter(pc => pc.connectionState === 'connected').length;
+    s.textContent = msg || (this.on ? (n ? n + ' pemain tersambung' : 'Menunggu pemain lain...') : '');
+  }
+};
+// ================= PESAN SUARA DM =================
+const VN = {
+  rec: null, chunks: [], stream: null, t0: 0, tm: null, mime: '', ext: 'webm', cancelled: false,
+  pickMime() {
+    const c = ['audio/webm;codecs=opus', 'audio/webm', 'audio/mp4', 'audio/ogg;codecs=opus', 'audio/ogg'];
+    if (!window.MediaRecorder) return null;
+    return c.find(t => { try { return MediaRecorder.isTypeSupported(t); } catch (e) { return false; } }) || '';
+  },
+  async start() {
+    if (this.rec || typeof dmPeer === 'undefined' || !dmPeer) return;
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia || this.pickMime() === null) return showToast('Browser ini belum mendukung pesan suara');
+    try { this.stream = await navigator.mediaDevices.getUserMedia({ audio: { echoCancellation: true, noiseSuppression: true } }); }
+    catch (e) { return showPermHelp('mic', e && e.name); }
+    this.mime = this.pickMime(); this.ext = /mp4/.test(this.mime) ? 'm4a' : /ogg/.test(this.mime) ? 'ogg' : 'webm';
+    this.chunks = []; this.cancelled = false;
+    try { this.rec = new MediaRecorder(this.stream, this.mime ? { mimeType: this.mime } : undefined); }
+    catch (e) { this.cleanup(); return showToast('Tidak bisa mulai merekam'); }
+    this.rec.ondataavailable = e => { if (e.data && e.data.size) this.chunks.push(e.data); };
+    this.rec.onstop = () => this.finish();
+    this.rec.start(250); this.t0 = Date.now();
+    $('vn-bar').style.display = 'flex'; document.querySelector('#dm-chat-screen .input-row').style.display = 'none';
+    this.tick(); this.tm = setInterval(() => this.tick(), 250);
+    if (typeof SFX !== 'undefined') SFX.step();
+  },
+  tick() {
+    const s = Math.floor((Date.now() - this.t0) / 1000); $('vn-time').textContent = Math.floor(s / 60) + ':' + String(s % 60).padStart(2, '0');
+    if (s >= 120) this.send();
+  },
+  send() { if (!this.rec) return; this.cancelled = false; try { this.rec.stop(); } catch (e) { this.cleanup(); } },
+  cancel() { if (!this.rec) { this.cleanup(); return; } this.cancelled = true; try { this.rec.stop(); } catch (e) { this.cleanup(); } },
+  cleanup() {
+    clearInterval(this.tm); this.tm = null;
+    try { if (this.stream) this.stream.getTracks().forEach(t => t.stop()); } catch (e) {}
+    this.stream = null; this.rec = null;
+    const b = $('vn-bar'); if (b) b.style.display = 'none';
+    const r = document.querySelector('#dm-chat-screen .input-row'); if (r) r.style.display = '';
+  },
+  async finish() {
+    const secs = Math.max(1, Math.round((Date.now() - this.t0) / 1000)), blob = new Blob(this.chunks, { type: this.mime || 'audio/webm' });
+    const peer = (typeof dmPeer !== 'undefined') ? dmPeer : null; const cancelled = this.cancelled; const ext = this.ext, mime = (blob.type || 'audio/webm').split(';')[0];
+    this.cleanup();
+    if (cancelled || !peer) return;
+    if (Date.now() - this.t0 < 900 || blob.size < 800) return showToast('Pesan suara terlalu singkat');
+    showLoading('MENGIRIM PESAN SUARA...');
+    try {
+      const name = `vn-${secs}s-${Date.now()}.${ext}`, path = `${currentUserId}/${peer.id}/${name}`;
+      const up = await supabaseClient.storage.from('dm-files').upload(path, blob, { contentType: mime, upsert: false });
+      if (up.error) throw up.error;
+      const ins = await supabaseClient.from('direct_messages').insert([{ sender_id: currentUserId, receiver_id: peer.id, sender_name: currentUsername, text: null, file_path: path, file_name: name, file_type: mime, file_size: blob.size }]);
+      if (ins.error) throw ins.error;
+      if (dmPeer && dmPeer.id === peer.id) loadDM(true);
+    } catch (e) { showToast('Gagal kirim pesan suara: ' + (e.message || e)); }
+    hideLoading();
+  },
+  cur: null,
+  node(m, wrap) {
+    const mm = /^vn-(\d+)s-/.exec(m.file_name || ''), secs = mm ? +mm[1] : 0;
+    const fmt = s => Math.floor(s / 60) + ':' + String(Math.floor(s % 60)).padStart(2, '0');
+    const PLAY = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M8 5v14l11-7z"/></svg>', PAUSE = '<svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor"><path d="M6 5h4v14H6zM14 5h4v14h-4z"/></svg>';
+    wrap.innerHTML = `<div class="vn"><button class="vn-btn" aria-label="Putar">${PLAY}</button><div class="vn-bar"><i></i></div><span class="vn-t">${fmt(secs)}</span></div>`;
+    const btn = wrap.querySelector('.vn-btn'), fill = wrap.querySelector('.vn-bar i'), tt = wrap.querySelector('.vn-t'), bar = wrap.querySelector('.vn-bar');
+    const a = new Audio(); a.preload = 'none'; let loaded = false;
+    const total = () => (isFinite(a.duration) && a.duration > 0 ? a.duration : secs) || 1;
+    a.ontimeupdate = () => { fill.style.width = Math.min(100, a.currentTime / total() * 100) + '%'; tt.textContent = fmt(a.paused && a.currentTime === 0 ? secs : a.currentTime); };
+    a.onended = () => { btn.innerHTML = PLAY; fill.style.width = '0'; tt.textContent = fmt(secs); a.currentTime = 0; };
+    a.onpause = () => { btn.innerHTML = PLAY; };
+    a.onplay = () => { btn.innerHTML = PAUSE; if (VN.cur && VN.cur !== a) VN.cur.pause(); VN.cur = a; };
+    btn.onclick = async () => {
+      if (!a.paused) return a.pause();
+      try { if (!loaded) { a.src = await getSignedUrl(m.file_path); loaded = true; } await a.play(); } catch (e) { showToast('Tidak bisa memutar pesan suara'); }
+    };
+    bar.onclick = e => { if (!loaded || !isFinite(a.duration)) return; const r = bar.getBoundingClientRect(); a.currentTime = Math.max(0, Math.min(1, (e.clientX - r.left) / r.width)) * a.duration; };
+  }
+};
+// ================= PENGHASIL QR (mode byte, koreksi level M, versi 1-20) =================
+const QRE = (() => {
+  const ECC_PB = [-1, 10, 16, 26, 18, 24, 16, 18, 22, 22, 26, 30, 22, 22, 24, 24, 28, 28, 26, 26, 26];
+  const NBLK = [-1, 1, 1, 1, 2, 2, 4, 4, 4, 5, 5, 5, 8, 9, 9, 10, 10, 11, 13, 14, 16];
+  const mul = (x, y) => { let z = 0; for (let i = 7; i >= 0; i--) { z = (z << 1) ^ ((z >>> 7) * 0x11D); z ^= ((y >>> i) & 1) * x; } return z; };
+  const divisor = d => { const r = new Array(d - 1).fill(0).concat([1]); let root = 1; for (let i = 0; i < d; i++) { for (let j = 0; j < r.length; j++) { r[j] = mul(r[j], root); if (j + 1 < r.length) r[j] ^= r[j + 1]; } root = mul(root, 2); } return r; };
+  const remainder = (data, div) => { const r = div.map(() => 0); for (const b of data) { const f = b ^ r.shift(); r.push(0); div.forEach((c, i) => { r[i] ^= mul(c, f); }); } return r; };
+  const rawModules = v => { let r = (16 * v + 128) * v + 64; if (v >= 2) { const n = Math.floor(v / 7) + 2; r -= (25 * n - 10) * n - 55; if (v >= 7) r -= 36; } return r; };
+  const dataCw = v => Math.floor(rawModules(v) / 8) - ECC_PB[v] * NBLK[v];
+  function utf8(s) { return Array.from(new TextEncoder().encode(s)); }
+  function make(text) {
+    const bytes = utf8(text); let ver = 0;
+    for (let v = 1; v <= 20; v++) { const cc = v < 10 ? 8 : 16; if (4 + cc + bytes.length * 8 <= dataCw(v) * 8) { ver = v; break; } }
+    if (!ver) return null;
+    const bits = []; const put = (val, len) => { for (let i = len - 1; i >= 0; i--) bits.push((val >>> i) & 1); };
+    put(4, 4); put(bytes.length, ver < 10 ? 8 : 16); bytes.forEach(b => put(b, 8));
+    const cap = dataCw(ver) * 8; put(0, Math.min(4, cap - bits.length)); while (bits.length % 8) bits.push(0);
+    for (let p = 0xEC; bits.length < cap; p ^= 0xEC ^ 0x11) put(p, 8);
+    const data = []; for (let i = 0; i < bits.length; i += 8) { let b = 0; for (let j = 0; j < 8; j++) b = (b << 1) | bits[i + j]; data.push(b); }
+    // koreksi kesalahan + interleave
+    const nb = NBLK[ver], ee = ECC_PB[ver], raw = Math.floor(rawModules(ver) / 8), ns = nb - raw % nb, sl = Math.floor(raw / nb), div = divisor(ee), blocks = [];
+    for (let i = 0, k = 0; i < nb; i++) { const dat = data.slice(k, k + sl - ee + (i < ns ? 0 : 1)); k += dat.length; const ecc = remainder(dat, div); if (i < ns) dat.push(0); blocks.push(dat.concat(ecc)); }
+    const all = []; for (let i = 0; i < blocks[0].length; i++) blocks.forEach((b, j) => { if (i !== sl - ee || j >= ns) all.push(b[i]); });
+    // matriks
+    const size = ver * 4 + 17, m = Array.from({ length: size }, () => new Array(size).fill(false)), fn = Array.from({ length: size }, () => new Array(size).fill(false));
+    const set = (x, y, d) => { m[y][x] = d; fn[y][x] = true; };
+    for (let i = 0; i < size; i++) { set(6, i, i % 2 === 0); set(i, 6, i % 2 === 0); }
+    const finder = (cx, cy) => { for (let dy = -4; dy <= 4; dy++) for (let dx = -4; dx <= 4; dx++) { const d = Math.max(Math.abs(dx), Math.abs(dy)), x = cx + dx, y = cy + dy; if (x >= 0 && x < size && y >= 0 && y < size) set(x, y, d !== 2 && d !== 4); } };
+    finder(3, 3); finder(size - 4, 3); finder(3, size - 4);
+    if (ver > 1) { const n = Math.floor(ver / 7) + 2, step = ver === 32 ? 26 : Math.ceil((ver * 4 + 4) / (n * 2 - 2)) * 2, pos = [6]; for (let p = size - 7; pos.length < n; p -= step) pos.splice(1, 0, p);
+      for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) { if ((i === 0 && j === 0) || (i === 0 && j === n - 1) || (i === n - 1 && j === 0)) continue; for (let dy = -2; dy <= 2; dy++) for (let dx = -2; dx <= 2; dx++) set(pos[i] + dx, pos[j] + dy, Math.max(Math.abs(dx), Math.abs(dy)) !== 1); } }
+    const fmt = mask => { const d = (0 << 3) | mask; let r = d; for (let i = 0; i < 10; i++) r = (r << 1) ^ ((r >>> 9) * 0x537); const b = ((d << 10) | r) ^ 0x5412, g = i => ((b >>> i) & 1) !== 0;
+      for (let i = 0; i <= 5; i++) set(8, i, g(i)); set(8, 7, g(6)); set(8, 8, g(7)); set(7, 8, g(8)); for (let i = 9; i < 15; i++) set(14 - i, 8, g(i));
+      for (let i = 0; i < 8; i++) set(size - 1 - i, 8, g(i)); for (let i = 8; i < 15; i++) set(8, size - 15 + i, g(i)); set(8, size - 8, true); };
+    fmt(0);
+    if (ver >= 7) { let r = ver; for (let i = 0; i < 12; i++) r = (r << 1) ^ ((r >>> 11) * 0x1F25); const b = (ver << 12) | r; for (let i = 0; i < 18; i++) { const bit = ((b >>> i) & 1) !== 0, a = size - 11 + i % 3, c = Math.floor(i / 3); set(a, c, bit); set(c, a, bit); } }
+    let i = 0; for (let right = size - 1; right >= 1; right -= 2) { if (right === 6) right = 5; for (let vert = 0; vert < size; vert++) for (let j = 0; j < 2; j++) { const x = right - j, up = ((right + 1) & 2) === 0, y = up ? size - 1 - vert : vert; if (!fn[y][x] && i < all.length * 8) { m[y][x] = ((all[i >>> 3] >>> (7 - (i & 7))) & 1) !== 0; i++; } } }
+    const apply = mk => { for (let y = 0; y < size; y++) for (let x = 0; x < size; x++) { let inv; switch (mk) { case 0: inv = (x + y) % 2 === 0; break; case 1: inv = y % 2 === 0; break; case 2: inv = x % 3 === 0; break; case 3: inv = (x + y) % 3 === 0; break; case 4: inv = (Math.floor(x / 3) + Math.floor(y / 2)) % 2 === 0; break; case 5: inv = x * y % 2 + x * y % 3 === 0; break; case 6: inv = (x * y % 2 + x * y % 3) % 2 === 0; break; default: inv = ((x + y) % 2 + x * y % 3) % 2 === 0; } if (!fn[y][x] && inv) m[y][x] = !m[y][x]; } };
+    const penalty = () => { let p = 0; for (let y = 0; y < size; y++) { let run = 1; for (let x = 1; x < size; x++) { if (m[y][x] === m[y][x - 1]) { run++; if (run === 5) p += 3; else if (run > 5) p++; } else run = 1; } }
+      for (let x = 0; x < size; x++) { let run = 1; for (let y = 1; y < size; y++) { if (m[y][x] === m[y - 1][x]) { run++; if (run === 5) p += 3; else if (run > 5) p++; } else run = 1; } }
+      for (let y = 0; y < size - 1; y++) for (let x = 0; x < size - 1; x++) if (m[y][x] === m[y][x + 1] && m[y][x] === m[y + 1][x] && m[y][x] === m[y + 1][x + 1]) p += 3;
+      let dark = 0; m.forEach(r => r.forEach(v => { if (v) dark++; })); p += Math.floor(Math.abs(dark * 20 - size * size * 10) / (size * size)) * 10; return p; };
+    let best = 0, bp = 1e9; for (let mk = 0; mk < 8; mk++) { apply(mk); fmt(mk); const p = penalty(); if (p < bp) { bp = p; best = mk; } apply(mk); }
+    apply(best); fmt(best);
+    return m;
+  }
+  function draw(canvas, text, px) {
+    const m = make(text); if (!m) return false; const n = m.length, q = 4, s = Math.max(2, Math.floor((px || 320) / (n + q * 2)));
+    canvas.width = canvas.height = s * (n + q * 2); const c = canvas.getContext('2d'); c.fillStyle = '#fff'; c.fillRect(0, 0, canvas.width, canvas.height); c.fillStyle = '#000';
+    for (let y = 0; y < n; y++) for (let x = 0; x < n; x++) if (m[y][x]) c.fillRect((x + q) * s, (y + q) * s, s, s);
+    return true;
+  }
+  return { make, draw };
+})();
+// ================= TOOLS: QR + KOTAK UPLOAD + PEMUTAR YOUTUBE =================
+const UUID_RE = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
+const dropURL = id => (location.origin && location.origin !== 'null' ? location.origin + location.pathname : 'https://syranx-ai.vercel.app/') + '#drop=' + id;
+function qrDownload(cv, name) { cv.toBlob(b => { const a = document.createElement('a'); a.href = URL.createObjectURL(b); a.download = name; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 2000); }); }
+async function copyText(t) { try { await navigator.clipboard.writeText(t); showToast('Disalin'); } catch (e) { showToast('Tidak bisa menyalin'); } }
+
+// ---------- layar QR ----------
+const QRT = {
+  tab: 'text',
+  open() { openOverlay('qr-screen'); this.show(this.tab); },
+  show(t) {
+    this.tab = t; document.querySelectorAll('#qr-seg button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+    if (t === 'text') {
+      $('qr-body').innerHTML = `<div class="qr-box"><textarea id="qr-text" class="glass-input" rows="3" maxlength="300" placeholder="Tulis teks atau tempel link"></textarea>
+        <button class="btn-primary" onclick="QRT.make()">Buat QR</button>
+        <div id="qr-out" style="display:none"><canvas id="qr-cv" class="qr-cv"></canvas><div class="qr-acts"><button class="mini-btn" onclick="qrDownload($('qr-cv'),'qr-syranx.png')">Unduh PNG</button><button class="mini-btn" onclick="copyText($('qr-text').value)">Salin teks</button></div></div></div>`;
+    } else DRP.render();
+  },
+  make() {
+    const t = $('qr-text').value.trim(); if (!t) return showToast('Isi teks atau link dulu');
+    if (!QRE.draw($('qr-cv'), t, 560)) return showToast('Teks terlalu panjang untuk QR');
+    $('qr-out').style.display = 'block';
+  }
+};
+
+// ---------- kotak upload: pemilik ----------
+const DRP = {
+  days: 7, items: [],
+  async render() {
+    $('qr-body').innerHTML = `<div class="qr-box"><p class="muted" style="font-size:13px;line-height:1.55">Buat kotak upload lalu bagikan QR-nya. Orang yang memindai QR (harus masuk akun Syranx) bisa mengirim foto dan video ke kotakmu. File hanya bisa dilihat olehmu.</p>
+      <input id="dr-title" class="glass-input" maxlength="40" placeholder="Nama kotak, misalnya Foto acara">
+      <div class="g-seg">${[1, 7, 30].map(d => `<button class="${this.days === d ? 'on' : ''}" onclick="DRP.days=${d};DRP.render()">${d} hari</button>`).join('')}</div>
+      <button class="btn-primary" onclick="DRP.create()">Buat kotak</button>
+      <div class="g-or">Kotak saya</div><div id="dr-list"><p class="muted">Memuat...</p></div></div>`;
+    await this.list();
+  },
+  async list() {
+    const el = $('dr-list'); if (!el) return;
+    const r = await supabaseClient.from('drops').select('id,title,created_at,expires_at').order('created_at', { ascending: false }).limit(50);
+    if (r.error) { el.innerHTML = '<p class="muted">Fitur ini belum siap. Jalankan SQL kotak upload (supabase_v14.sql) di Supabase.</p>'; return; }
+    this.items = r.data || [];
+    if (!this.items.length) { el.innerHTML = '<p class="muted">Belum ada kotak.</p>'; return; }
+    el.innerHTML = this.items.map(d => { const exp = d.expires_at ? new Date(d.expires_at) : null, over = exp && exp < new Date();
+      return `<div class="dr-card"><div class="dr-t"><b>${esc(d.title)}</b><small class="muted">${over ? 'Sudah berakhir' : exp ? 'Berakhir ' + exp.toLocaleDateString('id-ID', { day: 'numeric', month: 'short' }) : 'Tanpa batas'}</small></div>
+        <div class="dr-a"><button class="mini-btn" onclick="DRP.qr('${d.id}')">QR</button><button class="mini-btn" onclick="DRP.files('${d.id}')">File</button><button class="mini-btn danger" onclick="DRP.del('${d.id}')">Hapus</button></div></div>`; }).join('');
+  },
+  async create() {
+    const title = ($('dr-title').value || '').trim(); if (!title) return showToast('Beri nama kotak dulu');
+    const exp = new Date(Date.now() + this.days * 86400000).toISOString();
+    const r = await supabaseClient.from('drops').insert([{ title, expires_at: exp }]).select('id').single();
+    if (r.error) return showToast('Gagal membuat kotak. Jalankan SQL v14 dulu.');
+    showToast('Kotak dibuat'); await this.list(); this.qr(r.data.id);
+  },
+  qr(id) {
+    const d = this.items.find(x => x.id === id) || { title: 'Kotak upload' }, url = dropURL(id);
+    $('qr-modal-body').innerHTML = `<h3>${esc(d.title)}</h3><canvas id="qr-cv2" class="qr-cv"></canvas><p class="muted" style="font-size:12px;margin:10px 0">Pindai dengan kamera HP lalu masuk Syranx untuk mengirim foto atau video.</p>
+      <div class="qr-acts"><button class="mini-btn" onclick="qrDownload($('qr-cv2'),'kotak-upload.png')">Unduh PNG</button><button class="mini-btn" onclick="copyText('${url}')">Salin link</button></div>
+      <button class="btn-primary" style="margin-top:12px" onclick="$('qr-modal').classList.remove('show')">Tutup</button>`;
+    $('qr-modal').classList.add('show'); QRE.draw($('qr-cv2'), url, 520);
+  },
+  async files(id) {
+    const d = this.items.find(x => x.id === id) || { title: 'Kotak' };
+    $('qr-body').innerHTML = `<div class="qr-box"><button class="mini-btn" onclick="DRP.render()">← Kembali</button><h3 style="color:var(--strong)">${esc(d.title)}</h3><div id="dr-files"><p class="muted">Memuat...</p></div></div>`;
+    const l = await supabaseClient.storage.from('drops').list(id, { limit: 200, sortBy: { column: 'created_at', order: 'desc' } });
+    const box = $('dr-files'); if (l.error) { box.innerHTML = '<p class="muted">Gagal memuat file.</p>'; return; }
+    const fs = (l.data || []).filter(f => f.name && f.id); if (!fs.length) { box.innerHTML = '<p class="muted">Belum ada file masuk.</p>'; return; }
+    const paths = fs.map(f => id + '/' + f.name), s = await supabaseClient.storage.from('drops').createSignedUrls(paths, 3600);
+    box.innerHTML = '<div class="dr-grid"></div>'; const grid = box.firstChild;
+    fs.forEach((f, i) => {
+      const url = s.data && s.data[i] && s.data[i].signedUrl, parts = f.name.split('__'), who = parts.length >= 3 ? parts[0] : '', nm = parts.length >= 3 ? parts.slice(2).join('__') : f.name;
+      const isVid = /\.(mp4|mov|webm|m4v)$/i.test(nm), c = document.createElement('div'); c.className = 'dr-file';
+      c.innerHTML = (isVid ? `<video src="${url}" controls playsinline preload="metadata"></video>` : `<img src="${url}" loading="lazy" alt="">`) + `<div class="dr-fi"><small>${esc(who ? 'dari ' + who : nm)}</small><span><a class="mini-btn" href="${url}" download="${esc(nm)}" target="_blank" rel="noopener">Unduh</a><button class="mini-btn danger">Hapus</button></span></div>`;
+      if (!isVid) c.querySelector('img').onclick = () => openLightbox(url);
+      c.querySelector('button').onclick = async () => { if (!confirm('Hapus file ini?')) return; const r = await supabaseClient.storage.from('drops').remove([id + '/' + f.name]); if (r.error) showToast('Gagal menghapus'); else c.remove(); };
+      grid.appendChild(c);
+    });
+  },
+  async del(id) {
+    if (!confirm('Hapus kotak ini beserta semua file di dalamnya?')) return;
+    try { const l = await supabaseClient.storage.from('drops').list(id, { limit: 1000 }); const names = (l.data || []).filter(f => f.id).map(f => id + '/' + f.name); if (names.length) await supabaseClient.storage.from('drops').remove(names); } catch (e) {}
+    const r = await supabaseClient.from('drops').delete().eq('id', id); if (r.error) showToast('Gagal menghapus'); else { showToast('Kotak dihapus'); this.list(); }
+  }
+};
+
+// ---------- kotak upload: pengirim (setelah memindai QR) ----------
+const DUP = {
+  id: null, busy: false,
+  async open(id) {
+    this.id = id; $('drop-body').innerHTML = '<p class="muted" style="text-align:center;margin-top:40px">Memuat kotak...</p>'; openOverlay('drop-screen');
+    const r = await supabaseClient.rpc('get_drop', { p_id: id }), d = r.data && r.data[0];
+    if (r.error || !d) { $('drop-body').innerHTML = '<div class="qr-box"><p style="text-align:center;color:var(--strong)">Kotak tidak ditemukan atau sudah berakhir.</p><button class="btn-primary" onclick="closeOverlay(\'drop-screen\')">Tutup</button></div>'; return; }
+    $('drop-body').innerHTML = `<div class="qr-box"><h3 style="color:var(--strong);text-align:center">${esc(d.title)}</h3><p class="muted" style="text-align:center;font-size:13px">Foto dan video yang kamu kirim hanya bisa dilihat oleh <b>${esc(d.owner_name)}</b>.</p>
+      <input type="file" id="dup-file" accept="image/*,video/*" multiple style="display:none" onchange="DUP.send(this)">
+      <button class="btn-primary" onclick="$('dup-file').click()">Pilih foto atau video</button><div id="dup-list"></div><small class="muted" style="text-align:center">Maksimal 50 MB per file.</small></div>`;
+  },
+  async send(inp) {
+    const fs = Array.from(inp.files || []); inp.value = ''; if (!fs.length || this.busy) return; this.busy = true;
+    const list = $('dup-list'), who = (currentUsername || 'user').replace(/[^\w]+/g, '').slice(0, 20) || 'user';
+    for (const f of fs) {
+      const row = document.createElement('div'); row.className = 'bd-lrow'; row.innerHTML = `<span style="min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${esc(f.name)}</span><em style="margin-left:auto">Menunggu</em>`; list.appendChild(row); const st = row.querySelector('em');
+      const isV = /^video\//.test(f.type) || /\.(mp4|mov|webm|m4v)$/i.test(f.name), isI = /^image\//.test(f.type) || /\.(jpe?g|png|webp|gif|heic|heif)$/i.test(f.name);
+      if (!isV && !isI) { st.textContent = 'Bukan foto/video'; continue; } if (f.size > 50 * 1048576) { st.textContent = 'Terlalu besar'; continue; }
+      st.textContent = 'Mengirim...';
+      const safe = (f.name.replace(/[^\w.\-]+/g, '_') || 'file').slice(-60), path = `${this.id}/${who}__${Date.now()}__${safe}`;
+      const up = await supabaseClient.storage.from('drops').upload(path, f, { contentType: f.type || (isV ? 'video/mp4' : 'image/jpeg'), upsert: false });
+      st.textContent = up.error ? 'Gagal' : 'Terkirim'; if (up.error) console.error('drop', up.error);
+    }
+    this.busy = false; showToast('Selesai');
+  }
+};
+(function () { const m = /[#&]drop=([0-9a-f-]{36})/i.exec(location.hash || ''); if (m && UUID_RE.test(m[1])) { try { localStorage.setItem('syranx_pending_drop', m[1]); } catch (e) {} try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {} } })();
+setInterval(() => {
+  let id = null; try { id = localStorage.getItem('syranx_pending_drop'); } catch (e) {}
+  if (!id) return;
+  if (!currentUserId) { const er = $('auth-error'); if (er && !er.textContent) er.textContent = 'Masuk atau daftar dulu untuk mengirim file ke kotak upload.'; return; }
+  if (typeof PermGate !== 'undefined' && $('perm-gate').classList.contains('show')) return;
+  try { localStorage.removeItem('syranx_pending_drop'); } catch (e) {}
+  if (UUID_RE.test(id)) DUP.open(id);
+}, 1500);
+
+// ---------- pemutar YouTube (pemutar resmi YouTube) ----------
+const YTP = {
+  q: [], idx: -1, player: null, loop: false, apiReq: false,
+  load() { try { this.q = JSON.parse(localStorage.getItem('syranx_yt_q') || '[]').filter(x => x && /^[\w-]{11}$/.test(x.id)); } catch (e) { this.q = []; } },
+  save() { try { localStorage.setItem('syranx_yt_q', JSON.stringify(this.q.slice(0, 50))); } catch (e) {} },
+  parse(s) { s = (s || '').trim(); let m = /youtu\.be\/([\w-]{11})/.exec(s) || /[?&]v=([\w-]{11})/.exec(s) || /(?:shorts|embed|live)\/([\w-]{11})/.exec(s) || (/^[\w-]{11}$/.test(s) ? [0, s] : null); return m ? m[1] : null; },
+  open() {
+    if (!this.q.length && !this.loaded) { this.load(); this.loaded = true; }
+    openOverlay('yt-screen'); this.render(); this.api();
+  },
+  api() {
+    if (window.YT && YT.Player) return; if (this.apiReq) return; this.apiReq = true;
+    window.onYouTubeIframeAPIReady = () => { this.render(); if (this.pending !== undefined) { const i = this.pending; this.pending = undefined; this.play(i); } };
+    const s = document.createElement('script'); s.src = 'https://www.youtube.com/iframe_api'; s.onerror = () => { this.apiReq = false; showToast('Pemutar YouTube tidak bisa dimuat'); }; document.head.appendChild(s);
+  },
+  render() {
+    const b = $('yt-body'); if (!b) return;
+    if (!b.querySelector('#yt-in')) b.innerHTML = `<div class="qr-box"><div class="search-row"><input id="yt-in" class="glass-input" placeholder="Tempel link YouTube" autocomplete="off" onkeydown="if(event.key==='Enter')YTP.add(true)"><button class="btn-primary search-btn" onclick="YTP.add(true)">Putar</button></div>
+      <div class="yt-frame"><div id="yt-box"></div><p id="yt-ph" class="muted">Tempel link video lalu tekan Putar.</p></div>
+      <div class="yt-ctl"><button class="mini-btn" onclick="YTP.step(-1)">Sebelumnya</button><button class="mini-btn" onclick="YTP.step(1)">Berikutnya</button><button id="yt-loop" class="mini-btn" onclick="YTP.toggleLoop()">Ulangi: mati</button><button class="mini-btn" onclick="YTP.stop()">Stop</button></div>
+      <div class="g-or">Antrean</div><div id="yt-q"></div><button class="mini-btn" style="margin-top:6px" onclick="YTP.add(false)">+ Tambah ke antrean saja</button></div>`;
+    const q = $('yt-q'); q.innerHTML = this.q.length ? '' : '<p class="muted">Antrean kosong.</p>';
+    this.q.forEach((x, i) => { const r = document.createElement('div'); r.className = 'yt-row' + (i === this.idx ? ' on' : ''); r.innerHTML = `<span class="yt-t">${esc(x.title || x.id)}</span><button class="mini-btn danger" aria-label="Hapus">x</button>`; r.querySelector('.yt-t').onclick = () => this.play(i); r.querySelector('button').onclick = e => { e.stopPropagation(); this.remove(i); }; q.appendChild(r); });
+  },
+  async add(playNow) {
+    const inp = $('yt-in'), id = this.parse(inp.value); if (!id) return showToast('Link YouTube tidak dikenali');
+    inp.value = ''; let i = this.q.findIndex(x => x.id === id);
+    if (i < 0) { this.q.push({ id, title: '' }); i = this.q.length - 1; this.save(); this.title(i); }
+    this.render(); if (playNow) this.play(i); else showToast('Ditambahkan ke antrean');
+  },
+  async title(i) { try { const x = this.q[i], r = await fetch('https://www.youtube.com/oembed?format=json&url=' + encodeURIComponent('https://www.youtube.com/watch?v=' + x.id)); if (r.ok) { const j = await r.json(); x.title = j.title || ''; this.save(); this.render(); } } catch (e) {} },
+  play(i) {
+    if (i < 0 || i >= this.q.length) return; this.idx = i;
+    if (!(window.YT && YT.Player)) { this.pending = i; this.api(); showToast('Memuat pemutar...'); return; }
+    try { if (typeof Music !== 'undefined') Music.pause(); } catch (e) {}
+    const id = this.q[i].id; $('yt-ph').style.display = 'none';
+    if (this.player && this.player.loadVideoById) { this.player.loadVideoById(id); }
+    else { const d = document.createElement('div'); d.id = 'yt-player'; $('yt-box').innerHTML = ''; $('yt-box').appendChild(d);
+      this.player = new YT.Player('yt-player', { videoId: id, width: '100%', height: '100%', playerVars: { playsinline: 1, rel: 0, autoplay: 1, modestbranding: 1 },
+        events: { onReady: e => { try { e.target.playVideo(); } catch (x) {} }, onStateChange: e => { if (e.data === 0) this.ended(); if (e.data === 1) { try { if (typeof Music !== 'undefined') Music.pause(); } catch (x) {} } }, onError: () => { showToast('Video ini tidak bisa diputar di sini'); setTimeout(() => this.step(1), 800); } } }); }
+    if (!this.q[i].title) this.title(i); this.render();
+  },
+  ended() { if (this.loop && this.q.length === 1) { try { this.player.seekTo(0); this.player.playVideo(); } catch (e) {} return; } this.step(1, true); },
+  step(d, auto) { if (!this.q.length) return; let n = this.idx + d; if (n >= this.q.length) { if (this.loop || !auto) n = 0; else return; } if (n < 0) n = this.q.length - 1; this.play(n); },
+  toggleLoop() { this.loop = !this.loop; const b = $('yt-loop'); if (b) { b.textContent = 'Ulangi: ' + (this.loop ? 'nyala' : 'mati'); b.classList.toggle('on', this.loop); } },
+  stop() { try { if (this.player && this.player.stopVideo) this.player.stopVideo(); } catch (e) {} },
+  remove(i) { this.q.splice(i, 1); if (i < this.idx) this.idx--; else if (i === this.idx) { this.idx = -1; this.stop(); } this.save(); this.render(); }
+};
 let toastT;
 function showToast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
 </script>
