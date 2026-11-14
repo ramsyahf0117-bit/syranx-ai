@@ -676,6 +676,8 @@
 .yt-res-t{flex:1;min-width:0;display:flex;flex-direction:column;gap:2px}
 .yt-res-t b{font-size:13px;color:var(--strong);font-weight:600;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 .yt-res-t span{font-size:11px;color:var(--muted,#9aa)}
+
+.yt-ban{margin-top:8px;padding:14px;border-radius:14px;background:rgba(220,60,60,.14);border:1px solid rgba(220,60,60,.4);text-align:center}.yt-ban b{color:#ff8a80;font-size:16px}.yt-ban p{margin:6px 0 0;font-size:13px;color:var(--strong)}
 </style>
 </head>
 <body>
@@ -4057,8 +4059,14 @@ const YTP = {
     try {
       const { data } = await supabaseClient.auth.getSession(), tok = data && data.session ? data.session.access_token : '';
       const r = await fetch('/api/ytsearch?q=' + encodeURIComponent(v), { headers: { Authorization: 'Bearer ' + tok } });
-      if (r.status === 503 || r.status === 404) { box.innerHTML = '<p class="muted">Pencarian belum diaktifkan. Admin perlu memasang YT_API_KEY di Vercel. Sementara itu kamu masih bisa menempel link.</p>'; return; }
-      const j = await r.json(); if (!r.ok) { box.innerHTML = '<p class="muted">Pencarian gagal' + (j.error ? ': ' + esc(String(j.error)).slice(0, 80) : '') + '</p>'; return; }
+      if (r.status === 404) { box.innerHTML = '<p class="muted">Pencarian belum diaktifkan. Admin perlu memasang YT_API_KEY di Vercel. Sementara itu kamu masih bisa menempel link.</p>'; return; }
+      const j = await r.json();
+      if (r.status === 403 && (j.error === 'violation' || j.error === 'blocked')) {
+        const tgl = j.until ? new Date(j.until).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' }) : '';
+        box.innerHTML = '<div class="yt-ban"><b>Astaghfirullah bro, tobat!!</b><p>' + (j.permanent ? 'Pencarian YouTube kamu diblokir permanen.' : 'Pencarian YouTube kamu diblokir 3 hari' + (tgl ? ' (sampai ' + esc(tgl) + ')' : '') + '. Kalau terulang lagi, diblokir permanen.') + '</p></div>'; return;
+      }
+      if (r.status === 503) { box.innerHTML = '<p class="muted">Pencarian belum diatur lengkap oleh admin.</p>'; return; }
+      if (!r.ok) { box.innerHTML = '<p class="muted">Pencarian gagal' + (j.error ? ': ' + esc(String(j.error)).slice(0, 80) : '') + '</p>'; return; }
       if (!j.items.length) { box.innerHTML = '<p class="muted">Tidak ada hasil.</p>'; return; }
       box.innerHTML = ''; this.res = j.items;
       j.items.forEach((x, k) => { const d = document.createElement('div'); d.className = 'yt-res-row'; d.innerHTML = `<img src="${esc(x.thumb)}" alt="" loading="lazy"><div class="yt-res-t"><b>${esc(x.title)}</b><span>${esc(x.channel)}</span></div><button class="mini-btn" aria-label="Tambah ke antrean">+</button>`;
