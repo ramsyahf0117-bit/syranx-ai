@@ -37,11 +37,12 @@ module.exports = async (req, res) => {
   } catch (e) { return res.status(502).json({ error: 'guard_unavailable' }); }
   const p = new URLSearchParams({ part: 'snippet', type: 'video', maxResults: '15', q, safeSearch: 'strict', videoEmbeddable: 'true', key });
   if (req.query && req.query.music === '1') p.set('videoCategoryId', '10');
+  if (req.query && req.query.live === '1') p.set('eventType', 'live');
   try {
     const r = await fetch('https://www.googleapis.com/youtube/v3/search?' + p.toString());
     const j = await r.json();
     if (!r.ok) return res.status(502).json({ error: (j.error && j.error.message) || 'yt_error' });
-    const items = (j.items || []).filter(x => x.id && x.id.videoId).map(x => ({ id: x.id.videoId, title: x.snippet.title, channel: x.snippet.channelTitle, thumb: ((x.snippet.thumbnails || {}).medium || (x.snippet.thumbnails || {}).default || {}).url || '' }));
+    const items = (j.items || []).filter(x => x.id && x.id.videoId).map(x => ({ id: x.id.videoId, title: x.snippet.title, live: x.snippet.liveBroadcastContent === 'live', channel: x.snippet.channelTitle, thumb: ((x.snippet.thumbnails || {}).medium || (x.snippet.thumbnails || {}).default || {}).url || '' }));
     res.status(200).json({ items });
   } catch (e) { res.status(502).json({ error: 'yt_fetch' }); }
 };
