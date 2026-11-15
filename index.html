@@ -678,6 +678,15 @@
 .yt-res-t span{font-size:11px;color:var(--muted,#9aa)}
 
 .yt-ban{margin-top:8px;padding:14px;border-radius:14px;background:rgba(220,60,60,.14);border:1px solid rgba(220,60,60,.4);text-align:center}.yt-ban b{color:#ff8a80;font-size:16px}.yt-ban p{margin:6px 0 0;font-size:13px;color:var(--strong)}
+
+.yt-chips{margin-top:8px}.yt-chips .mini-btn.on{background:rgba(242,163,58,.25);color:var(--strong)}
+.yt-live{font-style:normal;font-size:10px;font-weight:700;color:#fff;background:#d93025;border-radius:4px;padding:1px 5px;letter-spacing:.5px}
+.clk-now{text-align:center;padding:14px 0 10px}#clk-time{font-size:46px;font-weight:300;letter-spacing:2px;color:var(--strong);font-variant-numeric:tabular-nums}#clk-date{font-size:14px;color:var(--strong);margin-top:2px}#clk-zone{font-size:12px;color:var(--muted,#9aa);margin-top:2px}
+.clk-days{display:flex;gap:6px;flex-wrap:wrap}.clk-days .mini-btn{min-width:42px}.clk-days .mini-btn.on{background:rgba(242,163,58,.3);color:var(--strong)}
+.al-time{font-size:20px;font-weight:600;margin-right:6px}.sw-d{font-size:44px;text-align:center;font-variant-numeric:tabular-nums;color:var(--strong);padding:12px 0}
+.ring-time{font-size:54px;font-weight:300;color:var(--strong)}
+.msg-tick{margin-left:6px;font-size:11px;opacity:.6;letter-spacing:-2px}.msg-tick.read{opacity:1;color:#5ac8fa;letter-spacing:-2px}
+.prof-saver{background:linear-gradient(135deg,#1b1b24,#2a2216)}
 </style>
 </head>
 <body>
@@ -751,7 +760,7 @@
 <!-- TOOLS -->
 <div id="tools-menu" class="full-screen-overlay">
   <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('tools-menu')">←</button><h2>Tools</h2></div>
-  <div class="overlay-content"><div class="tools-grid"><div class="tool-card" onclick="openOverlay('calc-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="16" y1="11" x2="16" y2="11.01"/><line x1="8" y1="15" x2="8" y2="15.01"/><line x1="12" y1="15" x2="12" y2="15.01"/><line x1="16" y1="15" x2="16" y2="15.01"/></svg></div>Kalkulator</div><div class="tool-card" onclick="openOverlay('conv-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>Konverter</div><div class="tool-card" onclick="QRT.open()"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20h1"/></svg></div>QR Code</div><div class="tool-card" onclick="YTP.open()"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="4"/><polygon points="10 9 15.5 12 10 15" fill="currentColor"/></svg></div>Pemutar YouTube</div></div></div>
+  <div class="overlay-content"><div class="tools-grid"><div class="tool-card" onclick="openOverlay('calc-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="8" y2="11.01"/><line x1="12" y1="11" x2="12" y2="11.01"/><line x1="16" y1="11" x2="16" y2="11.01"/><line x1="8" y1="15" x2="8" y2="15.01"/><line x1="12" y1="15" x2="12" y2="15.01"/><line x1="16" y1="15" x2="16" y2="15.01"/></svg></div>Kalkulator</div><div class="tool-card" onclick="openOverlay('conv-screen')"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="17 1 21 5 17 9"/><path d="M3 11V9a4 4 0 0 1 4-4h14"/><polyline points="7 23 3 19 7 15"/><path d="M21 13v2a4 4 0 0 1-4 4H3"/></svg></div>Konverter</div><div class="tool-card" onclick="QRT.open()"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><path d="M14 14h3v3h-3zM20 14v3M14 20h3M20 20h1"/></svg></div>QR Code</div><div class="tool-card" onclick="YTP.open()"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2.5" y="5" width="19" height="14" rx="4"/><polygon points="10 9 15.5 12 10 15" fill="currentColor"/></svg></div>Pemutar YouTube</div><div class="tool-card" onclick="CLK.open()"><div class="tool-icon"><svg viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M5 3 2 6M19 3l3 3"/></svg></div>Jam dan Alarm</div></div></div>
 </div>
 
 <div id="calc-screen" class="full-screen-overlay">
@@ -828,6 +837,7 @@
       <div class="set-row"><label>Transparansi kaca<small>Makin besar makin pekat</small></label><input type="range" id="set-glass" min="3" max="30" step="1" oninput="setPref('glass',+this.value);$('v-glass').textContent=this.value+'%'"><span class="val" id="v-glass">8%</span></div>
       <div class="set-row"><label>Ukuran teks chat</label><input type="range" id="set-fs" min="13" max="20" step="1" oninput="setPref('fs',+this.value);$('v-fs').textContent=this.value"><span class="val" id="v-fs">15</span></div>
       <div class="set-row"><label>Video latar<small>Matikan untuk hemat kuota dan baterai</small></label><label class="switch"><input type="checkbox" id="set-anim" onchange="setPref('anim',this.checked)"><span></span></label></div>
+      <div class="set-row"><label>Mode hemat data<small>Matikan video latar dan banner, cek pesan lebih jarang</small></label><label class="switch"><input type="checkbox" id="set-saver" onchange="setPref('saver',this.checked)"><span></span></label></div>
       <div class="set-row"><label>Latar aplikasi<small>Ganti dengan foto atau video dari HP kamu</small></label><div style="display:flex;gap:6px"><button class="mini-btn" onclick="document.getElementById('bg-file').click()">Ganti</button><button class="mini-btn" onclick="resetBg()">Bawaan</button></div></div>
       <div class="set-row"><label>Tampilkan status online<small>Matikan agar orang lain tidak melihat kamu online</small></label><label class="switch"><input type="checkbox" id="set-online" onchange="setPref('online',this.checked)"><span></span></label></div>
       <div class="set-row"><label>Suara notifikasi<small>Bunyi saat pesan masuk</small></label><label class="switch"><input type="checkbox" id="set-sound" onchange="setPref('sound',this.checked)"><span></span></label></div>
@@ -840,6 +850,13 @@
       <div class="set-row"><label>Kamera<small id="perm-cam">-</small></label><button class="mini-btn" id="pb-cam" onclick="Perms.request('cam')">Minta izin</button></div>
       <p id="perm-help" class="muted" style="display:none;padding:6px 0 4px;line-height:1.55;font-size:12px"></p>
       <div style="padding:10px 0 4px"><button class="set-btn" onclick="Perms.all()"><span>Ulangi semua izin</span><span>&#8634;</span></button></div>
+    </div>
+    <div class="set-card">
+      <h3>Akun</h3>
+      <div style="padding-top:2px">
+        <button class="set-btn" onclick="ACC.openPw()"><span>Ganti password</span><span>›</span></button>
+        <button class="set-btn danger" onclick="ACC.openDel()"><span>Hapus akun</span><span></span></button>
+      </div>
     </div>
     <div class="set-card">
       <h3>Lainnya</h3>
@@ -962,6 +979,17 @@
   <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('yt-screen')">←</button><h2>Pemutar YouTube</h2></div>
   <div class="overlay-content"><div class="g-wrap"><div id="yt-body"></div></div></div>
 </div>
+<!-- JAM, ALARM, AKUN -->
+<div id="clock-screen" class="full-screen-overlay" style="z-index:1700">
+  <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('clock-screen')">←</button><h2>Jam dan Alarm</h2></div>
+  <div class="overlay-content"><div class="g-wrap">
+    <div class="clk-now"><div id="clk-time">--:--:--</div><div id="clk-date"></div><div id="clk-zone"></div></div>
+    <div id="clk-seg" class="g-seg"><button data-t="alarm" class="on" onclick="CLK.show('alarm')">Alarm</button><button data-t="ingat" onclick="CLK.show('ingat')">Pengingat</button><button data-t="sw" onclick="CLK.show('sw')">Stopwatch</button></div>
+    <div id="clk-body"></div>
+  </div></div>
+</div>
+<div id="alarm-ring" class="perm-modal" style="z-index:5000"><div class="perm-card" style="text-align:center"><div id="ring-time" class="ring-time"></div><h3 id="ring-label" style="color:var(--strong);margin:6px 0 14px"></h3><div class="qr-acts"><button class="mini-btn" id="ring-snooze" onclick="CLK.snooze()">Tunda 5 menit</button><button class="btn-primary" onclick="CLK.stopRing()">Matikan</button></div></div></div>
+<div id="acct-modal" class="perm-modal" style="z-index:4000" onclick="if(event.target===this)ACC.close()"><div class="perm-card" id="acct-body"></div></div>
 
 <div id="games-menu" class="full-screen-overlay">
   <div class="overlay-header"><button class="icon-btn" onclick="closeOverlay('games-menu')">←</button><h2>Game Mini</h2></div>
@@ -1683,7 +1711,7 @@ async function hapusRiwayatFromMenu() {
 }
 // ================= TEMA & PENGATURAN =================
 const PREF_KEY = 'syranx_prefs_v12';
-const DEFAULT_PREFS = { blur: 22, glass: 10, fs: 15, anim: true, online: true, sound: true, notif: true };
+const DEFAULT_PREFS = { blur: 22, glass: 10, fs: 15, anim: true, online: true, sound: true, notif: true, saver: false };
 let prefs = { ...DEFAULT_PREFS };
 function lsGet(k) { try { return localStorage.getItem(k); } catch (e) { return null; } }
 function lsSet(k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
@@ -1697,12 +1725,13 @@ function loadPrefs() {
     fs: clampNum(p.fs, 13, 20, DEFAULT_PREFS.fs),
     anim: p.anim !== false,
     sound: p.sound !== false,
-    notif: p.notif !== false
+    notif: p.notif !== false,
+    saver: p.saver === true
   };
 }
 function applyPrefs() {
   const r = document.documentElement;
-  r.setAttribute('data-anim', prefs.anim ? 'on' : 'off');
+  r.setAttribute('data-anim', prefs.anim ? 'on' : 'off'); r.setAttribute('data-saver', prefs.saver ? 'on' : 'off');
   r.style.setProperty('--blur', prefs.blur + 'px');
   r.style.setProperty('--glass-a', (prefs.glass / 100).toFixed(2));
   r.style.setProperty('--fs', prefs.fs + 'px');
@@ -1717,7 +1746,7 @@ function syncSettingsUI() {
   $('set-blur').value = prefs.blur; $('v-blur').textContent = prefs.blur;
   $('set-glass').value = prefs.glass; $('v-glass').textContent = prefs.glass + '%';
   $('set-fs').value = prefs.fs; $('v-fs').textContent = prefs.fs;
-  $('set-anim').checked = prefs.anim;
+  $('set-anim').checked = prefs.anim; if ($('set-saver')) $('set-saver').checked = !!prefs.saver;
   $('set-sound').checked = prefs.sound; if ($('set-online')) $('set-online').checked = prefs.online !== false;
   $('set-notif').checked = prefs.notif && Notif.perm() === 'granted';
   const ns = $('notif-state'); if (ns) ns.textContent = Notif.perm() === 'unsupported' ? 'Browser ini tidak mendukung notifikasi' : (Notif.perm() === 'granted' ? 'Aktif' : (Notif.perm() === 'denied' ? 'Diblokir di pengaturan browser' : 'Belum diizinkan'));
@@ -2058,9 +2087,9 @@ const Notif = {
   }
 };
 async function toggleNotif(on) {
-  if (!on) { setPref('notif', false); syncSettingsUI(); return; }
+  if (!on) { setPref('notif', false); syncSettingsUI(); try { Push.off(); } catch (e) {} return; }
   const r = await Notif.request();
-  if (r === 'granted') { setPref('notif', true); showToast('Notifikasi diaktifkan'); }
+  if (r === 'granted') { setPref('notif', true); showToast('Notifikasi diaktifkan'); try { Push.sync(); } catch (e) {} }
   else showToast(r === 'unsupported' ? 'Browser ini tidak mendukung notifikasi' : 'Izin ditolak. Aktifkan lewat pengaturan situs di browser.');
   syncSettingsUI(); updateNotifBanner();
 }
@@ -2223,7 +2252,7 @@ function fileNode(m) {
     const a = document.createElement('audio'); a.className = 'msg-media'; a.controls = true; a.preload = 'none'; wrap.appendChild(a);
     getSignedUrl(m.file_path).then(u => { a.src = u; }).catch(asCard);
   } else if (type.startsWith('video/')) {
-    const v = document.createElement('video'); v.className = 'msg-media'; v.controls = true; v.preload = 'metadata'; v.playsInline = true; wrap.appendChild(v);
+    const v = document.createElement('video'); v.className = 'msg-media'; v.controls = true; v.preload = prefs.saver ? 'none' : 'metadata'; v.playsInline = true; wrap.appendChild(v);
     getSignedUrl(m.file_path).then(u => { v.src = u; }).catch(asCard);
   } else asCard();
   return wrap;
@@ -2242,6 +2271,7 @@ function dmRow(m) {
   if (m.file_path) b.appendChild(fileNode(m));
   if (m.text) { const t = document.createElement('div'); t.textContent = m.text; b.appendChild(t); }
   const tm = document.createElement('div'); tm.className = 'msg-time'; tm.textContent = hhmm(m.created_at); b.appendChild(tm);
+  if (me) { const k = document.createElement('span'); k.className = 'msg-tick' + (m.read_at ? ' read' : ''); k.dataset.tick = m.id; k.textContent = m.read_at ? '\u2713\u2713' : '\u2713'; tm.appendChild(k); }
   wrap.appendChild(b); row.appendChild(wrap);
   return row;
 }
@@ -2257,7 +2287,7 @@ function startDM(id, name, avatar, role) {
   openOverlay('dm-chat-screen');
   Unread.markRead(id);
   loadDM(true);
-  clearInterval(dmTimer); dmTimer = setInterval(() => { if (!document.hidden) loadDM(false); }, 4000);
+  clearInterval(dmTimer); dmTimer = setInterval(() => { if (!document.hidden) loadDM(false); }, prefs.saver ? 10000 : 4000);
 }
 function closeDMRoom() { try { VN.cancel(); } catch (e) {} clearInterval(dmTimer); dmPeer = null; closeOverlay('dm-chat-screen'); }
 
@@ -2276,6 +2306,8 @@ async function loadDM(scroll) {
   if (first) { area.innerHTML = ''; dmSeen = new Set(); }
   let added = false;
   rows.forEach(m => { if (dmSeen.has(m.id)) return; dmSeen.add(m.id); area.appendChild(dmRow(m)); added = true; });
+  rows.forEach(m => { if (m.sender_id === me && m.read_at) { const k = area.querySelector('[data-tick="' + m.id + '"]'); if (k && !k.classList.contains('read')) { k.classList.add('read'); k.textContent = '\u2713\u2713'; } } });
+  if (!window.__noRead && !document.hidden && rows.some(m => m.receiver_id === me && m.sender_id === peer && !m.read_at)) supabaseClient.rpc('mark_dm_read', { peer }).then(r => { if (r && r.error) window.__noRead = true; }, () => { window.__noRead = true; });
   if (!rows.length && first) area.innerHTML = '<p style="text-align:center;color:var(--text-2);margin:auto">Belum ada pesan. Sapa duluan!</p>';
   if (added && (scroll || nearBottom)) area.scrollTop = area.scrollHeight;
 }
@@ -2286,6 +2318,7 @@ async function kirimDM() {
   if (!text) return; input.value = '';
   const { error } = await supabaseClient.from('direct_messages').insert([{ sender_id: currentUserId, receiver_id: dmPeer.id, sender_name: currentUsername, text }]);
   if (error) { showToast('Gagal kirim: ' + error.message); input.value = text; return; }
+  Push.notify(dmPeer.id);
   loadDM(true);
 }
 async function kirimFileDM(input) {
@@ -2301,6 +2334,7 @@ async function kirimFileDM(input) {
     if (up.error) throw up.error;
     const ins = await supabaseClient.from('direct_messages').insert([{ sender_id: currentUserId, receiver_id: peer.id, sender_name: currentUsername, text: caption || null, file_path: path, file_name: file.name, file_type: file.type || 'application/octet-stream', file_size: file.size }]);
     if (ins.error) throw ins.error;
+    Push.notify(peer.id);
     if (dmPeer && dmPeer.id === peer.id) { $('dm-prompt').value = ''; loadDM(true); }
   } catch (e) { showToast('Gagal kirim file: ' + (e.message || e)); }
   hideLoading();
@@ -3119,7 +3153,7 @@ function bgApply() {
   if (!v.__ev) { v.__ev = 1; v.addEventListener('playing', () => v.classList.add('on')); v.addEventListener('error', () => v.classList.remove('on')); }
   const isImg = customBg && /^image\//.test(customBg.type);
   if (im) { if (isImg) { if (!im.src || im.__b !== customBg) { im.src = URL.createObjectURL(customBg); im.__b = customBg; } im.classList.add('on'); } else { im.classList.remove('on'); } }
-  if (isImg || !prefs.anim) { v.classList.remove('on'); if (v.getAttribute('src')) { v.pause(); v.removeAttribute('src'); v.load(); } return; }
+  if (isImg || !prefs.anim || prefs.saver) { v.classList.remove('on'); if (v.getAttribute('src')) { v.pause(); v.removeAttribute('src'); v.load(); } return; }
   const want = customBg ? (v.__b === customBg ? v.getAttribute('src') : (v.__b = customBg, URL.createObjectURL(customBg))) : v.dataset.src;
   if (v.getAttribute('src') !== want) { v.classList.remove('on'); v.src = want; v.muted = true; }
   if (bgHold) return;
@@ -3183,6 +3217,7 @@ function bannerHTML(p) {
   const custom = p && /^https:\/\//.test(p.banner_url || '');
   const url = custom ? p.banner_url : DEFAULT_BANNER, type = custom ? (p.banner_type || 'image') : 'video';
   if (type !== 'video') return `<img class="prof-media" src="${esc(url)}" alt="">`;
+  if (prefs.saver) return '<div class="prof-media prof-saver"></div>';
   return `<video class="prof-media" src="${esc(url)}" autoplay muted loop playsinline preload="auto" disablepictureinpicture></video>`;
 }
 function profileHTML(p, editable) {
@@ -3830,6 +3865,7 @@ const VN = {
       if (up.error) throw up.error;
       const ins = await supabaseClient.from('direct_messages').insert([{ sender_id: currentUserId, receiver_id: peer.id, sender_name: currentUsername, text: null, file_path: path, file_name: name, file_type: mime, file_size: blob.size }]);
       if (ins.error) throw ins.error;
+      Push.notify(peer.id);
       if (dmPeer && dmPeer.id === peer.id) loadDM(true);
     } catch (e) { showToast('Gagal kirim pesan suara: ' + (e.message || e)); }
     hideLoading();
@@ -4030,7 +4066,7 @@ setInterval(() => {
 
 // ---------- pemutar YouTube (pemutar resmi YouTube) ----------
 const YTP = {
-  q: [], idx: -1, player: null, loop: false, apiReq: false,
+  q: [], idx: -1, player: null, loop: false, apiReq: false, live: false,
   load() { try { this.q = JSON.parse(localStorage.getItem('syranx_yt_q') || '[]').filter(x => x && /^[\w-]{11}$/.test(x.id)); } catch (e) { this.q = []; } },
   save() { try { localStorage.setItem('syranx_yt_q', JSON.stringify(this.q.slice(0, 50))); } catch (e) {} },
   parse(s) { s = (s || '').trim(); let m = /youtu\.be\/([\w-]{11})/.exec(s) || /[?&]v=([\w-]{11})/.exec(s) || /(?:shorts|embed|live)\/([\w-]{11})/.exec(s) || (/^[\w-]{11}$/.test(s) ? [0, s] : null); return m ? m[1] : null; },
@@ -4045,7 +4081,7 @@ const YTP = {
   },
   render() {
     const b = $('yt-body'); if (!b) return;
-    if (!b.querySelector('#yt-in')) b.innerHTML = `<div class="qr-box"><div class="search-row"><input id="yt-in" class="glass-input" placeholder="Cari lagu atau video, atau tempel link" autocomplete="off" onkeydown="if(event.key==='Enter')YTP.go()"><button class="btn-primary search-btn" onclick="YTP.go()">Cari</button></div><div id="yt-res"></div>
+    if (!b.querySelector('#yt-in')) b.innerHTML = `<div class="qr-box"><div class="search-row"><input id="yt-in" class="glass-input" placeholder="Cari lagu atau video, atau tempel link" autocomplete="off" onkeydown="if(event.key==='Enter')YTP.go()"><button class="btn-primary search-btn" onclick="YTP.go()">Cari</button></div><div class="yt-chips"><button id="yt-live" class="mini-btn" onclick="YTP.toggleLive()">Live: mati</button></div><div id="yt-res"></div>
       <div class="yt-frame"><div id="yt-box"></div><p id="yt-ph" class="muted">Cari video lalu pilih untuk diputar.</p></div>
       <div class="yt-ctl"><button class="mini-btn" onclick="YTP.step(-1)">Sebelumnya</button><button class="mini-btn" onclick="YTP.step(1)">Berikutnya</button><button id="yt-loop" class="mini-btn" onclick="YTP.toggleLoop()">Ulangi: mati</button><button class="mini-btn" onclick="YTP.stop()">Stop</button></div>
       <div class="g-or">Antrean</div><div id="yt-q"></div><button class="mini-btn" style="margin-top:6px" onclick="YTP.add(false)">+ Tambah ke antrean saja</button></div>`;
@@ -4053,12 +4089,12 @@ const YTP = {
     this.q.forEach((x, i) => { const r = document.createElement('div'); r.className = 'yt-row' + (i === this.idx ? ' on' : ''); r.innerHTML = `<span class="yt-t">${esc(x.title || x.id)}</span><button class="mini-btn danger" aria-label="Hapus">x</button>`; r.querySelector('.yt-t').onclick = () => this.play(i); r.querySelector('button').onclick = e => { e.stopPropagation(); this.remove(i); }; q.appendChild(r); });
   },
   async go() {
-    const v = ($('yt-in').value || '').trim(); if (!v) return;
+    let v = ($('yt-in').value || '').trim(); if (!v && this.live) v = 'live'; if (!v) return;
     if (this.parse(v)) return this.add(true);
     const box = $('yt-res'); box.innerHTML = '<p class="muted">Mencari...</p>';
     try {
       const { data } = await supabaseClient.auth.getSession(), tok = data && data.session ? data.session.access_token : '';
-      const r = await fetch('/api/ytsearch?q=' + encodeURIComponent(v), { headers: { Authorization: 'Bearer ' + tok } });
+      const r = await fetch('/api/ytsearch?q=' + encodeURIComponent(v) + (this.live ? '&live=1' : ''), { headers: { Authorization: 'Bearer ' + tok } });
       if (r.status === 404) { box.innerHTML = '<p class="muted">Pencarian belum diaktifkan. Admin perlu memasang YT_API_KEY di Vercel. Sementara itu kamu masih bisa menempel link.</p>'; return; }
       const j = await r.json();
       if (r.status === 403 && (j.error === 'violation' || j.error === 'blocked')) {
@@ -4069,10 +4105,11 @@ const YTP = {
       if (!r.ok) { box.innerHTML = '<p class="muted">Pencarian gagal' + (j.error ? ': ' + esc(String(j.error)).slice(0, 80) : '') + '</p>'; return; }
       if (!j.items.length) { box.innerHTML = '<p class="muted">Tidak ada hasil.</p>'; return; }
       box.innerHTML = ''; this.res = j.items;
-      j.items.forEach((x, k) => { const d = document.createElement('div'); d.className = 'yt-res-row'; d.innerHTML = `<img src="${esc(x.thumb)}" alt="" loading="lazy"><div class="yt-res-t"><b>${esc(x.title)}</b><span>${esc(x.channel)}</span></div><button class="mini-btn" aria-label="Tambah ke antrean">+</button>`;
+      j.items.forEach((x, k) => { const d = document.createElement('div'); d.className = 'yt-res-row'; d.innerHTML = `<img src="${esc(x.thumb)}" alt="" loading="lazy"><div class="yt-res-t"><b>${esc(x.title)}</b><span>${x.live ? '<em class="yt-live">LIVE</em> ' : ''}${esc(x.channel)}</span></div><button class="mini-btn" aria-label="Tambah ke antrean">+</button>`;
         d.querySelector('.yt-res-t').onclick = d.querySelector('img').onclick = () => this.pick(k, true); d.querySelector('button').onclick = e => { e.stopPropagation(); this.pick(k, false); }; box.appendChild(d); });
     } catch (e) { box.innerHTML = '<p class="muted">Tidak bisa terhubung ke pencarian. Coba lagi.</p>'; }
   },
+  toggleLive() { this.live = !this.live; const b = $('yt-live'); if (b) { b.textContent = 'Live: ' + (this.live ? 'nyala' : 'mati'); b.classList.toggle('on', this.live); } const i = $('yt-in'); if (i) i.placeholder = this.live ? 'Cari siaran live (kosong = semua live)' : 'Cari lagu atau video, atau tempel link'; },
   pick(k, playNow) {
     const x = this.res[k]; if (!x) return; let i = this.q.findIndex(y => y.id === x.id);
     if (i < 0) { this.q.push({ id: x.id, title: x.title }); i = this.q.length - 1; this.save(); }
@@ -4136,6 +4173,166 @@ const MQR = {
     st.textContent = 'Selesai'; this.show(name); this.list();
   }
 };
+// ================= JAM, ALARM, PENGINGAT, AKUN, PUSH =================
+const VAPID_PUB = 'BILBV5eqbbSnNQzT2VbYMCKpJLn2L3C27z15h0PtEoFezzW-6-T_Z64eUDszpXKokiyL3bNTUUFNx483ZmZbRr0';
+const DAYS_ID = ['Min', 'Sen', 'Sel', 'Rab', 'Kam', 'Jum', 'Sab'];
+const pad2 = n => String(n).padStart(2, '0');
+const dayKey = d => d.getFullYear() + '-' + pad2(d.getMonth() + 1) + '-' + pad2(d.getDate());
+const CLK = {
+  tab: 'alarm', alarms: [], rem: [], ringing: null, ctx: null, osc: null, ringTimer: null, sw: { run: false, t0: 0, acc: 0, laps: [] }, newDays: [],
+  load() {
+    try { this.alarms = JSON.parse(localStorage.getItem('syranx_alarms') || '[]'); } catch (e) { this.alarms = []; }
+    try { this.rem = JSON.parse(localStorage.getItem('syranx_remind') || '[]'); } catch (e) { this.rem = []; }
+  },
+  save() { try { localStorage.setItem('syranx_alarms', JSON.stringify(this.alarms)); localStorage.setItem('syranx_remind', JSON.stringify(this.rem)); } catch (e) {} },
+  open() { openOverlay('clock-screen'); this.paint(); this.show(this.tab); },
+  paint() {
+    const t = $('clk-time'); if (!t) return; const d = new Date();
+    t.textContent = d.toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false }).replace(/\./g, ':');
+    $('clk-date').textContent = d.toLocaleDateString('id-ID', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' });
+    const off = -d.getTimezoneOffset() / 60, nm = { 7: 'WIB', 8: 'WITA', 9: 'WIT' }[off];
+    $('clk-zone').textContent = (nm ? nm + ' · ' : '') + 'UTC' + (off >= 0 ? '+' : '-') + pad2(Math.abs(off | 0)) + ':' + pad2(Math.round(Math.abs(off % 1) * 60));
+  },
+  show(t) {
+    this.tab = t; document.querySelectorAll('#clk-seg button').forEach(b => b.classList.toggle('on', b.dataset.t === t));
+    const b = $('clk-body'); if (!b) return;
+    const note = '<p class="muted" style="font-size:12px;line-height:1.5;margin-top:10px">Berbunyi selama Syranx terbuka, termasuk di latar belakang. Kalau aplikasi ditutup penuh, tidak akan berbunyi.</p>';
+    if (t === 'alarm') {
+      b.innerHTML = `<div class="qr-box"><input id="al-t" type="time" class="glass-input" value="07:00"><input id="al-l" class="glass-input" maxlength="40" placeholder="Nama alarm (opsional)">
+        <div class="clk-days" id="al-d">${[1, 2, 3, 4, 5, 6, 0].map(i => `<button class="mini-btn${this.newDays.includes(i) ? ' on' : ''}" onclick="CLK.toggleDay(${i})">${DAYS_ID[i]}</button>`).join('')}</div>
+        <p class="muted" style="font-size:12px">Tanpa hari dipilih: berbunyi sekali saja.</p><button class="btn-primary" onclick="CLK.addAlarm()">Tambah alarm</button>
+        <div class="g-or">Alarm saya</div><div id="al-list"></div>${note}</div>`;
+      this.listAlarms();
+    } else if (t === 'ingat') {
+      const d = new Date(Date.now() + 36e5); d.setMinutes(0, 0, 0); const v = dayKey(d) + 'T' + pad2(d.getHours()) + ':00';
+      b.innerHTML = `<div class="qr-box"><input id="rm-w" type="datetime-local" class="glass-input" value="${v}"><input id="rm-t" class="glass-input" maxlength="80" placeholder="Ingatkan aku untuk..."><button class="btn-primary" onclick="CLK.addRem()">Tambah pengingat</button>
+        <div class="g-or">Pengingat saya</div><div id="rm-list"></div>${note}</div>`;
+      this.listRem();
+    } else {
+      b.innerHTML = `<div class="qr-box"><div id="sw-d" class="sw-d">00:00.00</div><div class="qr-acts"><button id="sw-go" class="btn-primary" onclick="CLK.swGo()">Mulai</button><button class="mini-btn" onclick="CLK.swLap()">Putaran</button><button class="mini-btn" onclick="CLK.swReset()">Reset</button></div><div id="sw-l"></div></div>`;
+      this.swPaint();
+    }
+  },
+  toggleDay(i) { const k = this.newDays.indexOf(i); if (k < 0) this.newDays.push(i); else this.newDays.splice(k, 1); this.show('alarm'); },
+  addAlarm() {
+    const t = $('al-t').value; if (!/^\d\d:\d\d$/.test(t)) return showToast('Pilih jam dulu');
+    this.alarms.push({ id: Date.now() + '', t, label: $('al-l').value.trim().slice(0, 40), days: this.newDays.slice(), on: true, last: '' }); this.newDays = []; this.save(); this.show('alarm'); showToast('Alarm ditambahkan'); this.unlock();
+  },
+  listAlarms() {
+    const el = $('al-list'); if (!el) return; el.innerHTML = this.alarms.length ? '' : '<p class="muted">Belum ada alarm.</p>';
+    this.alarms.slice().sort((a, b) => a.t.localeCompare(b.t)).forEach(a => {
+      const r = document.createElement('div'); r.className = 'yt-row' + (a.on ? ' on' : '');
+      r.innerHTML = `<span class="yt-t"><b class="al-time">${a.t}</b> ${esc(a.label || 'Alarm')}<small class="muted"> ${a.days.length ? a.days.map(i => DAYS_ID[i]).join(' ') : 'Sekali'}</small></span><button class="mini-btn">${a.on ? 'Nyala' : 'Mati'}</button><button class="mini-btn danger" aria-label="Hapus">x</button>`;
+      const [b1, b2] = r.querySelectorAll('button'); b1.onclick = () => { a.on = !a.on; a.last = ''; this.save(); this.listAlarms(); }; b2.onclick = () => { this.alarms = this.alarms.filter(x => x.id !== a.id); this.save(); this.listAlarms(); }; el.appendChild(r);
+    });
+  },
+  addRem() {
+    const w = new Date($('rm-w').value).getTime(), t = $('rm-t').value.trim(); if (!isFinite(w)) return showToast('Pilih tanggal dan jam'); if (!t) return showToast('Tulis isi pengingat');
+    if (w < Date.now() - 6e4) return showToast('Waktunya sudah lewat'); this.rem.push({ id: Date.now() + '', at: w, text: t, done: false }); this.save(); this.show('ingat'); showToast('Pengingat ditambahkan'); this.unlock();
+  },
+  listRem() {
+    const el = $('rm-list'); if (!el) return; const l = this.rem.slice().sort((a, b) => a.at - b.at); el.innerHTML = l.length ? '' : '<p class="muted">Belum ada pengingat.</p>';
+    l.forEach(x => { const r = document.createElement('div'); r.className = 'yt-row' + (x.done ? '' : ' on'); r.innerHTML = `<span class="yt-t">${esc(x.text)}<small class="muted"> ${new Date(x.at).toLocaleString('id-ID', { dateStyle: 'medium', timeStyle: 'short' })}${x.done ? ' · selesai' : ''}</small></span><button class="mini-btn danger" aria-label="Hapus">x</button>`; r.querySelector('button').onclick = () => { this.rem = this.rem.filter(y => y.id !== x.id); this.save(); this.listRem(); }; el.appendChild(r); });
+  },
+  // --- bunyi ---
+  unlock() { try { if (!this.ctx) this.ctx = new (window.AudioContext || window.webkitAudioContext)(); if (this.ctx.state === 'suspended') this.ctx.resume(); } catch (e) {} },
+  beepLoop() {
+    const beep = () => { try { this.unlock(); const c = this.ctx, o = c.createOscillator(), g = c.createGain(); o.type = 'sine'; o.frequency.value = 880; g.gain.setValueAtTime(0.0001, c.currentTime); g.gain.exponentialRampToValueAtTime(0.35, c.currentTime + 0.02); g.gain.exponentialRampToValueAtTime(0.0001, c.currentTime + 0.35); o.connect(g); g.connect(c.destination); o.start(); o.stop(c.currentTime + 0.4); } catch (e) {} try { navigator.vibrate && navigator.vibrate([200, 100, 200]); } catch (e) {} };
+    beep(); this.ringTimer = setInterval(beep, 900);
+  },
+  ring(label, kind) {
+    if (this.ringing) return; this.ringing = { label, kind };
+    $('ring-time').textContent = new Date().toLocaleTimeString('id-ID', { hour: '2-digit', minute: '2-digit', hour12: false }).replace(/\./g, ':'); $('ring-label').textContent = label;
+    $('ring-snooze').style.display = kind === 'alarm' ? '' : 'none'; $('alarm-ring').classList.add('show'); this.beepLoop();
+    try { Notif.show(kind === 'alarm' ? 'Alarm' : 'Pengingat', label, 'clk'); } catch (e) {}
+    this.autoOff = setTimeout(() => this.stopRing(), 60000);
+  },
+  stopRing() { clearInterval(this.ringTimer); clearTimeout(this.autoOff); this.ringing = null; $('alarm-ring').classList.remove('show'); try { navigator.vibrate && navigator.vibrate(0); } catch (e) {} },
+  snooze() { const r = this.ringing; this.stopRing(); if (!r) return; this.rem.push({ id: Date.now() + '', at: Date.now() + 5 * 6e4, text: r.label, done: false, snooze: true }); this.save(); showToast('Ditunda 5 menit'); },
+  tick() {
+    const now = new Date(), nowMs = now.getTime(); let dirty = false;
+    this.alarms.forEach(a => {
+      if (!a.on) return; const [h, m] = a.t.split(':').map(Number); const at = new Date(now.getFullYear(), now.getMonth(), now.getDate(), h, m, 0, 0), diff = nowMs - at.getTime(), key = dayKey(now) + ' ' + a.t;
+      if (diff >= 0 && diff < 90000 && a.last !== key && (!a.days.length || a.days.includes(now.getDay()))) { a.last = key; if (!a.days.length) a.on = false; dirty = true; this.ring(a.label || 'Alarm', 'alarm'); }
+    });
+    this.rem.forEach(x => { if (!x.done && x.at <= nowMs) { x.done = true; dirty = true; this.ring(x.text, x.snooze ? 'alarm' : 'rem'); } });
+    if (this.rem.length > 60) { this.rem = this.rem.filter(x => !x.done).concat(this.rem.filter(x => x.done).slice(-20)); dirty = true; }
+    if (dirty) { this.save(); if ($('clock-screen').classList.contains('show')) { if (this.tab === 'alarm') this.listAlarms(); else if (this.tab === 'ingat') this.listRem(); } }
+    if ($('clock-screen').classList.contains('show')) this.paint();
+  },
+  // --- stopwatch ---
+  swNow() { return this.sw.acc + (this.sw.run ? performance.now() - this.sw.t0 : 0); },
+  fmt(ms) { const c = Math.floor(ms / 10) % 100, s = Math.floor(ms / 1000) % 60, m = Math.floor(ms / 60000); return pad2(m) + ':' + pad2(s) + '.' + pad2(c); },
+  swPaint() { const d = $('sw-d'); if (!d) return; d.textContent = this.fmt(this.swNow()); const g = $('sw-go'); if (g) g.textContent = this.sw.run ? 'Berhenti' : (this.sw.acc ? 'Lanjut' : 'Mulai'); const l = $('sw-l'); if (l) l.innerHTML = this.sw.laps.map((x, i) => `<div class="yt-row"><span class="yt-t">Putaran ${i + 1}</span><b>${this.fmt(x)}</b></div>`).reverse().join(''); },
+  swGo() { if (this.sw.run) { this.sw.acc += performance.now() - this.sw.t0; this.sw.run = false; } else { this.sw.t0 = performance.now(); this.sw.run = true; } this.swPaint(); },
+  swLap() { if (this.sw.run || this.sw.acc) { this.sw.laps.push(this.swNow()); this.swPaint(); } },
+  swReset() { this.sw = { run: false, t0: 0, acc: 0, laps: [] }; this.swPaint(); }
+};
+CLK.load();
+setInterval(() => CLK.tick(), 1000);
+setInterval(() => { if (CLK.sw.run && CLK.tab === 'sw' && $('sw-d')) CLK.swPaint(); }, 50);
+document.addEventListener('pointerdown', () => CLK.unlock(), { once: true });
+document.addEventListener('visibilitychange', () => { if (!document.hidden) CLK.tick(); });
+
+// ---------- akun: ganti password, hapus akun ----------
+const ACC = {
+  modal(h) { $('acct-body').innerHTML = h; $('acct-modal').classList.add('show'); },
+  close() { $('acct-modal').classList.remove('show'); },
+  msg(t, ok) { const m = $('ac-msg'); if (m) { m.textContent = t; m.style.color = ok ? '#7bd88f' : '#ff8a80'; } },
+  openPw() {
+    this.modal(`<h3 style="color:var(--strong);margin-bottom:10px">Ganti password</h3><div class="qr-box"><input id="ac-old" type="password" class="glass-input" placeholder="Password sekarang" autocomplete="current-password"><input id="ac-new" type="password" class="glass-input" placeholder="Password baru (min. 8 karakter)" autocomplete="new-password"><input id="ac-new2" type="password" class="glass-input" placeholder="Ulangi password baru" autocomplete="new-password"><p id="ac-msg" style="font-size:13px;min-height:18px"></p><div class="qr-acts"><button class="mini-btn" onclick="ACC.close()">Batal</button><button class="btn-primary" onclick="ACC.doPw()">Simpan</button></div></div>`);
+  },
+  async reauth(pw) {
+    const u = await supabaseClient.auth.getUser(), email = u && u.data && u.data.user && u.data.user.email; if (!email) return 'Sesi tidak ditemukan, masuk ulang dulu';
+    const r = await supabaseClient.auth.signInWithPassword({ email, password: pw }); return r.error ? 'Password sekarang salah' : null;
+  },
+  async doPw() {
+    const o = $('ac-old').value, n = $('ac-new').value, n2 = $('ac-new2').value;
+    if (!o) return this.msg('Isi password sekarang'); if (n.length < 8) return this.msg('Password baru minimal 8 karakter'); if (n !== n2) return this.msg('Ulangi password tidak sama'); if (n === o) return this.msg('Password baru harus berbeda');
+    this.msg('Memeriksa...', true); const e = await this.reauth(o); if (e) return this.msg(e);
+    const r = await supabaseClient.auth.updateUser({ password: n }); if (r.error) return this.msg('Gagal: ' + r.error.message);
+    this.msg('Password diganti', true); setTimeout(() => this.close(), 1200); showToast('Password diganti');
+  },
+  openDel() {
+    this.modal(`<h3 style="color:#ff8a80;margin-bottom:6px">Hapus akun</h3><p class="muted" style="font-size:13px;line-height:1.55;margin-bottom:10px">Akun, profil, pesan, dan kontakmu dihapus permanen dan tidak bisa dikembalikan. Ketik <b>${esc(currentUsername || '')}</b> dan password untuk melanjutkan.</p><div class="qr-box"><input id="ac-un" class="glass-input" placeholder="Ketik nama akunmu" autocomplete="off"><input id="ac-old" type="password" class="glass-input" placeholder="Password" autocomplete="current-password"><p id="ac-msg" style="font-size:13px;min-height:18px"></p><div class="qr-acts"><button class="mini-btn" onclick="ACC.close()">Batal</button><button class="btn-primary" style="background:#c0392b" onclick="ACC.doDel()">Hapus permanen</button></div></div>`);
+  },
+  async doDel() {
+    if ($('ac-un').value.trim().toLowerCase() !== String(currentUsername || '').toLowerCase()) return this.msg('Nama akun tidak cocok'); const pw = $('ac-old').value; if (!pw) return this.msg('Isi password');
+    this.msg('Memeriksa...', true); const e = await this.reauth(pw); if (e) return this.msg(e);
+    try { await Push.off(); } catch (x) {}
+    const r = await supabaseClient.rpc('delete_my_account'); if (r.error) return this.msg('Gagal: ' + r.error.message + '. Pastikan SQL v17 sudah dijalankan.');
+    try { await supabaseClient.auth.signOut(); } catch (x) {} alert('Akun dihapus.'); location.reload();
+  }
+};
+
+// ---------- push notifikasi ----------
+const Push = {
+  tries: 0, uid: null, busy: false,
+  ok() { return 'serviceWorker' in navigator && 'PushManager' in window && 'Notification' in window && !!VAPID_PUB; },
+  key() { const p = '='.repeat((4 - VAPID_PUB.length % 4) % 4), r = atob((VAPID_PUB + p).replace(/-/g, '+').replace(/_/g, '/')); return Uint8Array.from(r, c => c.charCodeAt(0)); },
+  async sync() {
+    if (!this.ok() || Notification.permission !== 'granted' || !prefs.notif || !currentUserId) return;
+    this.tries++;
+    try {
+      const reg = await navigator.serviceWorker.ready; let sub = await reg.pushManager.getSubscription();
+      if (!sub) sub = await reg.pushManager.subscribe({ userVisibleOnly: true, applicationServerKey: this.key() });
+      const j = sub.toJSON(), r = await supabaseClient.rpc('save_push_sub', { p_endpoint: j.endpoint, p_p256dh: j.keys.p256dh, p_auth: j.keys.auth });
+      if (r.error) console.warn('push', r.error); else { this.uid = currentUserId; this.tries = 0; }
+    } catch (e) { console.warn('push', e); }
+  },
+  async off() {
+    if (!this.ok()) return; const reg = await navigator.serviceWorker.ready, sub = await reg.pushManager.getSubscription(); if (!sub) return;
+    try { await supabaseClient.rpc('delete_push_sub', { p_endpoint: sub.endpoint }); } catch (e) {} try { await sub.unsubscribe(); } catch (e) {} this.uid = null;
+  },
+  async notify(to) {
+    try { if (!to) return; const { data } = await supabaseClient.auth.getSession(), tok = data && data.session && data.session.access_token; if (!tok) return;
+      fetch('/api/push', { method: 'POST', headers: { Authorization: 'Bearer ' + tok, 'Content-Type': 'application/json' }, body: JSON.stringify({ to }) }).catch(() => {}); } catch (e) {}
+  }
+};
+setInterval(() => {
+  if (!currentUserId || Push.busy || Push.uid === currentUserId || Push.tries >= 4 || !Push.ok() || Notification.permission !== 'granted') return;
+  Push.busy = true; Push.sync().finally(() => { Push.busy = false; });
+}, 4000);
 let toastT;
 function showToast(msg) { const t = $('toast'); t.textContent = msg; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2600); }
 </script>
