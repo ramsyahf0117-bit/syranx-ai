@@ -35,14 +35,20 @@ module.exports = async (req, res) => {
     if (st && st.blocked) return res.status(403).json({ error: 'blocked', permanent: !!st.permanent, until: st.until });
     if (isBad(q)) { const v = await rpc(base, anon, auth, 'search_violation'); return res.status(403).json({ error: 'violation', permanent: !!v.permanent, until: v.until }); }
   } catch (e) { return res.status(502).json({ error: 'guard_unavailable' }); }
-  const p = new URLSearchParams({ part: 'snippet', type: 'video', maxResults: '15', q, safeSearch: 'strict', videoEmbeddable: 'true', key });
-  if (req.query && req.query.music === '1') p.set('videoCategoryId', '10');
-  if (req.query && req.query.live === '1') p.set('eventType', 'live');
+  const live = req.query && req.query.live === '1';
+  const build = embed => {
+    const p = new URLSearchParams({ part: 'snippet', type: 'video', maxResults: '15', q, safeSearch: live ? 'moderate' : 'strict', key });
+    if (embed) p.set('videoEmbeddable', 'true');
+    if (req.query && req.query.music === '1') p.set('videoCategoryId', '10');
+    if (live) { p.set('eventType', 'live'); p.set('regionCode', 'ID'); }
+    return p;
+  };
+  const map = j => (j.items || []).filter(x => x.id && x.id.videoId).map(x => ({ id: x.id.videoId, title: x.snippet.title, live: x.snippet.liveBroadcastContent === 'live', channel: x.snippet.channelTitle, thumb: ((x.snippet.thumbnails || {}).medium || (x.snippet.thumbnails || {}).default || {}).url || '' }));
   try {
-    const r = await fetch('https://www.googleapis.com/youtube/v3/search?' + p.toString());
-    const j = await r.json();
+    let r = await fetch('https://www.googleapis.com/youtube/v3/search?' + build(true).toString()), j = await r.json();
     if (!r.ok) return res.status(502).json({ error: (j.error && j.error.message) || 'yt_error' });
-    const items = (j.items || []).filter(x => x.id && x.id.videoId).map(x => ({ id: x.id.videoId, title: x.snippet.title, live: x.snippet.liveBroadcastContent === 'live', channel: x.snippet.channelTitle, thumb: ((x.snippet.thumbnails || {}).medium || (x.snippet.thumbnails || {}).default || {}).url || '' }));
+    let items = map(j);
+    if (!items.length && live) { r = await fetch('https://www.googleapis.com/youtube/v3/search?' + build(false).toString()); j = await r.json(); if (r.ok) items = map(j); }
     res.status(200).json({ items });
   } catch (e) { res.status(502).json({ error: 'yt_fetch' }); }
 };
